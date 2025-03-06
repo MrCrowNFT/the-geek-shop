@@ -8,9 +8,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 app.use(express.json()); //accept JSON files
 app.use(cors()); // Allow all origins: probably should change it just specific one
 
-app.use("/home", userRouter);
-app.use("/admin", adminRouter);
-app.use("/categories", categoryRouter);
 
 app.post("/create-payment-intent", async (req, res) => {
   try {
