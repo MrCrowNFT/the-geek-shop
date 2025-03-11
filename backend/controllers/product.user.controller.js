@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Product from "../module/product.model.js";
 
 export const GetProducts = async (req, res) => {
@@ -14,16 +15,22 @@ export const GetProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    //new: true so that it returns the updated product
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid product ID" });
+    }
+
     const product = await Product.findById(id);
     if (!product) {
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
     }
+
     return res.status(200).json({ success: true, data: product });
   } catch (error) {
-    console.error(`Error updating product: ${error.message}`);
+    console.error(`Error fetching product by ID: ${error.message}`);
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -32,46 +39,43 @@ export const GetProductById = async (req, res) => {
 //some params in the request query may be empty
 export const Search = async (req, res) => {
   try {
-    const {
-      categories,
-      minPrice,
-      maxPrice,
-      searchTerm,
-      page = 1,
-      limit = 20, //20 products per page
-    } = req.query;
+    const { categories, minPrice, maxPrice, searchTerm, page, limit } =
+      req.query;
 
-    //we'll use a dynamic query
-    const query = {};
+    const query = {}; //dynami query
 
+    // Convert categories to ObjectId array
     if (categories) {
-      const categoriesIds = categories.split(","); //Parse coma separeted values
-      query.category = { $in: categoriesIds }; // filter
+      const categoryIds = categories
+        .split(",")
+        .map((id) => mongoose.Types.ObjectId(id));
+      query.category = { $in: categoryIds };
     }
 
+    // Price filtering
     if (minPrice || maxPrice) {
       query.priceTag = {};
       if (minPrice) query.priceTag.$gte = Number(minPrice);
       if (maxPrice) query.priceTag.$lte = Number(maxPrice);
     }
 
-    // Text search (if searchTerm is provided)
+    // Text search (ensure a text index exists in the model)
     if (searchTerm) {
-      query.$text = { $search: searchTerm }; // MongoDB text search
+      query.$text = { $search: searchTerm };
     }
 
-    // Convert page and limit to numbers, base 10
-    const pageNumber = parseInt(page, 10);
-    const limitNumber = parseInt(limit, 10);
-    const skip = (pageNumber - 1) * limitNumber; // Calculate the number of documents to skip
+    // Pagination handling
+    const pageNumber = parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
+    const limitNumber = parseInt(limit, 10) > 0 ? parseInt(limit, 10) : 20;
+    const skip = (pageNumber - 1) * limitNumber;
 
-    //populate to get the full product data
+    // Fetch products with pagination
     const products = await Product.find(query)
       .populate("category")
       .skip(skip)
       .limit(limitNumber);
 
-    //get total num of products returns for pagination
+    // Get total count for pagination
     const totalProducts = await Product.countDocuments(query);
 
     if (!products.length) {
@@ -85,10 +89,10 @@ export const Search = async (req, res) => {
       success: true,
       data: products,
       pagination: {
-        totalProducts, //total amount of products
-        totalPages: Math.ceil(totalProducts / limitNumber), //total amount of pages
-        currentPage: pageNumber, // current page
-        productsPerPage: limitNumber, // number of products per page
+        totalProducts,
+        totalPages: Math.ceil(totalProducts / limitNumber),
+        currentPage: pageNumber,
+        productsPerPage: limitNumber,
       },
     });
   } catch (error) {
