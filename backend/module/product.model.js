@@ -7,12 +7,8 @@ const productSchema = new mongoose.Schema(
     priceTag: { type: Number, required: true, min: 0 },
 
     total_cost: {
-      type: Object,
-      required: true,
-      properties: {
-        cost: { type: Number, required: true },
-        shipping: { type: Number, required: true },
-      },
+      cost: { type: Number, required: true },
+      shipping: { type: Number, required: true },
     },
 
     discount: {
@@ -21,7 +17,7 @@ const productSchema = new mongoose.Schema(
     },
 
     sku: {
-      type: String, // string for better flexibility
+      type: String, // String for better flexibility
       unique: true,
       required: false,
     },
@@ -36,7 +32,7 @@ const productSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
-        required: [],
+        default: [], // No category required initially
       },
     ],
 
@@ -48,7 +44,7 @@ const productSchema = new mongoose.Schema(
 
 productSchema.pre("save", async function (next) {
   try {
-    // valid pricing logic
+    // Ensure valid pricing logic
     const taxRate = 0.19;
     const profit = 0.1;
     const totalCost = this.total_cost.cost + this.total_cost.shipping;
@@ -56,6 +52,7 @@ productSchema.pre("save", async function (next) {
     const basePrice = totalCost + totalCost * taxRate + totalCost * profit;
     this.priceTag = Math.max(totalCost, basePrice - discount);
 
+    // Validate categories if they exist
     if (this.category && this.category.length > 0) {
       this.category = [...new Set(this.category.map((c) => c.toString()))].map(
         (c) => mongoose.Types.ObjectId(c)
