@@ -3,11 +3,14 @@ import express from "express";
 const userRouter = express.Router();
 
 //user routes
-userRouter.get("/");
-userRouter.post("/new");
-userRouter.post("/login");
-userRouter.put("/:id");
-userRouter.delete("/:id");
+userRouter.get("/users/profile");
+userRouter.put("/users/profile");
+userRouter.delete("/users/profile");
+
+//user wishlist
+userRouter.post("/users/wishlist");
+userRouter.get("/users/wishlist");
+userRouter.delete("/users/wishlist/:productId");
 
 //admin routes
 userRouter.post("/new-admin");
