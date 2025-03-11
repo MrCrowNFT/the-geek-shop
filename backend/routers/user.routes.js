@@ -13,8 +13,9 @@ userRouter.get("/users/wishlist");
 userRouter.delete("/users/wishlist/:productId");
 
 //admin routes
-userRouter.post("/new-admin");
-userRouter.post("/login-admin");
+userRouter.post("/admin");
+userRouter.get("/admin");
+userRouter.get("/admin/:id");
 userRouter.put("/admin/:id");
 userRouter.delete("/admin/:id");
 
