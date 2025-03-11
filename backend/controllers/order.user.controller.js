@@ -5,13 +5,13 @@ import mongoose from "mongoose";
 
 /**
  * Create a new order
- * @route POST /api/orders
- * @access Private
+ * @route POST /orders/new
+ * @access Private -- For logged user
  */
 export const createOrder = async (req, res) => {
   try {
     const { shipping, products, paid_amount } = req.body;
-    const userId = req.user._id; // Assuming you have user data from auth middleware
+    const userId = req.user._id; // user data from auth middleware
 
     // Validate shipping address exists
     const shippingAddress = await Shipping.findById(shipping);
@@ -64,7 +64,7 @@ export const createOrder = async (req, res) => {
 
 /**
  * Get all orders for a specific user
- * @route GET /api/orders
+ * @route GET /orders/
  * @access Private
  */
 export const getUserOrders = async (req, res) => {
@@ -87,7 +87,7 @@ export const getUserOrders = async (req, res) => {
 
 /**
  * Cancel an order
- * @route PUT /api/orders/:id/cancel
+ * @route PUT /orders/:id/cancel
  * @access Private
  */
 export const cancelOrder = async (req, res) => {
@@ -116,7 +116,7 @@ export const cancelOrder = async (req, res) => {
 
     // Check if order is beyond cancellation period (12 hours)
     if (order.status === "Paid") {
-      const paidAt = order.updatedAt; // Assuming updatedAt was set when status changed to Paid
+      const paidAt = order.updatedAt; // updatedAt set when status changed to Paid
       const currentTime = new Date();
       const hoursDifference = (currentTime - paidAt) / (1000 * 60 * 60);
 

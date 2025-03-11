@@ -5,7 +5,7 @@ const orderRouter = express.Router();
 //user 
 orderRouter.get("/");
 orderRouter.post("/new");
-orderRouter.put("/:id");
+orderRouter.put("/:id/cancel");
 
 //admin
 orderRouter.get("/admin/");
