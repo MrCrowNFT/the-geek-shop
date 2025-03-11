@@ -147,3 +147,23 @@ export const cancelOrder = async (req, res) => {
       .json({ message: "Error cancelling order", error: error.message });
   }
 };
+
+/**
+ * Add order reference to shipping address
+ * @param {string} shippingId - The ID of the shipping address
+ * @param {string} orderId - The ID of the order to add
+ * @returns {Promise<boolean>} - Success status
+ */
+export const addOrderToShipping = async (shippingId, orderId) => {
+    try {
+      await Shipping.findByIdAndUpdate(
+        shippingId,
+        { $addToSet: { orders: orderId } }, // $addToSet prevents duplicates
+        { new: true }
+      );
+      return true;
+    } catch (error) {
+      console.error("Error adding order to shipping:", error);
+      return false;
+    }
+  };
