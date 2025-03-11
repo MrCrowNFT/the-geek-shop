@@ -52,6 +52,6 @@ const shippingSchema = new mongoose.Schema(
   }
 );
 
-const Category = mongoose.model("Shipping", shippingSchema);
+const Shipping = mongoose.model("Shipping", shippingSchema);
 
-export default Category;
+export default Shipping;

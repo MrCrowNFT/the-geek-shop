@@ -43,6 +43,6 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-const Category = mongoose.model("Order", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
-export default Category;
+export default Order;
