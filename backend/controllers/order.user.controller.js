@@ -1,7 +1,7 @@
 import Order from "../models/Order.js";
 import Shipping from "../models/Shipping.js";
 import Product from "../models/Product.js";
-import mongoose from "mongoose";
+import Order from "../models/Order.js";
 
 /**
  * Create a new order
@@ -152,18 +152,40 @@ export const cancelOrder = async (req, res) => {
  * Add order reference to shipping address
  * @param {string} shippingId - The ID of the shipping address
  * @param {string} orderId - The ID of the order to add
- * @returns {Promise<boolean>} - Success status
+ * @returns {Promise<Object>} - Result with success status and message
  */
 export const addOrderToShipping = async (shippingId, orderId) => {
     try {
+      // Find both the shipping address and order
+      const shipping = await Shipping.findById(shippingId);
+      const order = await Order.findById(orderId);
+  
+      // Check if both exist
+      if (!shipping || !order) {
+        return { 
+          success: false, 
+          message: !shipping ? "Shipping address not found" : "Order not found" 
+        };
+      }
+  
+      // Verify that both belong to the same user
+      if (shipping.user.toString() !== order.user.toString()) {
+        return { 
+          success: false, 
+          message: "Order and shipping address do not belong to the same user" 
+        };
+      }
+  
+      // Add the order to the shipping address
       await Shipping.findByIdAndUpdate(
         shippingId,
         { $addToSet: { orders: orderId } }, // $addToSet prevents duplicates
         { new: true }
       );
-      return true;
+  
+      return { success: true, message: "Order added to shipping address successfully" };
     } catch (error) {
       console.error("Error adding order to shipping:", error);
-      return false;
+      return { success: false, message: error.message };
     }
   };
