@@ -82,10 +82,7 @@ export const refreshToken = async (req, res) => {
     // Verify the refresh token
     let decoded;
     try {
-      decoded = jwt.verify(
-        refreshToken,
-        process.env.JWT_REFRESH_SECRET
-      );
+      decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
     } catch (error) {
       //If verification fails, delete the stored refresh token from the database
       //as a security measure -> if someone tries to use an invalid token (possibly tampered with), we remove it from the system entirely
@@ -141,5 +138,62 @@ export const logout = async (req, res) => {
   } catch (error) {
     console.error(`Error during logout: ${error.message}`);
     res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const signup = async (res, res) => {
+  try {
+    const { username, password, email } = req.body;
+
+    // required fields
+    if (!username || !password || !email) {
+      res.status(400).json({
+        success: false,
+        message:
+          "Name, lastName, username, gender, email, password, and birthDate are required.",
+      });
+      return;
+    }
+
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      res.status(400).json({
+        success: false,
+        message: "Username already in use",
+      });
+      return;
+    }
+
+    // Check if email already exists
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      res.status(400).json({
+        success: false,
+        message: "Email already in use",
+      });
+      return;
+    }
+
+    // Create new user
+    const newUser = new User({ username, password, email });
+
+    await newUser.save();
+
+    // Send success response
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      data: {
+        username: newUser.username,
+        email: newUser.email,
+      },
+    });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 };
