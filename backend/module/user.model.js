@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+      select: false ,
     },
     email: {
       type: String,
@@ -57,5 +58,5 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const Role = mongoose.model("Role", userSchema);
-export default Role;
+const User = mongoose.model("User", userSchema);
+export default User;

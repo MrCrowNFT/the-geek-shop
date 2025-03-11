@@ -1,9 +1,9 @@
-import User from "../module/user.model.ts";
-import RefreshToken from "../module/refreshToken.model.ts";
+import User from "../module/user.model.js";
+import RefreshToken from "../module/refreshToken.model.js";
 import {
   generateTokens,
   generateAccessToken,
-} from "../helpers/auth.helpers.ts";
+} from "../helpers/auth.helpers.js";
 import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
@@ -141,7 +141,7 @@ export const logout = async (req, res) => {
   }
 };
 
-export const signup = async (res, res) => {
+export const signup = async (req, res) => {
   try {
     const { username, password, email } = req.body;
 
@@ -150,7 +150,7 @@ export const signup = async (res, res) => {
       res.status(400).json({
         success: false,
         message:
-          "Name, lastName, username, gender, email, password, and birthDate are required.",
+          "Username, password and email are required.",
       });
       return;
     }

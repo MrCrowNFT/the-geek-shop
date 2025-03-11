@@ -23,7 +23,7 @@ export const authenticate = (req, res, next) => {
   }
 };
 
-export const verifyAdmin = (req, res, next) => {
+export const verifySuperAdmin = (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({
       success: false,
@@ -39,17 +39,17 @@ export const verifyAdmin = (req, res, next) => {
   next();
 };
 
-export const verifySuperAdmin = (req, res, next) => {
+export const verifyAdmin = (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({
       success: false,
       message: "Unauthorized. Token missing or invalid.",
     });
   }
-  if (decoded.role !== "admin" && decoded.role !== "super_admin") {
+  if (req.user.role !== "admin" && req.user.role !== "super_admin") {
     return res.status(403).json({
       success: false,
-      message: "Access denied. Super admin role required.",
+      message: "Access denied. Admin or super admin role required.",
     });
   }
   next();
