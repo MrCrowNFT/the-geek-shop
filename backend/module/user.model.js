@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
         ref: "Shipping", // Reference the `Category` collection
       },
     ],
-    wishlis: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   },
   {
     timestamps: true,
