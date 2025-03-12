@@ -9,6 +9,7 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
+import cat from "../assets/cat-logo.svg";
 
 interface FooterProps {
   className?: string;
@@ -18,10 +19,8 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
   const year = new Date().getFullYear();
 
   return (
-    <footer
-      className={`bg-midnight-blue text-white font-sans mt-12 ${className}`}
-    >
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-[10%] py-8">
+    <footer className={`bg-[#191970] text-white font-sans mt-12 ${className}`}>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-[5%] py-8">
         {/* Main footer content grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* About section */}
@@ -143,14 +142,14 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
           <div className="flex items-center gap-3">
             <img
               loading="lazy"
-              src="/api/placeholder/60/60"
+              src={cat}
               alt="Marketplace Logo"
               className="h-12 w-12"
             />
-            <span className="font-bold text-lg">Marketplace</span>
+            <span className="font-bold text-lg">The Geek Shop</span>
           </div>
           <p className="text-sm text-gray-300">
-            © {year} Marketplace. All rights reserved.
+            © {year} The Geek Shop. All rights reserved.
           </p>
         </div>
       </div>
