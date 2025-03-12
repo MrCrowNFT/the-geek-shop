@@ -14,4 +14,6 @@ npm run seed
 
 Added `jest.config.js` and `babel.config.json` as Jest doesn't support ES Modules (import/export). babel-jest transpiles modern JavaScript to a format Jest can understand.
 
+## Frontend
 
+The frontend heavely uses shanc/ui components 
