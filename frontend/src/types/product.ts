@@ -16,3 +16,8 @@ export interface ProductGridProps {
   seeMoreLink: string;
   maxDisplay?: number;
 }
+
+export interface ProductPageProps {
+  product: Product;
+  relatedProducts: Product[];
+}

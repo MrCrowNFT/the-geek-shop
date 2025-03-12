@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product, ProductCardProps } from "@/types/card";
+import { Product, ProductCardProps } from "@/types/product";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [hovering, setHovering] = useState(false);
@@ -25,8 +25,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           src={product.images[0]}
           alt={product.name}
         />
+        {/**eventually add ${product.id} after */}
         {product.images[1] && (
-          <a href={`/product/${product.id}`} className="block w-full h-full">
+          <a href={`/product/`} className="block w-full h-full">
             <img
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
                 hovering ? "opacity-100" : "opacity-0"

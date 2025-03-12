@@ -1,4 +1,4 @@
-import { Product } from "@/types/card";
+import { Product } from "@/types/product";
 import ImageA from "@/assets/ImageA.png";
 import ImageB from "@/assets/ImageB.png";
 import ImageC from "@/assets/ImageC.png";
@@ -90,3 +90,12 @@ export const mockProducts: Product[] = [
     images: [ImageC, ImageD],
   },
 ];
+
+export const mockProduct: Product = {
+  id: 1,
+  name: "Premium Handcrafted Product",
+  price: 19.99,
+  description:
+    "pariatur ea consequat deserunt occaecat Lorem irure Lorem tempor - dolor elit velit dolor proident ipsum est anim velit voluptate aliqua exercitation - laboris quis elit magna ea amet excepteur amet minim cupidatat irure commodo nulla",
+  images: [ImageA, ImageB, ImageC, ImageD],
+};

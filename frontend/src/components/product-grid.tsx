@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ui/product-card";
-import { ProductGridProps } from "@/types/card";
+import { ProductGridProps } from "@/types/product";
 
 const ProductGrid: React.FC<ProductGridProps> = ({
   products,

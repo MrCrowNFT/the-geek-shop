@@ -1,5 +1,5 @@
 import React from "react";
-import { Search } from "lucide-react";
+
 import { SearchForm } from "./search-form";
 import cat from "../assets/cat-logo.svg";
 
@@ -47,9 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
           <div className="flex items-center gap-4">
             {/* Search section */}
             <div className="flex items-center">
-              <span className="flex items-center justify-center">
-                <Search size={20} className="text-white" />
-              </span>
+              <span className="flex items-center justify-center"/>
               <SearchForm />
             </div>
             
