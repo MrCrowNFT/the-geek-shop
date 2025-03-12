@@ -16,4 +16,4 @@ Added `jest.config.js` and `babel.config.json` as Jest doesn't support ES Module
 
 ## Frontend
 
-The frontend heavely uses shanc/ui components 
+The frontend heavely uses shadcn/ui components
