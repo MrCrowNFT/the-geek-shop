@@ -1,6 +1,6 @@
-import BannerA from "../../../assets/images/BannerA.png";
-import BannerB from "../../../assets/images/BannerB.png";
-import BannerC from "../../../assets/images/BannerC.png";
+import BannerA from "../assets/BannerA.jpg";
+import BannerB from "../assets/BannerB.jpg";
+import BannerC from "../assets/BannerC.jpg";
 import { BannerData } from "../types/banner";
 
 export const mockBannerData: BannerData = {
