@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { BannerItem, BannerData } from "../types/banner";
-import { mockBannerData } from "../mock/banner-mock";
 
 interface BannerProps {
-  bannerData?: BannerData;
+  bannerData: BannerData;
 }
 
-const Banner: React.FC<BannerProps> = ({ bannerData = mockBannerData }) => {
+const Banner: React.FC<BannerProps> = ({ bannerData }) => {
   return (
     <div className="mx-[7%] max-w-full">
       <div className="flex flex-col gap-2 h-screen">
