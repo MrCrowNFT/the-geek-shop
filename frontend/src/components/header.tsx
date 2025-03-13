@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
       <div className="user-interactions flex items-center gap-4 md:gap-6 w-full md:w-auto justify-center md:justify-start md:mr-[10%]">
         <a
-          href="/loginsingup"
+          href="/login"
           className="flex items-center gap-2 hover:text-red-500 transition-colors"
         >
           <User size={20} />
@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </a>
         <span className="inline-block h-6 w-px bg-gray-400"></span>
         <a
-          href="/create-account"
+          href="/signup"
           className="flex items-center gap-2 hover:text-red-500 transition-colors"
         >
           <PlusCircle size={20} />

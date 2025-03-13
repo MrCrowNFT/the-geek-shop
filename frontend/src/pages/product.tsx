@@ -2,7 +2,7 @@ import { useState } from "react";
 import Header from "@/components/header";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import Slider from "@/components/slider";
+import Slider from "@/components/ui/slider";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import ProductGrid from "@/components/product-grid";
 import { ProductPageProps } from "@/types/product";
