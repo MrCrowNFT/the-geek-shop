@@ -85,3 +85,6 @@ export const orderSearch = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+//missing a delete method
+//TODO add a way so that pending orders get deleted automatically after a time

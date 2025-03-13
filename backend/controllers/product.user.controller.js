@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../module/product.model.js";
 
-export const GetProducts = async (req, res) => {
+export const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
     return res.status(200).json({ success: true, data: products });
@@ -11,7 +11,7 @@ export const GetProducts = async (req, res) => {
   }
 };
 
-export const GetProductById = async (req, res) => {
+export const getProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -37,7 +37,7 @@ export const GetProductById = async (req, res) => {
 
 //this method will be used for product search therefor
 //some params in the request query may be empty
-export const Search = async (req, res) => {
+export const productSearch = async (req, res) => {
   try {
     const { categories, minPrice, maxPrice, searchTerm, page, limit } =
       req.query;
