@@ -4,7 +4,6 @@ import {
   Instagram,
   Twitter,
   Facebook,
-  Linkedin,
   Mail,
   Phone,
   MapPin,
@@ -121,7 +120,6 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
               { icon: <Instagram size={20} />, label: "Instagram" },
               { icon: <Facebook size={20} />, label: "Facebook" },
               { icon: <Twitter size={20} />, label: "Twitter" },
-              { icon: <Linkedin size={20} />, label: "LinkedIn" },
             ].map((social) => (
               <a
                 key={social.label}
