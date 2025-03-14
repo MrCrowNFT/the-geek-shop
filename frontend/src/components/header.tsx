@@ -76,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </a>
         <span className="inline-block h-6 w-px bg-gray-400"></span>
         <Link
-          to="/loginsingup"
+          to="/wishlist"
           className="flex items-center gap-2 hover:text-red-500 transition-colors"
           aria-label="Favorites"
         >
