@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { Product, ProductCardProps } from "@/types/product";
+import { useCart } from "@/hooks/use-cart";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [hovering, setHovering] = useState(false);
 
-  // Cart logic will be replaced with Zustand later
-  const addToCart = (product: Product) => {
-    // Empty placeholder for future Zustand implementation
-    console.log("Add to cart functionality will be implemented with Zustand");
-  };
+  // Use the Zustand cart hook
+  const addToCart = useCart((state) => state.addToCart);
 
   return (
     <div
@@ -25,9 +23,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           src={product.images[0]}
           alt={product.name}
         />
-        {/**eventually add ${product.id} after */}
         {product.images[1] && (
-          <a href={`/product/`} className="block w-full h-full">
+          <a href={`/product/${product.id}`} className="block w-full h-full">
             <img
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
                 hovering ? "opacity-100" : "opacity-0"
@@ -51,9 +48,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </a>
         <button
           onClick={() => addToCart(product)}
-          className={`w-full py-2 px-4 bg-[#191970] text-white font-bold rounded transition-all duration-300 transform ${
+          className={`w-full py-2 px-4  font-bold rounded transition-all duration-300 transform cursor-pointer ${
             hovering ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-          } hover:bg-gray-800`}
+          } hover:bg-gray-500`}
         >
           Add to cart →
         </button>

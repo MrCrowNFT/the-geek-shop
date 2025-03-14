@@ -6,6 +6,7 @@ import Slider from "@/components/ui/slider";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import ProductGrid from "@/components/product-grid";
 import { ProductPageProps } from "@/types/product";
+import { useCart } from "@/hooks/use-cart";
 
 const ProductPage: React.FC<ProductPageProps> = ({
   product,
@@ -13,6 +14,9 @@ const ProductPage: React.FC<ProductPageProps> = ({
 }) => {
   const [productCounter, setProductCounter] = useState<number>(1);
   const [addedToCart, setAddedToCart] = useState<boolean>(false);
+
+  // Use the Zustand cart hook
+  const addToCart = useCart((state) => state.addToCart);
 
   const addProduct = (): void => {
     setProductCounter(productCounter + 1);
@@ -27,9 +31,14 @@ const ProductPage: React.FC<ProductPageProps> = ({
   };
 
   const handleAddToCart = (): void => {
+    // Add the product to cart with the selected quantity
+    for (let i = 0; i < productCounter; i++) {
+      addToCart(product);
+    }
+
+    // Show the "Added to Cart" message
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
-    // In a real application, you would add the product to cart here
   };
 
   // Split description for bullet points
