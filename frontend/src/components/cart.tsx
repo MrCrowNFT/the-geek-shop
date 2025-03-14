@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../hooks/use-cart";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, XCircle, } from "lucide-react";
 
 const Cart: React.FC = () => {
   const { items, addToCart, removeFromCart, reduceQuantity, clearCart } =
@@ -19,7 +19,7 @@ const Cart: React.FC = () => {
       <div className="relative">
         <motion.button
           type="button"
-          className="relative flex items-center justify-center p-2 bg-white rounded-md shadow-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="relative flex items-center justify-center p-2 rounded-md shadow-md  "
           onClick={toggleCart}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -39,7 +39,7 @@ const Cart: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed top-0 right-0 z-50 h-full w-80 md:w-96 bg-indigo-900 text-white shadow-lg overflow-y-auto"
+            className="fixed top-0 right-0 z-50 h-full w-80 md:w-96  shadow-lg overflow-y-auto"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -49,12 +49,11 @@ const Cart: React.FC = () => {
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold">Your Cart</h2>
                 <motion.button
-                  className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 focus:outline-none"
                   onClick={toggleCart}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  ✕
+                  <XCircle className="w-6 h-6" />
                 </motion.button>
               </div>
 
@@ -129,7 +128,7 @@ const Cart: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="mt-6 border-t border-indigo-700 pt-4">
+                  <div className="mt-6 border-t  pt-4">
                     <div className="flex justify-between text-lg font-bold mb-4">
                       <span>Total:</span>
                       <span>

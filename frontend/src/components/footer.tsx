@@ -18,7 +18,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={`bg-[#191970] text-white font-sans mt-12 ${className}`}>
+    <footer className={` mt-12 ${className}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-[5%] py-8">
         {/* Main footer content grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
@@ -146,7 +146,7 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
             />
             <span className="font-bold text-lg">The Geek Shop</span>
           </div>
-          <p className="text-sm text-gray-300">
+          <p className="text-sm ">
             © {year} The Geek Shop. All rights reserved.
           </p>
         </div>
