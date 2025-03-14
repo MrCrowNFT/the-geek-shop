@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +21,7 @@ import {
   HelpCircle,
   LogOut,
 } from "lucide-react";
+import DarkModeToggle from "./dark-mode-toggle";
 
 // User sidebar data
 const userData = {
@@ -115,13 +115,16 @@ interface UserSidebarProps {
 
 export function UserSidebar({ className }: UserSidebarProps) {
   return (
-    <Sidebar className={`h-full bg-white dark:bg-gray-800 shadow-lg ${className}`}>
+    <Sidebar
+      className={`h-full bg-white dark:bg-gray-800 shadow-lg ${className}`}
+    >
       <SidebarHeader>
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">My Account</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white"></h2>
         </div>
       </SidebarHeader>
       <SidebarContent className="overflow-y-auto">
+        <DarkModeToggle />
         {userData.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel className="text-sm font-medium text-gray-500 dark:text-gray-400 px-4 py-2">
@@ -132,12 +135,12 @@ export function UserSidebar({ className }: UserSidebarProps) {
                 {item.items.map((subItem) => (
                   <SidebarMenuItem key={subItem.title}>
                     <SidebarMenuButton asChild isActive={subItem.isActive}>
-                      <a 
-                        href={subItem.url} 
+                      <a
+                        href={subItem.url}
                         className={`flex items-center px-4 py-2 text-sm ${
-                          subItem.isActive 
-                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200' 
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          subItem.isActive
+                            ? "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200"
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                         }`}
                       >
                         {subItem.icon}
