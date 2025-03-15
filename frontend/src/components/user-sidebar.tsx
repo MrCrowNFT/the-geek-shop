@@ -118,7 +118,6 @@ const Sidebar = () => {
             <div className="flex justify-between items-center p-4 border-b">
               <h2 className="text-xl font-bold">Menu</h2>
               <motion.button
-                
                 onClick={toggleSidebar}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -128,10 +127,12 @@ const Sidebar = () => {
               </motion.button>
             </div>
 
-            <div className="p-4 border-b">
+            <div className="flex items-center justify-between p-4 border-b">
+              <p className="text-sm font-semibold text-gray-600 uppercase">
+                Dark mode
+              </p>
               <DarkModeToggle />
             </div>
-
             <div className="p-4">
               {navData.map((section) => (
                 <div key={section.title} className="mb-4">

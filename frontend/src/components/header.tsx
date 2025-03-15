@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         </a>
         <span className="inline-block h-6 w-px bg-gray-400"></span>
         <a
-          href="/signup"
+          href="/signup/"
           className="flex items-center gap-2 hover:text-red-500 transition-colors"
         >
           <PlusCircle size={20} />

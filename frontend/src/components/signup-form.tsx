@@ -123,7 +123,7 @@ export function SignupForm({
               </div>
 
               {/* Submit Button */}
-              <Button type="submit" className="w-full bg-[#191970]">
+              <Button type="submit" className="w-full ">
                 Sign Up
               </Button>
             </div>

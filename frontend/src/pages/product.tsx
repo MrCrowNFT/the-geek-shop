@@ -7,6 +7,7 @@ import { ShoppingCart, Minus, Plus } from "lucide-react";
 import ProductGrid from "@/components/product-grid";
 import { ProductPageProps } from "@/types/product";
 import { useCart } from "@/hooks/use-cart";
+import Layout from "@/components/layout";
 
 const ProductPage: React.FC<ProductPageProps> = ({
   product,
@@ -15,7 +16,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
   const [productCounter, setProductCounter] = useState<number>(1);
   const [addedToCart, setAddedToCart] = useState<boolean>(false);
 
-  // Use the Zustand cart hook
+  // Zustand cart hook
   const addToCart = useCart((state) => state.addToCart);
 
   const addProduct = (): void => {
@@ -45,6 +46,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
   const descriptionPoints = product.description.split("-");
 
   return (
+    <Layout>
     <div className="flex min-h-screen flex-col">
       <Header />
       <Navbar />
@@ -150,6 +152,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
 
       <Footer />
     </div>
+    </Layout>
   );
 };
 

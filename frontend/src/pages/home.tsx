@@ -1,6 +1,7 @@
 import Banner from "@/components/banner";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import Layout from "@/components/layout";
 import Navbar from "@/components/navbar";
 
 import ProductGrid from "@/components/product-grid";
@@ -10,18 +11,20 @@ import { mockProducts } from "@/mock/products-mock";
 const Home = () => {
   return (
     <>
-      <Header />
-      <Navbar/>
-      <Banner bannerData={mockBannerData}/>
-      <br />
-      
-      {/* New Arrivals Section */}
-      <ProductGrid 
-          products={mockProducts.slice().reverse()} 
-          title="New Arrivals" 
-          seeMoreLink="/products/new" 
+      <Layout>
+        <Header />
+        <Navbar />
+        <Banner bannerData={mockBannerData} />
+        <br />
+
+        {/* New Arrivals Section */}
+        <ProductGrid
+          products={mockProducts.slice().reverse()}
+          title="New Arrivals"
+          seeMoreLink="/products/new"
         />
-      <Footer />
+        <Footer />
+      </Layout>
     </>
   );
 };
