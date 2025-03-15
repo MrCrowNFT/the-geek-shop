@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Product, ProductCardProps } from "@/types/product";
+import {  ProductCardProps } from "@/types/product";
 import { useCart } from "@/hooks/use-cart";
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [hovering, setHovering] = useState(false);
 
-  // Use the Zustand cart hook
+  // Zustand cart hook
   const addToCart = useCart((state) => state.addToCart);
 
   return (

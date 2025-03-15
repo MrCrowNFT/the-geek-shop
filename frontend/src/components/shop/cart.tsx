@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "../hooks/use-cart";
+import { useCart } from "@/hooks/use-cart";
 import { ShoppingCart, XCircle, } from "lucide-react";
 
 const Cart: React.FC = () => {

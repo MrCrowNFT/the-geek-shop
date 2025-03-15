@@ -1,8 +1,7 @@
-import Footer from "@/components/footer";
-import Header from "@/components/header";
-import Navbar from "@/components/navbar";
-import { SignupForm } from "@/components/signup-form";
-import { Layout } from "lucide-react";
+import Footer from "@/components/common/footer";
+import Header from "@/components/common/header";
+import Navbar from "@/components/common/navbar";
+import { SignupForm } from "@/components/auth/signup-form";
 
 const Signup = () => {
   return (

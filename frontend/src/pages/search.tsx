@@ -1,18 +1,18 @@
-import Footer from "@/components/footer";
-import Header from "@/components/header";
-import Layout from "@/components/layout";
-import Navbar from "@/components/navbar";
+import Footer from "@/components/common/footer";
+import Header from "@/components/common/header";
+import Layout from "@/components/common/layout";
+import Navbar from "@/components/common/navbar";
 
 const Search = () => {
-    return (
-      <>
+  return (
+    <>
       <Layout>
-      <Header/>
-      <Navbar/>
-      <Footer/>
+        <Header />
+        <Navbar />
+        <Footer />
       </Layout>
-      </>
-    );
-  };
-  
-  export default Search;
+    </>
+  );
+};
+
+export default Search;

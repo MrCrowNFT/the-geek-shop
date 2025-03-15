@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BannerItem, BannerData } from "../types/banner";
+import { BannerItem, BannerData } from "@/types/banner";
 
 interface BannerProps {
   bannerData: BannerData;

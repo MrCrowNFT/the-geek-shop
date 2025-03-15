@@ -1,10 +1,10 @@
-import Banner from "@/components/banner";
-import Footer from "@/components/footer";
-import Header from "@/components/header";
-import Layout from "@/components/layout";
-import Navbar from "@/components/navbar";
+import Banner from "@/components/common/banner";
+import Footer from "@/components/common/footer";
+import Header from "@/components/common/header";
+import Layout from "@/components/common/layout";
+import Navbar from "@/components/common/navbar";
 
-import ProductGrid from "@/components/product-grid";
+import ProductGrid from "@/components/shop/product-grid";
 import { mockBannerData } from "@/mock/banner-mock";
 import { mockProducts } from "@/mock/products-mock";
 
