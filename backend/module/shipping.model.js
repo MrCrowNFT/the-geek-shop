@@ -19,12 +19,6 @@ const shippingSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    email: {
-      type: String,
-      required: true,
-      match: /.+\@.+\..+/,
-      lowercase: true,
-    },
     phone: {
       type: String,
       required: true,

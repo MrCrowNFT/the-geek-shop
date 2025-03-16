@@ -1,9 +1,13 @@
+import type { Categories } from "./category";
+
 export interface Product {
   id: string | number;
   name: string;
   price: number;
-  description: string;
+  isAvailable: boolean;
   images: string[];
+  description: string;
+  categories: Categories;
 }
 
 export interface ProductCardProps {

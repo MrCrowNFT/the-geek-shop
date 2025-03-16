@@ -8,7 +8,7 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
-import cat from "../assets/cat-logo.svg";
+import cat from "@/assets/cat-logo.svg";
 
 interface FooterProps {
   className?: string;

@@ -70,7 +70,7 @@ export const orderSearch = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: orders,
       pagination: {
@@ -82,7 +82,29 @@ export const orderSearch = async (req, res) => {
     });
   } catch (error) {
     console.error(`Error during order search: ${error.message}`);
-    res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+//function for the dashboard
+export const getRecentOrders = async (req, res) => {
+  try {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const orders = await Order.find({ createdAt: { $gte: thirtyDaysAgo } })
+      .populate("user", "username email")
+      .populate("shipping")
+      .populate("products.id")
+      .lean();
+
+    return res.status(200).json({
+      success: true,
+      data: orders,
+    });
+  } catch (error) {
+    console.error(`Error getting orders: ${error.message}`);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SearchForm } from "../shop/search-form";
-import cat from "../assets/cat-logo.svg";
+import cat from "@/assets/cat-logo.svg";
 import Cart from "../shop/cart";
 import Sidebar from "./user-sidebar";
 

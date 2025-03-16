@@ -8,14 +8,13 @@ import mongoose from "mongoose";
  */
 export const createShipping = async (req, res) => {
   try {
-    const { name, email, phone, run, address, region, indications } = req.body;
+    const { name, phone, run, address, region, indications } = req.body;
     const userId = req.user._id; // Assuming you have user data from auth middleware
 
     // Create new shipping address
     const newShipping = new Shipping({
       user: userId,
       name,
-      email,
       phone,
       run,
       address,
@@ -27,7 +26,12 @@ export const createShipping = async (req, res) => {
     res.status(201).json(savedShipping);
   } catch (error) {
     console.error("Error creating shipping address:", error);
-    res.status(500).json({ message: "Error creating shipping address", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error creating shipping address",
+        error: error.message,
+      });
   }
 };
 
@@ -40,13 +44,19 @@ export const getUserShippingAddresses = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const shippingAddresses = await Shipping.find({ user: userId })
-      .sort({ createdAt: -1 });
+    const shippingAddresses = await Shipping.find({ user: userId }).sort({
+      createdAt: -1,
+    });
 
     res.status(200).json(shippingAddresses);
   } catch (error) {
     console.error("Error fetching shipping addresses:", error);
-    res.status(500).json({ message: "Error fetching shipping addresses", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error fetching shipping addresses",
+        error: error.message,
+      });
   }
 };
 
@@ -72,13 +82,20 @@ export const getShippingById = async (req, res) => {
 
     // Verify shipping belongs to this user
     if (shipping.user.toString() !== userId.toString()) {
-      return res.status(403).json({ message: "Not authorized to access this shipping address" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to access this shipping address" });
     }
 
     res.status(200).json(shipping);
   } catch (error) {
     console.error("Error fetching shipping address:", error);
-    res.status(500).json({ message: "Error fetching shipping address", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error fetching shipping address",
+        error: error.message,
+      });
   }
 };
 
@@ -106,7 +123,9 @@ export const updateShipping = async (req, res) => {
 
     // Verify shipping belongs to this user
     if (shipping.user.toString() !== userId.toString()) {
-      return res.status(403).json({ message: "Not authorized to update this shipping address" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this shipping address" });
     }
 
     // Don't allow changing the user reference
@@ -122,7 +141,12 @@ export const updateShipping = async (req, res) => {
     res.status(200).json(updatedShipping);
   } catch (error) {
     console.error("Error updating shipping address:", error);
-    res.status(500).json({ message: "Error updating shipping address", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error updating shipping address",
+        error: error.message,
+      });
   }
 };
 
@@ -149,14 +173,16 @@ export const deleteShipping = async (req, res) => {
 
     // Verify shipping belongs to this user
     if (shipping.user.toString() !== userId.toString()) {
-      return res.status(403).json({ message: "Not authorized to delete this shipping address" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this shipping address" });
     }
 
     // Check if shipping address is associated with any orders
     if (shipping.orders && shipping.orders.length > 0) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "Cannot delete shipping address associated with orders",
-        orderCount: shipping.orders.length
+        orderCount: shipping.orders.length,
       });
     }
 
@@ -165,7 +191,11 @@ export const deleteShipping = async (req, res) => {
     res.status(200).json({ message: "Shipping address deleted successfully" });
   } catch (error) {
     console.error("Error deleting shipping address:", error);
-    res.status(500).json({ message: "Error deleting shipping address", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Error deleting shipping address",
+        error: error.message,
+      });
   }
 };
-
