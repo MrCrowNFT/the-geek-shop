@@ -23,6 +23,11 @@ const Home = () => {
           title="New Arrivals"
           seeMoreLink="/products/new"
         />
+        <ProductGrid
+          products={mockProducts.slice().reverse()}
+          title="Most Popular"
+          seeMoreLink="/products/new"
+        />
         <Footer />
       </Layout>
     </>
