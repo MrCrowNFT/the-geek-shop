@@ -76,7 +76,6 @@ export const updateUserProfile = async (req, res) => {
       _id: updatedUser._id,
       username: updatedUser.username,
       email: updatedUser.email,
-      role: updatedUser.role,
     });
   } catch (error) {
     console.error("Error updating user profile:", error);

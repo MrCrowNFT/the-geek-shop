@@ -11,7 +11,11 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      select: false ,
+      select: false,
+    },
+    profile_pic: {
+      type: String,
+      default: "", //if no picture we send an empty string and handle it on the frontend to display a user default img
     },
     email: {
       type: String,
@@ -38,6 +42,7 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 //*can't use arrow functions cause i'm using 'this.password'
 
 //we will hash the password before storing it in the database

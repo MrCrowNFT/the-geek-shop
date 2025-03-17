@@ -10,9 +10,6 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-
-
-
 const SalesTable: React.FC<SalesTableProps> = ({ salesData }) => {
   const { recentSales } = salesData;
 
