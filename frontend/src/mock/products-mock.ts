@@ -1,4 +1,4 @@
-import { IProductUser } from "@/types/product";
+import { IProductUser, IProductAdmin } from "@/types/product";
 import ImageA from "@/assets/ImageA.png";
 import ImageB from "@/assets/ImageB.png";
 import ImageC from "@/assets/ImageC.png";
@@ -162,6 +162,15 @@ export const mockProducts: IProductUser[] = [
   },
 ];
 
+//this is just an example, the total cost is set on the database, from which, the price tag
+// is evaluated but not set, basically it sets a minimun that it can be, but it can got bigger,
+export const mockProductsAdmin: IProductAdmin[] = mockProducts.map(
+  (product) => ({
+    ...product,
+    total_cost: product.priceTag * 0.6, // Example calculation: assuming 60% of priceTag is cost
+  })
+);
+
 export const mockProduct: IProductUser = {
   _id: "1",
   name: "Premium Handcrafted Product",
@@ -177,4 +186,9 @@ export const mockProduct: IProductUser = {
   salesCount: 25,
   createdAt: new Date(),
   updatedAt: new Date(),
+};
+
+export const mockProductAdmin: IProductAdmin = {
+  ...mockProduct,
+  total_cost: mockProduct.priceTag * 0.6, // Example calculation
 };

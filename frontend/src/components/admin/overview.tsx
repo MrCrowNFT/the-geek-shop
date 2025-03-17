@@ -100,13 +100,13 @@ const Overview = (orders: OverviewProps) => {
 
       {/* Chart and Table Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left column: Chart */}
+        {/* Chart */}
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="text-lg font-medium mb-4">Sales Overview</h2>
           <SalesChart salesData={salesSummary} />
         </div>
 
-        {/* Right column: Table */}
+        {/*Table */}
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="text-lg font-medium mb-4">Recent Orders</h2>
           <SalesTable ordersData={mockOrders} />

@@ -18,6 +18,9 @@ interface SalesTableProps {
 }
 
 const SalesTable: React.FC<SalesTableProps> = ({ ordersData }) => {
+  //only the top 10 orders
+  const latestOrders = ordersData.slice(0, 9);
+
   const formatDate = (dateString: Date): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -56,7 +59,7 @@ const SalesTable: React.FC<SalesTableProps> = ({ ordersData }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {ordersData.map((order: IOrder) => {
+              {latestOrders.map((order: IOrder) => {
                 // handle user which might be a string or IUser, so that ts does not complain
                 const userObj =
                   typeof order.user === "string"
