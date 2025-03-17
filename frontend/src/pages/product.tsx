@@ -70,7 +70,7 @@ const ProductPage: React.FC<ProductPageProps> = ({
                   {product.name}
                 </h1>
                 <h2 className="text-2xl font-semibold text-indigo-600">
-                  ${product.price.toFixed(2)}
+                  ${product.priceTag.toFixed(2)}
                 </h2>
               </div>
 

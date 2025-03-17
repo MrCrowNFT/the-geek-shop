@@ -103,7 +103,7 @@ const OrderSearchFilter: React.FC<OrderSearchFilterProps> = ({
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
             <Input
-              placeholder="Search by order ID, customer name..."
+              placeholder="Search order"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-8"
