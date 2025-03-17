@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -15,11 +16,13 @@ import { IUser } from "@/types/user";
 
 interface SalesTableProps {
   ordersData: IOrder[];
+  limit?: number;
 }
 
-const SalesTable: React.FC<SalesTableProps> = ({ ordersData }) => {
-  //only the top 10 orders
-  const latestOrders = ordersData.slice(0, 9);
+const SalesTable: React.FC<SalesTableProps> = ({ ordersData, limit }) => {
+  const navigate = useNavigate();
+
+  const latestOrders = limit ? ordersData.slice(0, limit) : ordersData;
 
   const formatDate = (dateString: Date): string => {
     const date = new Date(dateString);
@@ -39,6 +42,10 @@ const SalesTable: React.FC<SalesTableProps> = ({ ordersData }) => {
       style: "currency",
       currency: "USD",
     }).format(amount);
+  };
+
+  const handleRowClick = (orderId: string) => {
+    navigate(`/orders/${orderId}`);
   };
 
   return (
@@ -67,7 +74,11 @@ const SalesTable: React.FC<SalesTableProps> = ({ ordersData }) => {
                     : (order.user as IUser);
 
                 return (
-                  <TableRow key={order._id}>
+                  <TableRow
+                    key={order._id}
+                    onClick={() => handleRowClick(order._id)}
+                    className="cursor-pointer hover:bg-gray-50"
+                  >
                     <TableCell className="flex items-center gap-2">
                       <Avatar className="h-8 w-8">
                         <AvatarImage

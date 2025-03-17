@@ -60,9 +60,11 @@ function getSalesSummary(orders: IOrder[]) {
       (order) => order.createdAt.toISOString().split("T")[0] === dateString
     );
 
-    const totalSales = dailyOrders.length ;
-    const totalAmount =
-      dailyOrders.reduce((sum, order) => sum + order.paid_amount, 0) ; 
+    const totalSales = dailyOrders.length;
+    const totalAmount = dailyOrders.reduce(
+      (sum, order) => sum + order.paid_amount,
+      0
+    );
     result.push({ date: dateString, sales: totalSales, totalAmount });
   }
 
@@ -109,7 +111,8 @@ const Overview = (orders: OverviewProps) => {
         {/*Table */}
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="text-lg font-medium mb-4">Recent Orders</h2>
-          <SalesTable ordersData={mockOrders} />
+          {/*only the top 10 orders*/}
+          <SalesTable ordersData={mockOrders} limit={10} />
         </div>
       </div>
     </div>
