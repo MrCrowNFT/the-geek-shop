@@ -9,14 +9,14 @@ const mockCategories: ICategories = {
   categories: [
     {
       _id: "cat1",
-      name: "Electronics",
+      name: "Figurine",
       description: "Gadgets and devices",
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       _id: "cat2",
-      name: "Clothing",
+      name: "JJK",
       description: "Apparel and accessories",
       createdAt: new Date(),
       updatedAt: new Date(),
