@@ -24,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           alt={product.name}
         />
         {product.images[1] && (
-          <a href={`/product/${product.id}`} className="block w-full h-full">
+          <a href={`/product/${product._id}`} className="block w-full h-full">
             <img
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
                 hovering ? "opacity-100" : "opacity-0"
@@ -38,12 +38,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Product Info Section */}
       <div className="p-4 text-center">
-        <a href={`/product/${product.id}`} className="block group">
+        <a href={`/product/${product._id}`} className="block group">
           <h2 className="text-lg font-bold my-2 text-gray-800 group-hover:text-gray-600 transition-colors duration-200">
             {product.name}
           </h2>
           <p className="text-base text-gray-600 mb-4">
-            ${product.price.toFixed(2)}
+            ${product.priceTag.toFixed(2)}
           </p>
         </a>
         <button
