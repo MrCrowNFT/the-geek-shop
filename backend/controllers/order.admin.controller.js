@@ -93,7 +93,7 @@ export const getRecentOrders = async (req, res) => {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const orders = await Order.find({ createdAt: { $gte: thirtyDaysAgo } })
-      .populate("user", "username email")
+      .populate("user")
       .populate("shipping")
       .populate("products.id")
       .lean();
