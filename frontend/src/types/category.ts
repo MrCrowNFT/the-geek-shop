@@ -1,8 +1,11 @@
-interface Category {
+interface ICategory {
+  _id:string;
   name: string;
   description: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface Categories {
-  categories: Category[];
+export interface ICategories {
+  categories: ICategory[];
 }

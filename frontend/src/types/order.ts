@@ -1,33 +1,22 @@
-import type { Product } from "./product";
+import type { IProductAdmin, IProductUser } from "./product";
+import { IShipping } from "./shipping";
+import { IUser } from "./user";
 
-interface Shipping {
-  name: string;
-  phome: string;
-  run: string;
-  address: string;
-  region: string;
-  indications?: string;
-}
-
-interface User {
-  username: string;
-  email: string;
-}
-
-export interface OrdersData {
-  orders: Order[];
-}
-
-interface Order {
+//one order for 
+export interface IOrder {
   _id: string;
-  user: User;
-  shipping: Shipping;
+  user: string | IUser;
+  shipping: string | IShipping;//when creating the order is easies to just send the shipping id
   products: {
-    id: Product;
+    id: string | IProductUser | IProductAdmin; //this will depend on who is getting it. and when creating just the id string 
     quantity: number;
   }[];
   paid_amount: number;
   status: "Pending" | "Paid" | "OnRoute" | "Delivered" | "Cancelled";
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IOrdersData {
+  orders: IOrder[];
 }

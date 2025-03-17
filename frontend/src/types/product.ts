@@ -1,27 +1,43 @@
-import type { Categories } from "./category";
+import type { ICategories } from "./category";
 
-export interface Product {
-  id: string | number;
+//the one for the user shall not include businnes parameters
+//those should only be accesible to the admin
+export interface IProductUser {
+  _id: string;
   name: string;
-  price: number;
+  priceTag: number;
+  discount: {
+    amout: number;
+    status: boolean;
+  };
+  sku: string;
   isAvailable: boolean;
   images: string[];
   description: string;
-  categories: Categories;
+  categories: ICategories;
+  likesCount: number;
+  salesCount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+//this one is for the admin on the dashboard
+export interface IProductAdmin extends IProductUser {
+  total_cost: number;
 }
 
 export interface ProductCardProps {
-  product: Product;
+  product: IProductUser;
 }
 
 export interface ProductGridProps {
-  products: Product[];
+  products: IProductUser[];
   title: string;
   seeMoreLink: string;
   maxDisplay?: number;
 }
 
 export interface ProductPageProps {
-  product: Product;
-  relatedProducts: Product[];
+  product: IProductUser;
+  relatedProducts: IProductUser[];
 }

@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema(
     },
 
     sku: {
-      type: String, // String for better flexibility
+      type: String, // String for better flexibility since some might have letters
       unique: true,
       required: false,
     },
