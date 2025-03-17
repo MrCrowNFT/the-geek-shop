@@ -1,6 +1,5 @@
 import React from "react";
 
-// Define the props interface
 interface IndicatorProps {
   parameter: string;
   amount: number;

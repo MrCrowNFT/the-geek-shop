@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
-    //for biderectiona reference with user
+    //for biderectiona reference
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -10,6 +10,10 @@ const orderSchema = new mongoose.Schema(
     shipping: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Shipping",
+    },
+    tracking: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tracking",
     },
 
     products: [
