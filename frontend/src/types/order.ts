@@ -3,7 +3,6 @@ import { IShipping } from "./shipping";
 import { IUser } from "./user";
 import { ITracking } from "./tracking";
 
-//one order for
 export interface IOrder {
   _id: string;
   user: string | IUser;
