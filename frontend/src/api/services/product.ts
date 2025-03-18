@@ -1,7 +1,5 @@
-import axios from "axios";
+import api from "../axios"; 
 import { IProductUser } from "@/types/product";
-
-const API_URL = "http://localhost:5500/product";
 
 // pagination response type
 interface PaginatedResponse {
@@ -22,10 +20,10 @@ export const fetchProducts = async (): Promise<{
   data: IProductUser[];
 }> => {
   try {
-    const res = await axios.get<{
+    const res = await api.get<{
       success: boolean;
       data: IProductUser[];
-    }>(`${API_URL}/`);
+    }>("/product/");
     return res.data;
   } catch (err) {
     console.error("Fetching products error:", err);
@@ -38,8 +36,8 @@ export const fetchProductById = async (
   id: string
 ): Promise<{ success: boolean; data: IProductUser }> => {
   try {
-    const res = await axios.get<{ success: boolean; data: IProductUser }>(
-      `${API_URL}/${id}`
+    const res = await api.get<{ success: boolean; data: IProductUser }>(
+      `/product/${id}`
     );
     return res.data;
   } catch (err) {
@@ -58,7 +56,7 @@ export const searchProducts = async (params: {
   limit?: number;
 }): Promise<PaginatedResponse> => {
   try {
-    const res = await axios.get<PaginatedResponse>(`${API_URL}/search`, {
+    const res = await api.get<PaginatedResponse>("/product/search", {
       params,
     });
     return res.data;
