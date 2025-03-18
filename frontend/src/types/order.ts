@@ -19,5 +19,5 @@ export interface IOrder {
 }
 
 export interface IOrdersData {
-  orders: IOrder[];
+  orders?: IOrder[];
 }

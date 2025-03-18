@@ -3,12 +3,9 @@ import { IOrder } from "@/types/order";
 import SalesTable from "./sales-table";
 import OrderSearchFilter from "./order-search-filter";
 import { mockOrders } from "@/mock/orders-mock";
+import { IOrdersData } from "@/types/order";
 
-interface OrderManagementProps {
-  orders?: IOrder[];
-}
-
-const OrderManagement: React.FC<OrderManagementProps> = ({ orders }) => {
+const OrderManagement: React.FC<IOrdersData> = ({ orders }) => {
   // Trying to solve the input
   const allOrders = orders || mockOrders;
 
