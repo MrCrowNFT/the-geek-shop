@@ -4,6 +4,7 @@ import { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { refreshAccessTokenRequest } from "../utils/tokenRefresh";
 
 //Refresh the access token before it expires for a seamless user experience
+//also sending the acces token here, so no need on the services
 export const setupRequestInterceptor = (api: AxiosInstance): void => {
   api.interceptors.request.use(
     async (

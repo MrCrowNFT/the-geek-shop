@@ -1,7 +1,5 @@
-import axios from "axios";
+import api from "../axios"; 
 import { ICategories } from "@/types/category";
-
-const API_URL = "http://localhost:5500/category";
 
 // Fetch all categories
 export const fetchCategories = async (): Promise<{
@@ -9,8 +7,8 @@ export const fetchCategories = async (): Promise<{
   data: ICategories;
 }> => {
   try {
-    const res = await axios.get<{ success: boolean; data: ICategories }>(
-      `${API_URL}/`
+    const res = await api.get<{ success: boolean; data: ICategories }>(
+      "/category/"
     );
     return res.data;
   } catch (err) {
@@ -19,22 +17,17 @@ export const fetchCategories = async (): Promise<{
   }
 };
 
-//For Admin Only
-
+//Admin Only
 // Add a new category
 export const addCategory = async (category: {
   name: string;
   description?: string;
 }) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
-
-    const res = await axios.post<{ success: boolean; data: ICategories }>(
-      `${API_URL}/new`,
-      category,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
+    const res = await api.post<{ success: boolean; data: ICategories }>(
+      "/category/new",
+      category
+      // No need to manually add token - interceptor handles this
     );
     return res.data;
   } catch (err) {
@@ -49,14 +42,10 @@ export const updateCategory = async (
   category: { name?: string; description?: string }
 ) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
-
-    const res = await axios.put<{ success: boolean; data: ICategories }>(
-      `${API_URL}/${id}`,
-      category,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
+    const res = await api.put<{ success: boolean; data: ICategories }>(
+      `/category/${id}`,
+      category
+      // No need to manually add token - interceptor handles this
     );
     return res.data;
   } catch (err) {
@@ -68,13 +57,9 @@ export const updateCategory = async (
 // Delete category by ID
 export const deleteCategory = async (id: string) => {
   try {
-    const accessToken = localStorage.getItem("accessToken");
-
-    const res = await axios.delete<{ success: boolean; message: string }>(
-      `${API_URL}/${id}`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
+    const res = await api.delete<{ success: boolean; message: string }>(
+      `/category/${id}`
+      // No need to manually add token - interceptor handles this
     );
     return res.data;
   } catch (err) {
