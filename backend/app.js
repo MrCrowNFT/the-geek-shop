@@ -12,7 +12,12 @@ const app = express();
 
 app.use(express.json()); //accept JSON files
 app.use(cookieParser());
-app.use(cors()); // Allow all origins: probably should change it just specific one
+app.use(
+  cors({
+    origin: "http://localhost:5173", //only accept from here where frontend is running
+    credentials: true, //need this for the cookies to work cross origin (httpOnly cookie with the refresh token)
+  })
+);
 
 app.use("/auth", authRouter);
 app.use("/category/", categoryRouter);
