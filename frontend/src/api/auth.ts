@@ -28,6 +28,25 @@ export const signupRequest = async ({
 
 //login call
 
+interface LoginParams {
+  username: string;
+  password: string;
+}
+
+export const loginRequest = async ({ username, password }: LoginParams) => {
+  try {
+    const res = await axios.post(
+      "http://localhost:5500/auth/login",
+      { username, password },
+      { headers: { "Content-Type": "application/json" } }
+    );
+    return res.data; // Return only the data
+  } catch (err) {
+    console.error("Login error:", err);
+    throw err; // Re-throw to be handled by the caller
+  }
+};
+
 //refresh token call
 
 
