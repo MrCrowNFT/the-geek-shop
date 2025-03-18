@@ -8,7 +8,6 @@ import shippingRouter from "./routers/shipping.routes";
 import userRouter from "./routers/user.routes";
 import stripeRouter from "./routers/stripe.routes";
 
-
 const app = express();
 
 app.use(express.json()); //accept JSON files
@@ -21,11 +20,11 @@ app.use(
 );
 
 app.use("/auth", authRouter);
-app.use("/product/", productRouter);
-app.use("/category/", categoryRouter);
-app.use("/order/", orderRouter);
-app.use("/shipping/", shippingRouter);
-app.use("/user/", userRouter);
+app.use("/product", productRouter);
+app.use("/category", categoryRouter);
+app.use("/order", orderRouter);
+app.use("/shipping", shippingRouter);
+app.use("/user", userRouter);
 app.use("/stripe", stripeRouter);
 
 export default app;
