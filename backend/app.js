@@ -1,12 +1,13 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import authRouter from "./routers/auth.routes";
 import categoryRouter from "./routers/category.routes";
 import orderRouter from "./routers/order.routes";
 import shippingRouter from "./routers/shipping.routes";
 import userRouter from "./routers/user.routes";
 import stripeRouter from "./routers/stripe.routes";
-import cookieParser from "cookie-parser";
+
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(
 );
 
 app.use("/auth", authRouter);
+app.use("/product/", productRouter);
 app.use("/category/", categoryRouter);
 app.use("/order/", orderRouter);
 app.use("/shipping/", shippingRouter);

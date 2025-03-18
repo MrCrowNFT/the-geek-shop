@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../module/product.model.js";
 
+//todo: need to skip the product cost when sending the products
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
