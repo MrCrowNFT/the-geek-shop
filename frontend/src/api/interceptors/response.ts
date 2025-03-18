@@ -1,6 +1,5 @@
-// src/api/interceptors/response.ts
 import { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { refreshAccessToken } from "../services/auth";
+import { refreshAccessTokenRequest } from "../utils/tokenRefresh";
 import axios from "axios";
 import { ApiRequestConfig } from "@/types/api";
 
@@ -15,7 +14,7 @@ export const setupResponseInterceptor = (api: AxiosInstance): void => {
         originalRequest._retry = true;
 
         try {
-          const newToken = await refreshAccessToken();
+          const newToken = await refreshAccessTokenRequest();
           if (newToken) {
             originalRequest.headers = originalRequest.headers || {};
             originalRequest.headers.Authorization = `Bearer ${newToken}`;

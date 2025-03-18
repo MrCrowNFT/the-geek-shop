@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "@/types/api";
 import { AxiosInstance, InternalAxiosRequestConfig } from "axios";
-import { refreshAccessToken } from "../services/auth";
+import { refreshAccessTokenRequest } from "../utils/tokenRefresh";
 
 //Refresh the access token before it expires for a seamless user experience
 export const setupRequestInterceptor = (api: AxiosInstance): void => {
@@ -19,7 +19,7 @@ export const setupRequestInterceptor = (api: AxiosInstance): void => {
 
           if (decoded.exp - currentTime < 30) {
             // 30 seconds before expiration
-            const newToken = await refreshAccessToken();
+            const newToken = await refreshAccessTokenRequest();
             if (newToken) {
               config.headers.Authorization = `Bearer ${newToken}`;
               return config;
