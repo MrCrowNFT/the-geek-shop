@@ -1,12 +1,8 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { SignupParams, LoginParams } from "@/types/api";
 
 //signup call
-
-interface SignupParams {
-  username: string;
-  password: string;
-  email: string;
-}
 
 export const signupRequest = async ({
   username,
@@ -27,12 +23,6 @@ export const signupRequest = async ({
 };
 
 //login call
-
-interface LoginParams {
-  username: string;
-  password: string;
-}
-
 export const loginRequest = async ({ username, password }: LoginParams) => {
   try {
     const res = await axios.post(
@@ -48,14 +38,20 @@ export const loginRequest = async ({ username, password }: LoginParams) => {
 };
 
 //refresh token call
-export const refreshTokenRequest = async () => {
+export const refreshAccessToken = async () => {
   try {
+    // Get the access token from local storage
+    const accessToken = localStorage.getItem("accessToken");
+
+    // Make the API call with the access token in the Authorization header
     const res = await axios.post(
       "http://localhost:5500/auth/refresh-token",
-      {}, //empty body since token on httponly cookie
+      {}, // Empty body since we're sending tokens via header and cookies
       {
-        withCredentials: true, //* This enables sending cookies with the request
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true, //  ensures cookies are sent with the request
       }
     );
     return res.data; // Return only the data
@@ -68,12 +64,16 @@ export const refreshTokenRequest = async () => {
 //logout call
 export const logoutRequest = async () => {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+
     const res = await axios.post(
       "http://localhost:5500/auth/logout",
       {}, //empty body since token on httponly cookie
       {
-        withCredentials: true, //* This enables sending cookies with the request
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true,
       }
     );
     return res.data;

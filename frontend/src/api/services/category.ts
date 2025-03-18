@@ -14,7 +14,7 @@ export const fetchCategories = async (): Promise<{
     );
     return res.data;
   } catch (err) {
-    console.error("Fetching products error:", err);
+    console.error("Fetching categories error:", err);
     throw err;
   }
 };
@@ -36,7 +36,7 @@ export const addCategory = async (
     );
     return res.data;
   } catch (err) {
-    console.error("Fetching products error:", err);
+    console.error("Creating category error:", err);
     throw err;
   }
 };
@@ -57,7 +57,7 @@ export const updateCategory = async (
     );
     return res.data;
   } catch (err) {
-    console.error("Fetching products error:", err);
+    console.error("Updating category error:", err);
     throw err;
   }
 };
@@ -73,7 +73,7 @@ export const deleteCategory = async (id: string, token: string) => {
     );
     return res.data;
   } catch (err) {
-    console.error("Fetching products error:", err);
+    console.error("Deleting category error:", err);
     throw err;
   }
 };

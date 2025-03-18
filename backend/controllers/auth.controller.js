@@ -56,7 +56,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const refreshToken = async (req, res) => {
+export const refreshAccessToken = async (req, res) => {
   try {
     //check refresh token from the cookie
     const refreshToken = req.cookies.refreshToken;
@@ -109,6 +109,7 @@ export const refreshToken = async (req, res) => {
 
     res.status(200).json({
       success: true,
+      message: "Refresh successful",
       accessToken,
     });
   } catch (error) {

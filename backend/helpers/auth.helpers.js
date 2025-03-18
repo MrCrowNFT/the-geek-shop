@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
 // Constants for token expiration -> subject to change
-const ACCESS_TOKEN_EXPIRY = "15m";
-const REFRESH_TOKEN_EXPIRY = "7d";
+const ACCESS_TOKEN_EXPIRY = "5m";
+const REFRESH_TOKEN_EXPIRY = "30d";
 
 // Generate just an access token
 export const generateAccessToken = (user) => {

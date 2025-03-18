@@ -15,6 +15,7 @@ interface PaginatedResponse {
   };
 }
 
+//For User
 // Fetch all products
 export const fetchProducts = async (): Promise<{
   success: boolean;
