@@ -38,11 +38,17 @@ export const login = async (req, res) => {
       return;
     }
 
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
+
     res.status(200).json({
       success: true,
       message: "Login successful",
       accessToken,
-      refreshToken,
     });
   } catch (error) {
     console.error(`Error during login: ${error.message}`);
@@ -52,8 +58,8 @@ export const login = async (req, res) => {
 
 export const refreshToken = async (req, res) => {
   try {
-    //check refresh token
-    const { refreshToken } = req.body;
+    //check refresh token from the cookie
+    const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
       res
         .status(400)
@@ -100,6 +106,7 @@ export const refreshToken = async (req, res) => {
     }
 
     const accessToken = generateAccessToken(user);
+
     res.status(200).json({
       success: true,
       accessToken,
@@ -112,7 +119,7 @@ export const refreshToken = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
       res
@@ -130,6 +137,9 @@ export const logout = async (req, res) => {
       });
       return;
     }
+
+    // Clear the cookie
+    res.clearCookie("refreshToken");
 
     res.status(200).json({
       success: true,
@@ -149,8 +159,7 @@ export const signup = async (req, res) => {
     if (!username || !password || !email) {
       res.status(400).json({
         success: false,
-        message:
-          "Username, password and email are required.",
+        message: "Username, password and email are required.",
       });
       return;
     }

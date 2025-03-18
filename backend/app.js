@@ -6,10 +6,12 @@ import orderRouter from "./routers/order.routes";
 import shippingRouter from "./routers/shipping.routes";
 import userRouter from "./routers/user.routes";
 import stripeRouter from "./routers/stripe.routes";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 app.use(express.json()); //accept JSON files
+app.use(cookieParser());
 app.use(cors()); // Allow all origins: probably should change it just specific one
 
 app.use("/auth", authRouter);
