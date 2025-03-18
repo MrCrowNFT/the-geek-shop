@@ -66,3 +66,19 @@ export const refreshTokenRequest = async () => {
 };
 
 //logout call
+export const logoutRequest = async () => {
+  try {
+    const res = await axios.post(
+      "http://localhost:5500/auth/logout",
+      {}, //empty body since token on httponly cookie
+      {
+        withCredentials: true, //* This enables sending cookies with the request
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.error("Logout error:", err);
+    throw err;
+  }
+};
