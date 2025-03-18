@@ -4,10 +4,12 @@ import { IOrder } from "@/types/order";
 const API_URL = "http://localhost:5500/order";
 
 // Fetch all user orders
-export const fetchUserOrders = async (token: string): Promise<IOrder[]> => {
+export const fetchUserOrders = async (): Promise<IOrder[]> => {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+
     const response = await axios.get<IOrder[]>(API_URL, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
     return response.data;
   } catch (err) {
@@ -17,17 +19,16 @@ export const fetchUserOrders = async (token: string): Promise<IOrder[]> => {
 };
 
 // Create a new order
-export const createOrder = async (
-  orderData: {
-    shipping: string;
-    products: { id: string; quantity: number }[];
-    paid_amount: number;
-  },
-  token: string
-) => {
+export const createOrder = async (orderData: {
+  shipping: string;
+  products: { id: string; quantity: number }[];
+  paid_amount: number;
+}) => {
   try {
+    const accessToken = localStorage.getItem("accessToken");
+
     const response = await axios.post<IOrder>(`${API_URL}/new`, orderData, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
     return response.data;
   } catch (err) {
@@ -37,13 +38,14 @@ export const createOrder = async (
 };
 
 // Cancel an order
-export const cancelOrder = async (id: string, token: string) => {
+export const cancelOrder = async (id: string) => {
   try {
+    const accessToken = localStorage.getItem("accessToken");
     const response = await axios.put<{ message: string; order: IOrder }>(
       `${API_URL}/${id}/cancel`,
       {},
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
     return response.data;

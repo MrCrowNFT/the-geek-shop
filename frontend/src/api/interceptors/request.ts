@@ -3,6 +3,7 @@ import { DecodedToken } from "@/types/api";
 import { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { refreshAccessToken } from "../services/auth";
 
+//Refresh the access token before it expires for a seamless user experience
 export const setupRequestInterceptor = (api: AxiosInstance): void => {
   api.interceptors.request.use(
     async (

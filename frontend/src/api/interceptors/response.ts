@@ -4,6 +4,7 @@ import { refreshAccessToken } from "../services/auth";
 import axios from "axios";
 import { ApiRequestConfig } from "@/types/api";
 
+//Handle 401 errors and refresh the token when they occur
 export const setupResponseInterceptor = (api: AxiosInstance): void => {
   api.interceptors.response.use(
     (response: AxiosResponse) => response,
@@ -21,11 +22,9 @@ export const setupResponseInterceptor = (api: AxiosInstance): void => {
             return axios(originalRequest);
           }
         } catch (refreshError) {
-          // Handle authentication failure (e.g., redirect to login)
           console.error("Authentication failed:", refreshError);
 
-          // You might want to dispatch a logout action or redirect here
-          // For example: window.location.href = '/login';
+          //todo redirect to login
         }
       }
 
