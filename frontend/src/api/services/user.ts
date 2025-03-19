@@ -1,4 +1,5 @@
 import api from "../axios";
+import { SignupParams } from "@/types/api";
 
 //User routes
 //get user profile
@@ -64,7 +65,7 @@ export const addToWishlist = async (id: string, productId: string) => {
 //delete from it
 export const deleteFromWishlist = async (id: string, productId: string) => {
   try {
-    //
+    //need to use data so that productId gets included on the body
     const res = await api.delete(`/user/users/wishlist/${id}`, {
       data: { productId },
     });
@@ -76,3 +77,56 @@ export const deleteFromWishlist = async (id: string, productId: string) => {
 };
 
 //Admin routes
+export const createAdmin = async ({
+  username,
+  email,
+  password,
+}: SignupParams) => {
+  try {
+    const res = await api.post("/user/admin", { username, email, password });
+    return res.data;
+  } catch (err) {
+    console.error("Creating admin error:", err);
+    throw err;
+  }
+};
+
+export const getAdmins = async () => {
+  try {
+    const res = await api.get("/user/admin");
+    return res.data;
+  } catch (err) {
+    console.error("Getting admins error:", err);
+    throw err;
+  }
+};
+export const getAdminById = async (id: string) => {
+  try {
+    const res = await api.get(`/user/admin/${id}`);
+    return res.data;
+  } catch (err) {
+    console.error("Getting admin error:", err);
+    throw err;
+  }
+};
+export const updateAdminById = async (
+  id: string,
+  updatedProfile: { username?: string; email?: string; password?: string }
+) => {
+  try {
+    const res = await api.put(`/user/admin/${id}`, updatedProfile);
+    return res.data;
+  } catch (err) {
+    console.error("Getting admin error:", err);
+    throw err;
+  }
+};
+export const deleteAdminById = async (id: string) => {
+  try {
+    const res = await api.delete(`/user/admin/${id}`);
+    return res.data;
+  } catch (err) {
+    console.error("Getting admin error:", err);
+    throw err;
+  }
+};
