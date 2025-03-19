@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 export const createShipping = async (req, res) => {
   try {
     const { name, phone, run, address, region, indications } = req.body;
-    const userId = req.user._id; // Assuming you have user data from auth middleware
+    const userId = req.user._id; 
 
     // Create new shipping address
     const newShipping = new Shipping({

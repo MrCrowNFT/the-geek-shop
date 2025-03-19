@@ -20,19 +20,16 @@ export const getShippingAddressById = async (id: string) => {
   }
 };
 
-export const createShippingAddress = async (
-  id: string,
-  newShippingAddress: {
-    name: string;
-    phone: string;
-    run: string;
-    address: string;
-    region: string;
-    indications?: string;
-  }
-) => {
+export const createShippingAddress = async (newShippingAddress: {
+  name: string;
+  phone: string;
+  run: string;
+  address: string;
+  region: string;
+  indications?: string;
+}) => {
   try {
-    const res = await api.post(`/shipping/${id}`, newShippingAddress);
+    const res = await api.post(`/shipping/new`, newShippingAddress);
     return res.data;
   } catch (err) {
     console.error("Creating shipping address error:", err);
@@ -41,7 +38,6 @@ export const createShippingAddress = async (
 };
 
 export const updateShippingAddress = async (
-  id: string,
   shippingId: string,
   updatedShippingAddress: {
     name?: string;
@@ -53,9 +49,11 @@ export const updateShippingAddress = async (
   }
 ) => {
   try {
-    const res = await api.put(`/shipping/${id}`, updatedShippingAddress, {
-      params: { shippingId },
-    });
+    const res = await api.put(
+      `/shipping/${shippingId}`,
+      updatedShippingAddress,
+      {}
+    );
 
     return res.data;
   } catch (err) {
