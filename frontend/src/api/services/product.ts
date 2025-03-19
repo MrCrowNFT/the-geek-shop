@@ -1,4 +1,4 @@
-import api from "../axios"; 
+import api from "../axios";
 import { IProductUser } from "@/types/product";
 
 // pagination response type

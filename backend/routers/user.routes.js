@@ -11,19 +11,30 @@ import {
   getAllAdmins,
   updateAdmin,
 } from "../controllers/user.admin.controller";
-import { addToWishlist, deleteUserAccount, getUserProfile, getWishlist, removeFromWishlist, updateUserProfile } from "../controllers/user.user.controller";
+import {
+  addToWishlist,
+  deleteUserAccount,
+  getUserProfile,
+  getWishlist,
+  removeFromWishlist,
+  updateUserProfile,
+} from "../controllers/user.user.controller";
 
 const userRouter = express.Router();
 
 //user routes
-userRouter.get("/users/profile", authenticate, getUserProfile);
-userRouter.put("/users/profile", authenticate, updateUserProfile);
-userRouter.delete("/users/profile", authenticate, deleteUserAccount);
+userRouter.get("/users/profile/:id", authenticate, getUserProfile);
+userRouter.put("/users/profile/:id", authenticate, updateUserProfile);
+userRouter.delete("/users/profile/:id", authenticate, deleteUserAccount);
 
 //user wishlist
 userRouter.post("/users/wishlist", authenticate, addToWishlist);
 userRouter.get("/users/wishlist", authenticate, getWishlist);
-userRouter.delete("/users/wishlist/:productId", authenticate, removeFromWishlist);
+userRouter.delete(
+  "/users/wishlist/:productId",
+  authenticate,
+  removeFromWishlist
+);
 
 //admin routes
 userRouter.post(

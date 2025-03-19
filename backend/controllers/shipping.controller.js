@@ -26,12 +26,10 @@ export const createShipping = async (req, res) => {
     res.status(201).json(savedShipping);
   } catch (error) {
     console.error("Error creating shipping address:", error);
-    res
-      .status(500)
-      .json({
-        message: "Error creating shipping address",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error creating shipping address",
+      error: error.message,
+    });
   }
 };
 
@@ -51,12 +49,10 @@ export const getUserShippingAddresses = async (req, res) => {
     res.status(200).json(shippingAddresses);
   } catch (error) {
     console.error("Error fetching shipping addresses:", error);
-    res
-      .status(500)
-      .json({
-        message: "Error fetching shipping addresses",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error fetching shipping addresses",
+      error: error.message,
+    });
   }
 };
 
@@ -90,12 +86,10 @@ export const getShippingById = async (req, res) => {
     res.status(200).json(shipping);
   } catch (error) {
     console.error("Error fetching shipping address:", error);
-    res
-      .status(500)
-      .json({
-        message: "Error fetching shipping address",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error fetching shipping address",
+      error: error.message,
+    });
   }
 };
 
@@ -141,12 +135,10 @@ export const updateShipping = async (req, res) => {
     res.status(200).json(updatedShipping);
   } catch (error) {
     console.error("Error updating shipping address:", error);
-    res
-      .status(500)
-      .json({
-        message: "Error updating shipping address",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error updating shipping address",
+      error: error.message,
+    });
   }
 };
 
@@ -178,6 +170,8 @@ export const deleteShipping = async (req, res) => {
         .json({ message: "Not authorized to delete this shipping address" });
     }
 
+    //todo not just orders, you should only be able to delete if the orders
+    //todo: linked to it are ether cancelled of complete
     // Check if shipping address is associated with any orders
     if (shipping.orders && shipping.orders.length > 0) {
       return res.status(400).json({
@@ -191,11 +185,9 @@ export const deleteShipping = async (req, res) => {
     res.status(200).json({ message: "Shipping address deleted successfully" });
   } catch (error) {
     console.error("Error deleting shipping address:", error);
-    res
-      .status(500)
-      .json({
-        message: "Error deleting shipping address",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Error deleting shipping address",
+      error: error.message,
+    });
   }
 };

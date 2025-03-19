@@ -29,6 +29,8 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+//todo should i add a check for the older password here?
+//todo need to handle people not sending anything
 /**
  * Update user profile
  * @route PUT /users/profile
@@ -101,7 +103,8 @@ export const deleteUserAccount = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if user has any orders
+    //todo, this is wrong, i must check the orders status, should only be able to
+    //todo:  delete if orders are cancelled or completed
     if (user.orders && user.orders.length > 0) {
       return res.status(400).json({
         message:
@@ -110,10 +113,8 @@ export const deleteUserAccount = async (req, res) => {
       });
     }
 
-    // Delete related shipping addresses
+    //todo need to call the actual delete functions
     if (user.shipping && user.shipping.length > 0) {
-      // You might want to actually delete the shipping records here
-      // For now, we're just warning about them
       console.log(
         `Deleting user with ${user.shipping.length} shipping addresses`
       );
