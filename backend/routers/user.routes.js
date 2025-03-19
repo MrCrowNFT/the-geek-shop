@@ -28,8 +28,8 @@ userRouter.put("/users/profile/:id", authenticate, updateUserProfile);
 userRouter.delete("/users/profile/:id", authenticate, deleteUserAccount);
 
 //user wishlist
-userRouter.post("/users/wishlist", authenticate, addToWishlist);
-userRouter.get("/users/wishlist", authenticate, getWishlist);
+userRouter.post("/users/wishlist/:id", authenticate, addToWishlist);
+userRouter.get("/users/wishlist/:id", authenticate, getWishlist);
 userRouter.delete(
   "/users/wishlist/:productId",
   authenticate,

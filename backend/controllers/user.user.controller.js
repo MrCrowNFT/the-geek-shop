@@ -176,7 +176,7 @@ export const addToWishlist = async (req, res) => {
 export const removeFromWishlist = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { productId } = req.params;
+    const { productId } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(400).json({ message: "Invalid product ID format" });
