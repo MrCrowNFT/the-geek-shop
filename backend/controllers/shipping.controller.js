@@ -19,7 +19,7 @@ export const createShipping = async (req, res) => {
       run,
       address,
       region,
-      indications: indications || "",
+      indications: indications || "", //indications might be empty
     });
 
     const savedShipping = await newShipping.save();
