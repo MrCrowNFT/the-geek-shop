@@ -140,7 +140,7 @@ export const deleteUserAccount = async (req, res) => {
 export const addToWishlist = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { productId } = req.body;
+    const { productId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(400).json({ message: "Invalid product ID format" });
@@ -176,7 +176,7 @@ export const addToWishlist = async (req, res) => {
 export const removeFromWishlist = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { productId } = req.body;
+    const { productId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(400).json({ message: "Invalid product ID format" });

@@ -41,6 +41,9 @@ export const newProduct = async (req, res) => {
       ? category.map((id) => mongoose.Types.ObjectId(id))
       : [];
 
+//todo: for now the price_tag is set automatically by the pre save hook, 
+//todo, eventually need to make it so that you just can't set it lower than that
+//todo, but just set the price whatever you want. ae, removing the earnings bit from the hook
     // Create and save product
     const newProduct = new Product({
       name,
@@ -82,29 +85,53 @@ export const deleteProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const product = req.body;
+  const updateData = req.body;
 
   try {
-    if (!id || !product) {
+    if (!id || !updateData) {
       return res.status(400).json({ success: false, message: "Invalid input" });
     }
 
-    // Convert category to ObjectId if updated
-    if (product.category?.length) {
-      product.category = product.category.map((id) =>
-        mongoose.Types.ObjectId(id)
-      );
-    }
+    //  find the product
+    const productToUpdate = await Product.findById(id);
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, product, {
-      new: true,
-    });
-
-    if (!updatedProduct) {
+    if (!productToUpdate) {
       return res
         .status(404)
         .json({ success: false, message: "Product not found" });
     }
+
+    // Update the product fields
+    Object.keys(updateData).forEach((key) => {
+      if (key === "category" && updateData.category?.length) {
+        // category conversion specially as i'll be sending a string
+        productToUpdate.category = updateData.category.map((id) =>
+          typeof id === "string" ? mongoose.Types.ObjectId(id) : id
+        );
+      } else if (key === "total_cost") {
+        // Handle nested objects
+        productToUpdate.total_cost.cost =
+          updateData.total_cost.cost || productToUpdate.total_cost.cost;
+        productToUpdate.total_cost.shipping =
+          updateData.total_cost.shipping || productToUpdate.total_cost.shipping;
+      } else if (key === "discount") {
+        // Handle nested objects
+        productToUpdate.discount.amount =
+          updateData.discount.amount !== undefined
+            ? updateData.discount.amount
+            : productToUpdate.discount.amount;
+        productToUpdate.discount.status =
+          updateData.discount.status !== undefined
+            ? updateData.discount.status
+            : productToUpdate.discount.status;
+      } else {
+        // For other fields
+        productToUpdate[key] = updateData[key];
+      }
+    });
+
+    // Save the product to trigger the pre-save hooks
+    const updatedProduct = await productToUpdate.save();
 
     return res.status(200).json({ success: true, data: updatedProduct });
   } catch (error) {
@@ -114,6 +141,8 @@ export const updateProduct = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Invalid product ID" });
     }
-    return res.status(500).json({ success: false, message: "Server error" });
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || "Server error" });
   }
 };

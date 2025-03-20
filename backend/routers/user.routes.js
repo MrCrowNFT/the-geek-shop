@@ -23,15 +23,15 @@ import {
 const userRouter = express.Router();
 
 //user routes
-userRouter.get("/users/profile/:id", authenticate, getUserProfile);
-userRouter.put("/users/profile/:id", authenticate, updateUserProfile);
-userRouter.delete("/users/profile/:id", authenticate, deleteUserAccount);
+userRouter.get("/users/profile/", authenticate, getUserProfile);
+userRouter.put("/users/profile/", authenticate, updateUserProfile);
+userRouter.delete("/users/profile/", authenticate, deleteUserAccount);
 
 //user wishlist
-userRouter.post("/users/wishlist/:id", authenticate, addToWishlist);
-userRouter.get("/users/wishlist/:id", authenticate, getWishlist);
+userRouter.post("/wishlist/", authenticate, addToWishlist);
+userRouter.get("/wishlist/", authenticate, getWishlist);
 userRouter.delete(
-  "/users/wishlist/:productId",
+  "/wishlist/:productId",
   authenticate,
   removeFromWishlist
 );

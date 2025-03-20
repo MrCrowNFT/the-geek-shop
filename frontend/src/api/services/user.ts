@@ -1,11 +1,11 @@
 import api from "../axios";
 import { SignupParams } from "@/types/api";
 
-//User routes
-//get user profile
-export const getUserById = async (id: string) => {
+// User routes
+// get user profile
+export const getUserProfile = async () => {
   try {
-    const res = await api.get(`/user/users/profile/${id}`);
+    const res = await api.get(`/user/users/profile`);
     return res.data;
   } catch (err) {
     console.error("Fetching user profile error:", err);
@@ -13,13 +13,14 @@ export const getUserById = async (id: string) => {
   }
 };
 
-//update user profile
-export const updateUser = async (
-  id: string,
-  updatedProfile: { username?: string; email?: string; password?: string }
-) => {
+// update user profile
+export const updateUserProfile = async (updatedProfile: {
+  username?: string;
+  email?: string;
+  password?: string;
+}) => {
   try {
-    const res = await api.put(`/user/users/profile/${id}`, updatedProfile);
+    const res = await api.put(`/user/users/profile`, updatedProfile);
     return res.data;
   } catch (err) {
     console.error("Updating user profile error:", err);
@@ -27,10 +28,10 @@ export const updateUser = async (
   }
 };
 
-//delete user profile
-export const deleteUser = async (id: string) => {
+// delete user profile
+export const deleteUserAccount = async () => {
   try {
-    const res = await api.delete(`/user/users/profile/${id}`);
+    const res = await api.delete(`/user/users/profile`);
     return res.data;
   } catch (err) {
     console.error("Deleting user profile error:", err);
@@ -38,11 +39,11 @@ export const deleteUser = async (id: string) => {
   }
 };
 
-//wishlist
-//get
-export const getWishlist = async (id: string) => {
+// wishlist
+// get
+export const getWishlist = async () => {
   try {
-    const res = await api.delete(`/user/users/wishlist/${id}`);
+    const res = await api.get(`/user/wishlist`);
     return res.data;
   } catch (err) {
     console.error("Fetching user's wishlist error:", err);
@@ -50,11 +51,10 @@ export const getWishlist = async (id: string) => {
   }
 };
 
-//add
-export const addToWishlist = async (id: string, productId: string) => {
+// add
+export const addToWishlist = async (productId: string) => {
   try {
-    //the server expects an object with the product id, not an alone string
-    const res = await api.post(`/user/users/wishlist/${id}`, { productId });
+    const res = await api.post(`/user/wishlist`, { productId });
     return res.data;
   } catch (err) {
     console.error("Adding to wishlist error: ", err);
@@ -62,13 +62,10 @@ export const addToWishlist = async (id: string, productId: string) => {
   }
 };
 
-//delete from it
-export const deleteFromWishlist = async (id: string, productId: string) => {
+// delete from it
+export const deleteFromWishlist = async (productId: string) => {
   try {
-    //need to use data so that productId gets included on the body
-    const res = await api.delete(`/user/users/wishlist/${id}`, {
-      data: { productId },
-    });
+    const res = await api.delete(`/user/wishlist/${productId}`);
     return res.data;
   } catch (err) {
     console.error("Removing product from wishlist error:", err);
@@ -76,7 +73,7 @@ export const deleteFromWishlist = async (id: string, productId: string) => {
   }
 };
 
-//Admin routes
+// Admin routes
 export const createAdmin = async ({
   username,
   email,
@@ -100,6 +97,7 @@ export const getAdmins = async () => {
     throw err;
   }
 };
+
 export const getAdminById = async (id: string) => {
   try {
     const res = await api.get(`/user/admin/${id}`);
@@ -109,6 +107,7 @@ export const getAdminById = async (id: string) => {
     throw err;
   }
 };
+
 export const updateAdminById = async (
   id: string,
   updatedProfile: { username?: string; email?: string; password?: string }
@@ -117,16 +116,17 @@ export const updateAdminById = async (
     const res = await api.put(`/user/admin/${id}`, updatedProfile);
     return res.data;
   } catch (err) {
-    console.error("Getting admin error:", err);
+    console.error("Updating admin error:", err);
     throw err;
   }
 };
+
 export const deleteAdminById = async (id: string) => {
   try {
     const res = await api.delete(`/user/admin/${id}`);
     return res.data;
   } catch (err) {
-    console.error("Getting admin error:", err);
+    console.error("Deleting admin error:", err);
     throw err;
   }
 };
