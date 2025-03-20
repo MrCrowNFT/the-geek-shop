@@ -30,19 +30,45 @@ export const getOrderById = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   const { id } = req.params;
-  const order = req.body;
+  const updateData = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ success: false, message: "Order not found" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid order ID format" });
   }
+
   try {
-    const updatedOrder = await Order.findByIdAndUpdate(id, order, {
-      new: true,
+    // First find the order
+    const orderToUpdate = await Order.findById(id);
+
+    if (!orderToUpdate) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    // Update fields
+    Object.keys(updateData).forEach((key) => {
+      if (key === "shipping" && updateData.shipping) {
+        orderToUpdate.shipping = mongoose.Types.ObjectId(updateData.shipping);
+      } else if (key === "tracking" && updateData.tracking) {
+        orderToUpdate.tracking = mongoose.Types.ObjectId(updateData.tracking);
+      } else {
+        // For other fields
+        orderToUpdate[key] = updateData[key];
+      }
     });
+
+    // Save to trigger any middleware
+    const updatedOrder = await orderToUpdate.save();
+
     return res.status(200).json({ success: true, data: updatedOrder });
   } catch (error) {
-    console.error(`Error updating orders: ${error.message}`);
-    return res.status(500).json({ success: false, message: "Server error" });
+    console.error(`Error updating order: ${error.message}`);
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || "Server error" });
   }
 };
 
@@ -86,6 +112,7 @@ export const orderSearch = async (req, res) => {
   }
 };
 
+//todo add to router
 //function for the dashboard
 export const getRecentOrders = async (req, res) => {
   try {

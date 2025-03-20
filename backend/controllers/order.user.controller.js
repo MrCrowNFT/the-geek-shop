@@ -148,7 +148,7 @@ export const cancelOrder = async (req, res) => {
   }
 };
 
-//todo: do i really know this? the shipping id will be added to the order after the shipping is 
+//todo: do i really need this? the shipping id will be added to the order after the shipping is 
 //todo: created, therefor, this isn't really necessary
 /**
  * Add order reference to shipping address
