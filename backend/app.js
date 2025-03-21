@@ -7,6 +7,7 @@ import orderRouter from "./routers/order.routes";
 import shippingRouter from "./routers/shipping.routes";
 import userRouter from "./routers/user.routes";
 import stripeRouter from "./routers/stripe.routes";
+import trackingRouter from "./routers/tracking.routes";
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use("/order", orderRouter);
 app.use("/shipping", shippingRouter);
 app.use("/user", userRouter);
 app.use("/stripe", stripeRouter);
+app.use("/tracking", trackingRouter);
 
 export default app;
