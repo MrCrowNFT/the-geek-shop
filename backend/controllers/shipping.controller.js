@@ -170,14 +170,22 @@ export const deleteShipping = async (req, res) => {
         .json({ message: "Not authorized to delete this shipping address" });
     }
 
-    //todo not just orders, you should only be able to delete if the orders
-    //todo: linked to it are ether cancelled of complete
     // Check if shipping address is associated with any orders
     if (shipping.orders && shipping.orders.length > 0) {
-      return res.status(400).json({
-        message: "Cannot delete shipping address associated with orders",
-        orderCount: shipping.orders.length,
+      // Fetch all orders associated with the shipping address
+      const orders = await Order.find({ 
+        _id: { $in: shipping.orders },
+        status: { $nin: ['Delivered', 'Cancelled'] } // Only looking for orders that are NOT Delivered or Cancelled
       });
+      
+      // If any active orders exist (not completed or canceled), prevent deletion
+      if (orders.length > 0) {
+        return res.status(400).json({
+          message: "Cannot delete shipping address associated with active orders",
+          activeOrderCount: orders.length,
+          totalOrderCount: shipping.orders.length
+        });
+      }
     }
 
     await Shipping.findByIdAndDelete(shippingId);
