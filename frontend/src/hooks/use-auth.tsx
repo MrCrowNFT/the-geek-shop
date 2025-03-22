@@ -1,31 +1,60 @@
-import { loginRequest, signupRequest } from "@/api/services/auth";
-import { useMutation } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseMutationResult,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { SignupParams, LoginParams } from "@/types/api";
+import {
+  signupRequest,
+  loginRequest,
+  logoutRequest,
+} from "@/api/services/auth"; // Update this path
 
-export const useSignup = () => {
+// Signup hook
+export const useSignup = (): UseMutationResult<any, Error, SignupParams> => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: signupRequest,
+    mutationFn: (params: SignupParams) => signupRequest(params),
     onSuccess: () => {
-      return <></>; //return a success component
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
-      console.error("Signup error:", error);
-      throw error;
+      // Global error handling
+      console.error("Signup mutation error:", error);
     },
   });
 };
 
-export const useLogin = () => {
+// Login hook
+export const useLogin = (): UseMutationResult<any, Error, LoginParams> => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: loginRequest,
+    mutationFn: (params: LoginParams) => loginRequest(params),
     onSuccess: (data) => {
-      //todo Change from local storage -> state management
-      // Store the access token in localStorage, the refresh token is set on httpOnly cookie on server
-      //so don't need to handle it
-      localStorage.setItem("accessToken", data.accessToken);
+      // add any additional success handling here
+
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
-      console.error("Login error:", error);
-      throw error;
+      console.error("Login mutation error:", error);
+    },
+  });
+};
+
+// Logout hook
+export const useLogout = (): UseMutationResult<any, Error, void> => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => logoutRequest(),
+    onSuccess: () => {
+      // Clear any authenticated data from the query cache
+      queryClient.clear();
+    },
+    onError: (error) => {
+      console.error("Logout mutation error:", error);
     },
   });
 };
