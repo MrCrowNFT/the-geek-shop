@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742653624641" clover="3.2.0">
-  <project timestamp="1742653624641" name="All files">
-    <metrics statements="378" coveredstatements="280" conditionals="133" coveredconditionals="84" methods="38" coveredmethods="22" elements="549" coveredelements="386" complexity="0" loc="378" ncloc="378" packages="4" files="13" classes="13"/>
+<coverage generated="1742682145009" clover="3.2.0">
+  <project timestamp="1742682145009" name="All files">
+    <metrics statements="391" coveredstatements="334" conditionals="150" coveredconditionals="113" methods="40" coveredmethods="30" elements="581" coveredelements="477" complexity="0" loc="391" ncloc="391" packages="4" files="13" classes="13"/>
     <package name="controllers">
-      <metrics statements="304" coveredstatements="235" conditionals="109" coveredconditionals="70" methods="24" coveredmethods="19"/>
+      <metrics statements="304" coveredstatements="271" conditionals="109" coveredconditionals="82" methods="24" coveredmethods="22"/>
       <file name="auth.controller.js" path="/home/lucian/Software_dev/Projects/the-geek-shop/backend/controllers/auth.controller.js">
         <metrics statements="80" coveredstatements="80" conditionals="29" coveredconditionals="28" methods="4" coveredmethods="4"/>
         <line num="9" count="1" type="stmt"/>
@@ -254,7 +254,7 @@
         <line num="193" count="0" type="stmt"/>
       </file>
       <file name="shipping.controller.js" path="/home/lucian/Software_dev/Projects/the-geek-shop/backend/controllers/shipping.controller.js">
-        <metrics statements="67" coveredstatements="11" conditionals="26" coveredconditionals="2" methods="5" coveredmethods="1"/>
+        <metrics statements="67" coveredstatements="47" conditionals="26" coveredconditionals="14" methods="5" coveredmethods="4"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="3" type="stmt"/>
         <line num="11" count="3" type="stmt"/>
@@ -265,44 +265,44 @@
         <line num="28" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
         <line num="41" count="1" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
+        <line num="42" count="3" type="stmt"/>
+        <line num="43" count="3" type="stmt"/>
+        <line num="45" count="3" type="stmt"/>
+        <line num="49" count="2" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
         <line num="64" count="1" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="67" count="0" type="stmt"/>
-        <line num="69" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="73" count="0" type="stmt"/>
-        <line num="75" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="76" count="0" type="stmt"/>
-        <line num="80" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="81" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="89" count="0" type="stmt"/>
+        <line num="65" count="5" type="stmt"/>
+        <line num="66" count="5" type="stmt"/>
+        <line num="67" count="5" type="stmt"/>
+        <line num="69" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="73" count="4" type="stmt"/>
+        <line num="75" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="80" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="86" count="1" type="stmt"/>
+        <line num="88" count="1" type="stmt"/>
+        <line num="89" count="1" type="stmt"/>
         <line num="101" count="1" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
-        <line num="104" count="0" type="stmt"/>
-        <line num="105" count="0" type="stmt"/>
-        <line num="107" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="112" count="0" type="stmt"/>
-        <line num="114" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="115" count="0" type="stmt"/>
-        <line num="119" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="120" count="0" type="stmt"/>
-        <line num="126" count="0" type="stmt"/>
-        <line num="127" count="0" type="stmt"/>
-        <line num="129" count="0" type="stmt"/>
-        <line num="135" count="0" type="stmt"/>
-        <line num="137" count="0" type="stmt"/>
-        <line num="138" count="0" type="stmt"/>
+        <line num="102" count="7" type="stmt"/>
+        <line num="103" count="7" type="stmt"/>
+        <line num="104" count="7" type="stmt"/>
+        <line num="105" count="7" type="stmt"/>
+        <line num="107" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="108" count="1" type="stmt"/>
+        <line num="112" count="6" type="stmt"/>
+        <line num="114" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="115" count="1" type="stmt"/>
+        <line num="119" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="120" count="1" type="stmt"/>
+        <line num="126" count="3" type="stmt"/>
+        <line num="127" count="3" type="stmt"/>
+        <line num="129" count="3" type="stmt"/>
+        <line num="135" count="2" type="stmt"/>
+        <line num="137" count="2" type="stmt"/>
+        <line num="138" count="2" type="stmt"/>
         <line num="150" count="1" type="stmt"/>
         <line num="151" count="0" type="stmt"/>
         <line num="152" count="0" type="stmt"/>
@@ -325,19 +325,32 @@
       </file>
     </package>
     <package name="helpers">
-      <metrics statements="10" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
+      <metrics statements="23" coveredstatements="23" conditionals="17" coveredconditionals="17" methods="5" coveredmethods="5"/>
       <file name="auth.helpers.js" path="/home/lucian/Software_dev/Projects/the-geek-shop/backend/helpers/auth.helpers.js">
-        <metrics statements="10" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
+        <metrics statements="23" coveredstatements="23" conditionals="17" coveredconditionals="17" methods="5" coveredmethods="5"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="21" type="stmt"/>
+        <line num="15" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="29" count="7" type="stmt"/>
+        <line num="31" count="6" type="cond" truecount="5" falsecount="0"/>
+        <line num="32" count="4" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="48" count="2" type="stmt"/>
+        <line num="49" count="4" type="stmt"/>
+        <line num="51" count="3" type="cond" truecount="5" falsecount="0"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="55" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="5" type="stmt"/>
+        <line num="71" count="2" type="cond" truecount="5" falsecount="0"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
       </file>
     </package>
     <package name="middleware">
