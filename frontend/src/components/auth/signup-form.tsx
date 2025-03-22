@@ -10,6 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { useSignup } from "@/hooks/use-auth"; // Update this path
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function SignupForm({
   className,
@@ -27,6 +29,12 @@ export function SignupForm({
   const [errors, setErrors] = useState({
     passwordMismatch: false,
   });
+
+  // Setup signup mutation
+  const signupMutation = useSignup();
+
+  // Navigate function (if using React Router)
+  // const navigate = useNavigate();
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +58,21 @@ export function SignupForm({
     // Reset errors
     setErrors({ passwordMismatch: false });
 
-    //need to add the api call, and if success redirect to login
+    // Call the signup mutation
+    signupMutation.mutate(
+      {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      },
+      {
+        onSuccess: () => {
+          //todo maybe use useNavigate instead?
+          // Redirect to login page on successful signup
+          window.location.href = "/login";
+        },
+      }
+    );
   };
 
   return (
@@ -58,13 +80,21 @@ export function SignupForm({
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Sign Up</CardTitle>
-          <CardDescription>
-            Create a new account
-          </CardDescription>
+          <CardDescription>Create a new account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
+              {/* Error alert for API errors */}
+              {signupMutation.isError && (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    {signupMutation.error?.message ||
+                      "Signup failed. Please try again."}
+                  </AlertDescription>
+                </Alert>
+              )}
+
               {/* Username Field */}
               <div className="grid gap-2">
                 <Label htmlFor="username">Username</Label>
@@ -123,8 +153,12 @@ export function SignupForm({
               </div>
 
               {/* Submit Button */}
-              <Button type="submit" className="w-full ">
-                Sign Up
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={signupMutation.isLoading}
+              >
+                {signupMutation.isLoading ? "Signing up..." : "Sign Up"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
