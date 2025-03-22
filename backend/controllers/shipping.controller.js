@@ -1,4 +1,4 @@
-import Shipping from "../models/Shipping.js";
+import Shipping from "../module/shipping.model";
 import mongoose from "mongoose";
 
 /**
