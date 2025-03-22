@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 import Product from "../module/product.model.js";
+import { sanitizeProduct } from "../helpers/product.helpers.js";
 
-//todo: need to skip the product cost when sending the products
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
-    return res.status(200).json({ success: true, data: products });
+    //sanitize products so that we don't send the total_cost since that's business logic
+    const sanitizedProducts = products.map((product) =>
+      sanitizeProduct(product)
+    );
+    return res.status(200).json({ success: true, data: sanitizedProducts });
   } catch (error) {
     console.error(`Error fetching products: ${error.message}`);
     return res.status(500).json({ success: false, message: "Server error" });
@@ -29,7 +33,8 @@ export const getProductById = async (req, res) => {
         .json({ success: false, message: "Product not found" });
     }
 
-    return res.status(200).json({ success: true, data: product });
+    const sanitizedProduct = sanitizeProduct(product);
+    return res.status(200).json({ success: true, data: sanitizedProduct });
   } catch (error) {
     console.error(`Error fetching product by ID: ${error.message}`);
     return res.status(500).json({ success: false, message: "Server error" });
@@ -86,9 +91,13 @@ export const productSearch = async (req, res) => {
       });
     }
 
+    const sanitizedProducts = products.map((product) =>
+      sanitizeProduct(product)
+    );
+
     res.status(200).json({
       success: true,
-      data: products,
+      data: sanitizedProducts,
       pagination: {
         totalProducts,
         totalPages: Math.ceil(totalProducts / limitNumber),
