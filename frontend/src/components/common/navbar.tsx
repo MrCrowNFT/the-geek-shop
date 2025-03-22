@@ -17,11 +17,11 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
 
   return (
     <div className={`sticky top-0 w-full z-10 shadow-md bg-white ${className}`}>
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+      <div className="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
         {/* Main Navbar Row */}
         <div className="flex items-center h-16 md:h-20 relative">
           {/* Left Side - Sidebar (moved more to the left) */}
-          <div className="flex-none">
+          <div className="flex-none pl-1">
             <Sidebar />
           </div>
 
@@ -39,8 +39,8 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
 
           {/* Spacer on mobile, Navigation on desktop */}
           <div className="flex-grow flex items-center">
-            {/* Desktop Navigation - All menu items fit to the left side */}
-            <nav className="hidden md:flex md:items-center gap-4 lg:gap-6">
+            {/* Desktop Navigation - All menu items fit to the left side, added margin to create space from sidebar */}
+            <nav className="hidden md:flex md:items-center gap-4 lg:gap-6 ml-8">
               {["Figures", "Plushies", "Trading Cards", "Retro", "Goods"].map(
                 (item) => (
                   <a

@@ -3,13 +3,43 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, XCircle } from "lucide-react";
 import DarkModeToggle from "./dark-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { navData } from "@/data/nav-data";
+import { useLogout } from "@/hooks/use-auth";
+
+interface NavItem {
+  title: string;
+  url: string;
+  icon: React.ReactNode;
+}
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const logout = useLogout(); // Initialize the logout hook
+  const navigate = useNavigate(); // For redirecting after logout
 
   const toggleSidebar = () => setIsOpen(!isOpen);
+
+  // Handle logout action
+  const handleLogout = async (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    itemUrl: string
+  ) => {
+    // Check if this is the logout item
+    if (itemUrl === "/logout") {
+      e.preventDefault(); // Prevent default navigation
+      try {
+        await logout.mutateAsync();
+        // Close sidebar after successful logout
+        setIsOpen(false);
+        // Redirect to login page or homepage after logout
+        navigate("/login");
+      } catch (error) {
+        console.error("Failed to logout:", error);
+        // You could show an error toast/notification here
+      }
+    }
+  };
 
   return (
     <>
@@ -60,13 +90,24 @@ const Sidebar = () => {
                     {section.title}
                   </p>
                   <div className="space-y-2">
-                    {section.items.map((item) => (
+                    {section.items.map((item: NavItem) => (
                       <a
                         key={item.title}
                         href={item.url}
-                        className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100"
+                        onClick={(e) => handleLogout(e, item.url)}
+                        className={`flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 ${
+                          item.url === "/logout" && logout.isLoading
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
                       >
-                        {item.icon} <span>{item.title}</span>
+                        {item.icon}{" "}
+                        <span>
+                          {item.title}
+                          {item.url === "/logout" &&
+                            logout.isLoading &&
+                            " (Logging out...)"}
+                        </span>
                       </a>
                     ))}
                   </div>

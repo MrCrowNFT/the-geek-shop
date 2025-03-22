@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { useSignup } from "@/hooks/use-auth"; // Update this path
+import { useSignup } from "@/hooks/use-auth"; 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function SignupForm({
@@ -32,9 +32,6 @@ export function SignupForm({
 
   // Setup signup mutation
   const signupMutation = useSignup();
-
-  // Navigate function (if using React Router)
-  // const navigate = useNavigate();
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
