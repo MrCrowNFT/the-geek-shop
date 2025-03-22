@@ -20,8 +20,8 @@ export const useSignup = (): UseMutationResult<any, Error, SignupParams> => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
-      // Global error handling
       console.error("Signup mutation error:", error);
+      throw error;
     },
   });
 };
@@ -39,6 +39,7 @@ export const useLogin = (): UseMutationResult<any, Error, LoginParams> => {
     },
     onError: (error) => {
       console.error("Login mutation error:", error);
+      throw error;
     },
   });
 };
@@ -55,6 +56,7 @@ export const useLogout = (): UseMutationResult<any, Error, void> => {
     },
     onError: (error) => {
       console.error("Logout mutation error:", error);
+      throw error;
     },
   });
 };

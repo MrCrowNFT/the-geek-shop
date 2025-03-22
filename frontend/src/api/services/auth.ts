@@ -2,6 +2,11 @@ import api from "../axios";
 import { SignupParams, LoginParams } from "@/types/api";
 import { refreshAccessTokenRequest } from "../utils/tokenRefresh";
 
+//TODO: All the api calls on the services using a try catch block, this was written before
+//TODO: integrating react query which adds a layer of error hanlig, and also,i added extra error
+//TODO: handling at the component level, therefor these try catch block are redundant,
+//TODO: so, probably just eliminate them, the component can also just access the loginMutation.error
+
 //signup call
 export const signupRequest = async ({
   username,
