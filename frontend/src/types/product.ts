@@ -1,4 +1,4 @@
-import type { ICategories } from "./category";
+import type { ICategory } from "./category";
 
 //the one for the user shall not include businnes parameters
 //those should only be accesible to the admin
@@ -14,7 +14,7 @@ export interface IProductUser {
   isAvailable: boolean;
   images: string[];
   description: string;
-  categories: ICategories;
+  categories: ICategory[];
   likesCount: number;
   salesCount: number;
   createdAt: Date;
