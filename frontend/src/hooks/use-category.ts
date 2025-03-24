@@ -1,4 +1,4 @@
-import { fetchCategories } from "@/api/services/category";
+import { addCategory, fetchCategories } from "@/api/services/category";
 import {
   useMutation,
   UseMutationResult,
@@ -16,7 +16,23 @@ export const useFetchCategories = () => {
     });
     return data;
   } catch (err) {
-    console.error("Caching or refetching user's orders error:", err);
+    console.error("Caching or refetching categories error:", err);
     throw err;
   }
+};
+
+export const useAddCategory = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (category: { name: string; description?: string }) =>
+      addCategory(category),
+    onSuccess: () => {
+      //todo, check the name
+      queryClient.invalidateQueries({ queryKey: ["category"] });
+    },
+    onError: (error) => {
+      console.error("New category mutation error:", error);
+      throw error;
+    },
+  });
 };
