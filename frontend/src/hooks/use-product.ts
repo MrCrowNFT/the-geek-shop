@@ -4,7 +4,11 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { IProductUser } from "@/types/product";
+import {
+  ICreateProductPayload,
+  IProductUser,
+  IUpdateProductPayload,
+} from "@/types/product";
 import {
   fetchProducts,
   fetchProductById,
@@ -13,64 +17,6 @@ import {
   updateProduct,
   deleteProduct,
 } from "@/api/services/product";
-
-// Type for the paginated response
-interface PaginatedResponse {
-  success: boolean;
-  data: IProductUser[];
-  pagination: {
-    totalProducts: number;
-    totalPages: number;
-    currentPage: number;
-    productsPerPage: number;
-  };
-}
-
-// Type for create product payload
-interface CreateProductPayload {
-  name: string;
-  total_cost: {
-    cost: number;
-    shipping: number;
-  };
-  discount?: {
-    amount: number;
-    status: boolean;
-  };
-  sku?: string;
-  isAvailable: boolean;
-  images: string;
-  description?: string;
-  category: string[];
-}
-
-// Type for update product payload
-interface UpdateProductPayload {
-  name?: string;
-  total_cost?: {
-    cost?: number;
-    shipping?: number;
-  };
-  discount?: {
-    amount?: number;
-    status?: boolean;
-  };
-  sku?: string;
-  isAvailable?: boolean;
-  images?: string;
-  description?: string;
-  category?: string[];
-}
-
-// Type for search params
-interface SearchParams {
-  categories?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  searchTerm?: string;
-  page?: number;
-  limit?: number;
-}
 
 // Query hook for fetching all products
 export const useProducts = (
@@ -110,11 +56,15 @@ export const useCreateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    (newProduct: CreateProductPayload) => createProduct(newProduct),
+    (newProduct: ICreateProductPayload) => createProduct(newProduct),
     {
       onSuccess: () => {
         // Invalidate products queries to refetch data
         queryClient.invalidateQueries(["products"]);
+      },
+      onError: (error) => {
+        console.error("Create product mutation error:", error);
+        throw error;
       },
     }
   );
@@ -125,13 +75,17 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    ({ id, data }: { id: string; data: UpdateProductPayload }) =>
+    ({ id, data }: { id: string; data: IUpdateProductPayload }) =>
       updateProduct(id, data),
     {
       onSuccess: (_, variables) => {
         // Invalidate specific product query and products list
         queryClient.invalidateQueries(["product", variables.id]);
         queryClient.invalidateQueries(["products"]);
+      },
+      onError: (error) => {
+        console.error("Updating product mutation error:", error);
+        throw error;
       },
     }
   );
@@ -145,6 +99,10 @@ export const useDeleteProduct = () => {
     onSuccess: () => {
       // Invalidate products queries to refetch data
       queryClient.invalidateQueries(["products"]);
+    },
+    onError: (error) => {
+      console.error("Deleting product mutation error:", error);
+      throw error;
     },
   });
 };

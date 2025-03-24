@@ -4,9 +4,10 @@ import {
   fetchUserOrders,
   getAllOrders,
   getOrderById,
+  orderSearch,
   updateOrder,
 } from "@/api/services/order";
-import { IOrder } from "@/types/order";
+import { IOrder, IOrderSearchParams } from "@/types/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 //User order hooks
@@ -103,7 +104,20 @@ export const useFetchOrderById = (orderId: string) => {
   });
 };
 
-//TODO: MSSING ORDER SEARCH HOOK
+export const useOrderSearch = (params: IOrderSearchParams) => {
+  try {
+    const data = useQuery({
+      queryKey: ["orders"],
+      queryFn: () => orderSearch(params),
+      staleTime: 1000 * 60 * 5,
+      retry: 2,
+    });
+    return data;
+  } catch (err) {
+    console.error("Caching or refetching admin orders search error:", err);
+    throw err;
+  }
+};
 
 export const useUpdateOrder = () => {
   const queryClient = useQueryClient();

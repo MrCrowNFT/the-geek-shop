@@ -21,3 +21,9 @@ export interface IOrder {
 export interface IOrdersData {
   orders?: IOrder[];
 }
+
+export interface IOrderSearchParams {
+  searchTerm?: string;
+  page?: number;
+  limit?: number;
+}

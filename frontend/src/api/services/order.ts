@@ -1,5 +1,5 @@
 import api from "../axios";
-import { IOrder } from "@/types/order";
+import { IOrder, IOrderSearchParams } from "@/types/order";
 
 //User calls
 // Fetch all user orders
@@ -64,18 +64,10 @@ export const getOrderById = async (id: string) => {
 };
 
 //the server has a default value for the page and limit
-export const orderSearch = async (
-  searchTerm ?: string,
-  page?: number,
-  limit?: number
-) => {
+export const orderSearch = async (searchParams: IOrderSearchParams) => {
   try {
     const res = await api.get(`/order/admin/search`, {
-      params: {
-        searchTerm,
-        page,
-        limit,
-      },
+      params: searchParams,
     });
     return res.data;
   } catch (err) {

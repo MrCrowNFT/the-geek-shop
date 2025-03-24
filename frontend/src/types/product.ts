@@ -41,3 +41,61 @@ export interface ProductPageProps {
   product: IProductUser;
   relatedProducts: IProductUser[];
 }
+
+//api calls interfaces
+// Type for create product payload
+export interface IPaginatedResponse {
+  success: boolean;
+  data: IProductUser[];
+  pagination: {
+    totalProducts: number;
+    totalPages: number;
+    currentPage: number;
+    productsPerPage: number;
+  };
+}
+
+export interface ICreateProductPayload {
+  name: string;
+  total_cost: {
+    cost: number;
+    shipping: number;
+  };
+  discount?: {
+    amount: number;
+    status: boolean;
+  };
+  sku?: string;
+  isAvailable: boolean;
+  images: string;
+  description?: string;
+  category: string[];
+}
+
+// Type for update product payload
+export interface IUpdateProductPayload {
+  name?: string;
+  total_cost?: {
+    cost?: number;
+    shipping?: number;
+  };
+  discount?: {
+    amount?: number;
+    status?: boolean;
+  };
+  sku?: string;
+  isAvailable?: boolean;
+  images?: string;
+  description?: string;
+  category?: string[];
+}
+
+// Type for search params
+export interface ISearchParams {
+  categories?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  searchTerm?: string;
+  page?: number;
+  limit?: number;
+}

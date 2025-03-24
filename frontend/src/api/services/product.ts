@@ -1,25 +1,10 @@
 import api from "../axios";
-import { IProductUser } from "@/types/product";
+import { IProductUser, IPaginatedResponse } from "@/types/product";
 
 //User calls
-// pagination response type
-interface PaginatedResponse {
-  success: boolean;
-  data: IProductUser[];
-  pagination: {
-    totalProducts: number;
-    totalPages: number;
-    currentPage: number;
-    productsPerPage: number;
-  };
-}
 
-//For User
 // Fetch all products
-export const fetchProducts = async (): Promise<{
-  success: boolean;
-  data: IProductUser[];
-}> => {
+export const fetchProducts = async () => {
   try {
     const res = await api.get<{
       success: boolean;
@@ -55,9 +40,9 @@ export const searchProducts = async (params: {
   searchTerm?: string;
   page?: number;
   limit?: number;
-}): Promise<PaginatedResponse> => {
+}): Promise<IPaginatedResponse> => {
   try {
-    const res = await api.get<PaginatedResponse>("/product/search", {
+    const res = await api.get<IPaginatedResponse>("/product/search", {
       params,
     });
     return res.data;
