@@ -2,6 +2,7 @@ import {
   cancelOrder,
   createOrder,
   fetchUserOrders,
+  getAllOrders,
 } from "@/api/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -55,4 +56,20 @@ export const useCancelOrder = () => {
       throw error;
     },
   });
+};
+
+//Admin order hooks
+export const useFetchAllOrders = () => {
+  try {
+    const data = useQuery({
+      queryKey: ["admin orders"],
+      queryFn: getAllOrders,
+      staleTime: 1000 * 60 * 5,
+      retry: 2,
+    });
+    return data;
+  } catch (err) {
+    console.error("Caching or refetching admin orders error:", err);
+    throw err;
+  }
 };
