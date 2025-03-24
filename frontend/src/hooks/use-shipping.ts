@@ -40,3 +40,24 @@ export const useFetchShippingAddressById = (shippingId: string) => {
   });
 };
 
+export const useCreateShipping = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newShippingAddress: {
+      name: string;
+      phone: string;
+      run: string;
+      address: string;
+      region: string;
+      indications?: string;
+    }) => createShippingAddress(newShippingAddress),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["shippping"] });
+    },
+    onError: (error) => {
+      console.error("Create shipping mutation error:", error);
+      throw error;
+    },
+  });
+};
+
