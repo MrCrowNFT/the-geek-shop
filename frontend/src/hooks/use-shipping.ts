@@ -1,7 +1,9 @@
 import {
   createShippingAddress,
+  deleteShippingAddress,
   getShippingAddressById,
   getShippingAddresses,
+  updateShippingAddress,
 } from "@/api/services/shipping";
 import { IShipping } from "@/types/shipping";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -52,7 +54,7 @@ export const useCreateShipping = () => {
       indications?: string;
     }) => createShippingAddress(newShippingAddress),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["shippping"] });
+      queryClient.invalidateQueries({ queryKey: ["shipping"] });
     },
     onError: (error) => {
       console.error("Create shipping mutation error:", error);
@@ -61,3 +63,46 @@ export const useCreateShipping = () => {
   });
 };
 
+export const useUpdateShipping = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    ({
+      id,
+      updateData,
+    }: {
+      id: string;
+      updateData: {
+        name?: string;
+        phone?: string;
+        run?: string;
+        address?: string;
+        region?: string;
+        indications?: string;
+      };
+    }) => updateShippingAddress(id, updateData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["shipping"] });
+      },
+      onError: (error) => {
+        console.error("Update shipping mutation error:", error);
+        throw error;
+      },
+    }
+  );
+};
+
+export const useDeleteShipping = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((id: string) => deleteShippingAddress(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["shipping"]);
+    },
+    onError: (error) => {
+      console.error("Deleting shipping mutation error:", error);
+      throw error;
+    },
+  });
+};
