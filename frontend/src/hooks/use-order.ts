@@ -4,6 +4,7 @@ import {
   fetchUserOrders,
   getAllOrders,
   getOrderById,
+  updateOrder,
 } from "@/api/services/order";
 import { IOrder } from "@/types/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -100,4 +101,29 @@ export const useFetchOrderById = (orderId: string) => {
     },
     staleTime: 1000 * 60 * 5, // Keep cache fresh for 5 mins
   });
+};
+
+//TODO: MSSING ORDER SEARCH HOOK
+
+export const useUpdateOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    ({
+      id,
+      updateData,
+    }: {
+      id: string;
+      updateData: { shipping?: string; tracking?: string; status?: string };
+    }) => updateOrder(id, updateData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
+      },
+      onError: (error) => {
+        console.error("Update order mutation error:", error);
+        throw error;
+      },
+    }
+  );
 };

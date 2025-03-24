@@ -63,8 +63,9 @@ export const getOrderById = async (id: string) => {
   }
 };
 
+//the server has a default value for the page and limit
 export const orderSearch = async (
-  searchTerm: string,
+  searchTerm ?: string,
   page?: number,
   limit?: number
 ) => {
