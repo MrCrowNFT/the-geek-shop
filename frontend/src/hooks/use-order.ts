@@ -3,7 +3,9 @@ import {
   createOrder,
   fetchUserOrders,
   getAllOrders,
+  getOrderById,
 } from "@/api/services/order";
+import { IOrder } from "@/types/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 //User order hooks
@@ -59,6 +61,9 @@ export const useCancelOrder = () => {
 };
 
 //Admin order hooks
+//todo: there is an issue here, logical, shouldn't use this hook
+//todo: is is better to use the order rearch without any string,
+//todo: to not overload the client side
 export const useFetchAllOrders = () => {
   try {
     const data = useQuery({
@@ -72,4 +77,27 @@ export const useFetchAllOrders = () => {
     console.error("Caching or refetching admin orders error:", err);
     throw err;
   }
+};
+
+//since i am getting orders and putting them on the cache
+//just get the data from the cache to render the order details
+//minimizing the amount of api calls i need
+export const useFetchOrderById = (orderId: string) => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: ["order", orderId],
+    queryFn: async () => {
+      //check if the order is on the cached orders, if is not, make the api call
+      const cachedOrders = queryClient.getQueryData<{ orders: IOrder[] }>([
+        "orders",
+      ]);
+      const cachedOrder = cachedOrders?.orders.find((o) => o._id === orderId);
+
+      if (cachedOrder) return cachedOrder;
+
+      return getOrderById(orderId);
+    },
+    staleTime: 1000 * 60 * 5, // Keep cache fresh for 5 mins
+  });
 };
