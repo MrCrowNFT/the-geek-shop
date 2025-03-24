@@ -1,6 +1,11 @@
-import { createOrder, fetchUserOrders } from "@/api/services/order";
+import {
+  cancelOrder,
+  createOrder,
+  fetchUserOrders,
+} from "@/api/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+//User order hooks
 export const useFetchUserOrders = () => {
   try {
     const data = useQuery({
@@ -29,6 +34,24 @@ export const useCreateOrder = () => {
     },
     onError: (error) => {
       console.error("Create order mutation error:", error);
+      throw error;
+    },
+  });
+};
+
+//todo: since i will have the orders on the cache i can just check on that date first
+//todo: to check if is cancelable before trying to make the api call,
+export const useCancelOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => cancelOrder(id),
+    onSuccess: () => {
+      //todo check names
+      queryClient.invalidateQueries({ queryKey: ["order"] });
+    },
+    onError: (error) => {
+      console.error("Canceling order mutation error:", error);
       throw error;
     },
   });
