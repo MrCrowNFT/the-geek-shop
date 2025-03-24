@@ -4,19 +4,14 @@ import {
   fetchCategories,
   updateCategory,
 } from "@/api/services/category";
-import {
-  useMutation,
-  UseMutationResult,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useFetchCategories = () => {
   try {
     const data = useQuery({
       queryKey: ["categories"],
       queryFn: fetchCategories,
-      staleTime: 1000 * 60 * 5,
+      staleTime: 1000 * 60 * 5, //5 minutes
       retry: 2,
     });
     return data;
