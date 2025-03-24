@@ -2,11 +2,11 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-  UseQueryOptions,
 } from "@tanstack/react-query";
 import {
   ICreateProductPayload,
   IProductUser,
+  ISearchParams,
   IUpdateProductPayload,
 } from "@/types/product";
 import {
@@ -19,36 +19,58 @@ import {
 } from "@/api/services/product";
 
 // Query hook for fetching all products
-export const useProducts = (
-  options?: UseQueryOptions<{ success: boolean; data: IProductUser[] }>
-) => {
-  return useQuery(["products"], fetchProducts, options);
+export const useFetchProducts = () => {
+  try {
+    const data = useQuery({
+      queryKey: ["products"],
+      queryFn: fetchProducts,
+      staleTime: 1000 * 60 * 5,
+      retry: 2,
+    });
+    return data;
+  } catch (err) {
+    console.error("Caching or refetching products error:", err);
+    throw err;
+  }
 };
 
 // Query hook for fetching a product by ID
-export const useProduct = (
-  id: string,
-  options?: UseQueryOptions<{ success: boolean; data: IProductUser }>
-) => {
-  return useQuery(["product", id], () => fetchProductById(id), {
-    enabled: !!id,
-    ...options,
+export const useFetchProductById = (productId: string) => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: ["order", productId],
+    queryFn: async () => {
+      //check if the order is on the cached orders, if is not, make the api call
+      const cachedProducts = queryClient.getQueryData<{
+        products: IProductUser[];
+      }>(["orders"]);
+      const cachedProduct = cachedProducts?.products.find(
+        (p) => p._id === productId
+      );
+
+      if (cachedProduct) return cachedProduct;
+
+      return fetchProductById(productId);
+    },
+    staleTime: 1000 * 60 * 5, // Keep cache fresh for 5 mins
   });
 };
 
 // Query hook for searching products
-export const useSearchProducts = (
-  params: SearchParams,
-  options?: UseQueryOptions<PaginatedResponse>
-) => {
-  return useQuery(
-    ["products", "search", params],
-    () => searchProducts(params),
-    {
-      keepPreviousData: true,
-      ...options,
-    }
-  );
+export const useProductsSearch = (params: ISearchParams) => {
+  try {
+    const data = useQuery({
+      queryKey: ["products", params],
+      queryFn: () => searchProducts(params),
+      staleTime: 1000 * 60 * 5,
+      retry: 2,
+    });
+    return data;
+  } catch (err) {
+    console.error("Caching or refetching product search error:", err);
+    throw err;
+  }
 };
 
 // Mutation hook for creating a product

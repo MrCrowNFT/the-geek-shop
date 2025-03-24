@@ -107,7 +107,7 @@ export const useFetchOrderById = (orderId: string) => {
 export const useOrderSearch = (params: IOrderSearchParams) => {
   try {
     const data = useQuery({
-      queryKey: ["orders"],
+      queryKey: ["orders", params],
       queryFn: () => orderSearch(params),
       staleTime: 1000 * 60 * 5,
       retry: 2,
