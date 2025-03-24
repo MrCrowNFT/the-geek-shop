@@ -138,7 +138,7 @@ const NewProductButton: React.FC = () => {
 
     // In a real application, you would send this data to your API
     const newProduct: IProductAdmin = {
-
+      _id: formData._id || "",
       name: formData.name || "",
       priceTag: formData.priceTag || 0,
       total_cost: formData.total_cost || 0,
