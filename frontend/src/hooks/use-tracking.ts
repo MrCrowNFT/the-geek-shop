@@ -1,4 +1,8 @@
-import { getTrackingInfo, newTracking } from "@/api/services/tracking";
+import {
+  getTrackingInfo,
+  newTracking,
+  updateTrackingInfo,
+} from "@/api/services/tracking";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 
 export const useFetchTrackingInfo = (trackingId: string) => {
@@ -32,4 +36,29 @@ export const useNewTracking = () => {
   );
 };
 
+export const useUpdateTracking = () => {
+  const queryClient = useQueryClient();
 
+  return useMutation(
+    ({
+      trackingId,
+      updatedTrackingInfo,
+    }: {
+      trackingId: string;
+      updatedTrackingInfo: {
+        orderId: string;
+        carrier: string;
+        trackingNumber: string;
+      };
+    }) => updateTrackingInfo(trackingId, updatedTrackingInfo),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["tracking"]);
+      },
+      onError: (error) => {
+        console.error("Updating tracking info mutation error:", error);
+        throw error;
+      },
+    }
+  );
+};
