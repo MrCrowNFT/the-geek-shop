@@ -1,5 +1,15 @@
-import { newTracking } from "@/api/services/tracking";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getTrackingInfo, newTracking } from "@/api/services/tracking";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+
+export const useFetchTrackingInfo = (trackingId: string) => {
+  return useQuery({
+    queryKey: ["tracking", trackingId],
+    queryFn: async () => {
+      return getTrackingInfo(trackingId);
+    },
+    staleTime: 1000 * 60 * 5, // Keep cache fresh for 5 mins
+  });
+};
 
 export const useNewTracking = () => {
   const queryClient = useQueryClient();
@@ -21,3 +31,5 @@ export const useNewTracking = () => {
     }
   );
 };
+
+
