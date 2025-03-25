@@ -16,11 +16,5 @@ export interface IUser {
 }
 
 export interface IUserCardProps {
-  user: {
-    _id?: string;
-    username: string;
-    profile_pic: string;
-    email: string;
-    orders: string[] | IOrdersData;
-  };
+  user: IUser
 }

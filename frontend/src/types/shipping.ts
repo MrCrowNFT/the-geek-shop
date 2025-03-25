@@ -17,12 +17,5 @@ export interface IShippingAddresses {
 }
 
 export interface IShippingInfoCardProps {
-  shipping: {
-    name: string;
-    phone: string;
-    run?: string;
-    address: string;
-    region: string;
-    indications?: string;
-  };
+  shipping: IShipping;
 }
