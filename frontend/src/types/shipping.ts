@@ -16,7 +16,6 @@ export interface IShippingAddresses {
   addresses: IShipping[];
 }
 
-
 export interface IShippingInfoCardProps {
   shipping: {
     name: string;
