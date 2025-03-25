@@ -14,3 +14,13 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IUserCardProps {
+  user: {
+    _id?: string;
+    username: string;
+    profile_pic: string;
+    email: string;
+    orders: string[] | IOrdersData;
+  };
+}
