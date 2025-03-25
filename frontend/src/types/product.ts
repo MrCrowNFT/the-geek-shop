@@ -99,3 +99,11 @@ export interface ISearchParams {
   page?: number;
   limit?: number;
 }
+
+export interface IOrderProductsListProps {
+  products: Array<{
+    id: string | IProductAdmin;
+    quantity: number;
+  }>;
+  paidAmount: number;
+}
