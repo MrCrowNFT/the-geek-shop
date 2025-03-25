@@ -43,7 +43,7 @@ export interface ProductPageProps {
 }
 
 //api calls interfaces
-// Type for create product payload
+
 export interface IPaginatedResponse {
   success: boolean;
   data: IProductUser[];
@@ -108,6 +108,3 @@ export interface IOrderProductsListProps {
   paidAmount: number;
 }
 
-export interface ISeachProps {
-  products: IProductUser[];
-}
