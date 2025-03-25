@@ -22,6 +22,10 @@ export interface IOrdersData {
   orders?: IOrder[];
 }
 
+export interface IOrderDetails{
+  order: IOrder;
+}
+
 export interface IOrderSearchParams {
   searchTerm?: string;
   page?: number;

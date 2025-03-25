@@ -9,12 +9,6 @@ export interface ITracking {
 }
 
 export interface ITrackingInfoProps {
-  tracking?: {
-    _id: string;
-    carrier: string;
-    trackingNumber: number;
-    estimatedDelivery?: Date;
-  };
+  tracking?: ITracking;
   onAddTracking?: (trackingInfo: Omit<ITracking, "_id" | "order">) => void;
 }
-
