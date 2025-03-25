@@ -107,3 +107,7 @@ export interface IOrderProductsListProps {
   }>;
   paidAmount: number;
 }
+
+export interface ISeachProps {
+  products: IProductUser[];
+}
