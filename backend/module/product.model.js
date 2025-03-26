@@ -44,13 +44,34 @@ const productSchema = new mongoose.Schema(
 
 productSchema.pre("save", async function (next) {
   try {
-    // Ensure valid pricing logic
+    // Calculate total cost with tax
     const taxRate = 0.19;
-    const profit = 0.1;
-    const totalCost = this.total_cost.cost + this.total_cost.shipping;
-    const discount = this.discount.status ? this.discount.amount : 0;
-    const basePrice = totalCost + totalCost * taxRate + totalCost * profit;
-    this.priceTag = Math.max(totalCost, basePrice - discount);
+    const totalCostWithTax =
+      this.total_cost.cost +
+      this.total_cost.shipping +
+      (this.total_cost.cost + this.total_cost.shipping) * taxRate;
+
+    // case 1: price tag with discount > totalCostWithTax
+    const priceAfterDiscount =
+      this.priceTag - (this.discount.status ? this.discount.amount : 0);
+    if (priceAfterDiscount >= totalCostWithTax) {
+      // no changes needed
+      return next();
+    }
+    // case 2: price tag with discount < totalCostWithTax
+    //  try disabling discount
+    const priceWithoutDiscount = this.priceTag;
+    if (priceWithoutDiscount >= totalCostWithTax) {
+      // disable discount
+      this.discount.status = false;
+      this.discount.amount = 0;
+      return next();
+    }
+
+    // if still not enough just set price tag to total cost + tax
+    this.priceTag = totalCostWithTax;
+    this.discount.status = false;
+    this.discount.amount = 0;
 
     // Validate categories if they exist
     if (this.category && this.category.length > 0) {
