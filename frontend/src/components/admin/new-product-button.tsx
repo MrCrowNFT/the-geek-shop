@@ -196,9 +196,7 @@ const NewProductButton: React.FC = () => {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl overflow-hidden max-h-screen overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">
-                  Create New Product (Admin)
-                </h2>
+                <h2 className="text-xl font-bold">Create New Product</h2>
                 <button
                   onClick={handleCloseModal}
                   className="text-gray-500 hover:text-gray-700"
@@ -383,7 +381,7 @@ const NewProductButton: React.FC = () => {
                   <select
                     multiple
                     name="categories"
-                    value={formData.categories?.map((cat) => cat._id) || []}
+                    value={formData.categories || []}
                     onChange={handleCategoryChange}
                     className="mt-1 w-full rounded-md border-gray-300 shadow-sm p-2 border"
                     size={3}
@@ -405,14 +403,19 @@ const NewProductButton: React.FC = () => {
                       Selected Categories:
                     </h3>
                     <div className="mt-1 flex flex-wrap gap-2">
-                      {formData.categories.map((category) => (
-                        <span
-                          key={category._id}
-                          className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
-                        >
-                          {category.name}
-                        </span>
-                      ))}
+                      {formData.categories.map((categoryId) => {
+                        const category = availableCategories.find(
+                          (cat) => cat._id === categoryId
+                        );
+                        return category ? (
+                          <span
+                            key={category._id}
+                            className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
+                          >
+                            {category.name}
+                          </span>
+                        ) : null;
+                      })}
                     </div>
                   </div>
                 )}
