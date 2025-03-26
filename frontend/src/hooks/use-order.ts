@@ -81,6 +81,7 @@ export const useFetchOrderById = (orderId: string) => {
   });
 };
 
+//* currently not using it since there aren't that many orders
 export const useOrderSearch = (params: IOrderSearchParams) => {
   return useQuery({
     queryKey: ["orders", params],
@@ -90,6 +91,8 @@ export const useOrderSearch = (params: IOrderSearchParams) => {
   });
 };
 
+//todo: there is a fundamental issue right, so, i put the status on the order, maybe should have putted it into the 
+//todo: tracking, so that i can just change the tracking, give it a thought.
 export const useUpdateOrder = () => {
   const queryClient = useQueryClient();
 

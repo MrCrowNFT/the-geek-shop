@@ -11,10 +11,10 @@ import { useFetchOrderById } from "@/hooks/use-order";
 import { IOrder } from "@/types/order";
 
 const OrderDetailsPage: React.FC = () => {
-  // Extract orderId from URL params
+  // Extract id from URL params
   const { orderId } = useParams<{ orderId: string }>();
 
-  // Use the hook to fetch order details
+  // Use hook to fetch order details
   const { data: order, isLoading, error } = useFetchOrderById(orderId || "");
 
   // Loading state
@@ -34,7 +34,7 @@ const OrderDetailsPage: React.FC = () => {
       </div>
     );
   }
-
+  //Here comes a bunch of type checking so that typescript doesn't complain
   // Ensure type safety for user
   const user = typeof order.user === "string" ? null : order.user;
 
@@ -75,7 +75,7 @@ const OrderDetailsPage: React.FC = () => {
           />
         </div>
 
-        {/* User Card (1/3 width) */}
+        {/* User Card*/}
         <div className="w-1/3">{user && <UserInfoCard user={user} />}</div>
       </div>
 
