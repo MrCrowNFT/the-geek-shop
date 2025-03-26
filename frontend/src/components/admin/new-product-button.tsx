@@ -5,7 +5,7 @@ import { ICategory } from "@/types/category";
 
 const NewProductButton: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<Partial<IProductAdmin>>({
+  const [formData, setFormData] = useState<Partial<IProductAdmin>>({//partial as no id nor other that are added on mongo
     name: "",
     priceTag: 0,
     total_cost: 0,

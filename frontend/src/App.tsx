@@ -24,7 +24,7 @@ function App() {
         <Route path="/login/" element={<Login />} />
         <Route path="/signup/" element={<Signup />} />
         <Route path="/admin" element={<Dashboard />} />
-        <Route path="admin/order/" element={<OrderDetailsPage order={}/>} />
+        <Route path="/order/:orderId" element={<OrderDetailsPage/>} />
       </Routes>
     </QueryClientProvider>
   );
