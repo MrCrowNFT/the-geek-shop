@@ -4,6 +4,7 @@ export const newProduct = async (req, res) => {
   try {
     const {
       name,
+      priceTag, 
       total_cost,
       discount,
       sku,
@@ -19,7 +20,8 @@ export const newProduct = async (req, res) => {
       !total_cost?.cost ||
       !total_cost?.shipping ||
       isAvailable === undefined ||
-      !images?.length
+      !images?.length ||
+      priceTag === undefined
     ) {
       return res
         .status(400)
@@ -41,12 +43,10 @@ export const newProduct = async (req, res) => {
       ? category.map((id) => mongoose.Types.ObjectId(id))
       : [];
 
-    //todo: for now the price_tag is set automatically by the pre save hook,
-    //todo, eventually need to make it so that you just can't set it lower than that
-    //todo, but just set the price whatever you want. ae, removing the earnings bit from the hook
     // Create and save product
     const newProduct = new Product({
       name,
+      priceTag, 
       total_cost,
       discount,
       sku,
