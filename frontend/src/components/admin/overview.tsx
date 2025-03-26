@@ -1,12 +1,33 @@
 import { SalesChart } from "./bar-chart";
 import Indicator from "./indicator";
 import SalesTable from "./sales-table";
-import { mockOrders } from "@/mock/orders-mock";
 import { processData } from "@/helper/overview.helper";
-import { OverviewProps } from "@/types/overview";
+import { useFetchAllOrders } from "@/hooks/use-order";
+import { Loader2 } from "lucide-react";
 
-const Overview = (orders: OverviewProps) => {
-  const { indicatorsData, salesSummary } = processData(orders.orders);
+const Overview = () => {
+  const { data: ordersData, isLoading, error } = useFetchAllOrders();
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loader2 className="animate-spin" size={48} />
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !ordersData) {
+    return (
+      <div className="container mx-auto p-4 text-red-500">
+        Error loading overview data. Please try again.
+      </div>
+    );
+  }
+
+  // Process data safely
+  const { indicatorsData, salesSummary } = processData(ordersData.orders || []);
 
   return (
     <div className="flex flex-col gap-6">
@@ -29,7 +50,7 @@ const Overview = (orders: OverviewProps) => {
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="text-lg font-medium mb-4">Recent Orders</h2>
           {/*only the top 10 orders*/}
-          <SalesTable ordersData={mockOrders} limit={10} />
+          <SalesTable ordersData={ordersData.orders || []} limit={10} />
         </div>
       </div>
     </div>

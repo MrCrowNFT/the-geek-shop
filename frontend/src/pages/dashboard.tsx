@@ -3,7 +3,6 @@ import Overview from "@/components/admin/overview";
 import ProductList from "@/components/admin/products";
 import { mockProductsAdmin } from "@/mock/products-mock";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockOrders } from "@/mock/orders-mock";
 import AdminProfile from "@/components/admin/admin-profile";
 import { mockAdmin } from "@/mock/user-mock";
 
@@ -25,7 +24,7 @@ const Dashboard = () => {
         </div>
 
         <TabsContent value="overview" className="mt-0">
-          <Overview orders={mockOrders} />
+          <Overview />
         </TabsContent>
 
         <TabsContent value="orders" className="mt-0">

@@ -55,7 +55,7 @@ export const useCancelOrder = () => {
 // Admin order hooks
 export const useFetchAllOrders = () => {
   return useQuery({
-    queryKey: ["admin orders"],
+    queryKey: ["adminOrders"],
     queryFn: getAllOrders,
     staleTime: 1000 * 60 * 5,
     retry: 2,
@@ -66,12 +66,12 @@ export const useFetchOrderById = (orderId: string) => {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: ["order", orderId],
+    queryKey: ["adminOrders", orderId],
     queryFn: async () => {
-      const cachedOrders = queryClient.getQueryData<{ orders: IOrder[] }>([
-        "orders",
+      const cachedOrders = queryClient.getQueryData<{ adminOrders: IOrder[] }>([
+        "adminOrders",
       ]);
-      const cachedOrder = cachedOrders?.orders.find((o) => o._id === orderId);
+      const cachedOrder = cachedOrders?.adminOrders.find((o) => o._id === orderId);
 
       if (cachedOrder) return cachedOrder;
 
@@ -84,7 +84,7 @@ export const useFetchOrderById = (orderId: string) => {
 //* currently not using it since there aren't that many orders
 export const useOrderSearch = (params: IOrderSearchParams) => {
   return useQuery({
-    queryKey: ["orders", params],
+    queryKey: ["adminOrders", params],
     queryFn: () => orderSearch(params),
     staleTime: 1000 * 60 * 5,
     retry: 2,
@@ -105,7 +105,7 @@ export const useUpdateOrder = () => {
       updateData: { shipping?: string; tracking?: string; status?: string };
     }) => updateOrder(id, updateData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
     },
     onError: (error) => {
       console.error("Update order mutation error:", error);

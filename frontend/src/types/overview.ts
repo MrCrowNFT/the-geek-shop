@@ -1,5 +1,5 @@
 import { JSX} from "react";
-import { IOrder } from "./order";
+
 
 export interface IndicatorProps {
   parameter: string;
@@ -8,7 +8,5 @@ export interface IndicatorProps {
 };
 
 
-export interface OverviewProps {
-  orders: IOrder[];
-}
+
 
