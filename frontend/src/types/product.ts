@@ -7,7 +7,7 @@ export interface IProductUser {
   name: string;
   priceTag: number;
   discount: {
-    amout: number;
+    amount: number;
     status: boolean;
   };
   sku: string;
@@ -57,6 +57,7 @@ export interface IPaginatedResponse {
 
 export interface ICreateProductPayload {
   name: string;
+  priceTag: number;
   total_cost: {
     cost: number;
     shipping: number;
@@ -69,7 +70,7 @@ export interface ICreateProductPayload {
   isAvailable: boolean;
   images: string;
   description?: string;
-  category: string[];
+  categories: ICategory[] | string[]; 
 }
 
 // Type for update product payload

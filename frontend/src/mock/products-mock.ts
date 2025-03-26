@@ -3,10 +3,9 @@ import ImageA from "@/assets/ImageA.png";
 import ImageB from "@/assets/ImageB.png";
 import ImageC from "@/assets/ImageC.png";
 import ImageD from "@/assets/ImageD.png";
-import type { ICategories } from "@/types/category";
+import type {  ICategory } from "@/types/category";
 
-const mockCategories: ICategories = {
-  categories: [
+const mockCategories: ICategory[]= [
     {
       _id: "cat1",
       name: "Figurine",
@@ -21,8 +20,8 @@ const mockCategories: ICategories = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-  ],
-};
+  ]
+
 
 export const mockProducts: IProductUser[] = [
   {
@@ -31,7 +30,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 19.99,
     description: "Description 1",
     images: [ImageA, ImageB],
-    discount: { amout: 5, status: true },
+    discount: { amount: 5, status: true },
     sku: "SKU001",
     isAvailable: true,
     categories: mockCategories,
@@ -46,7 +45,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 29.99,
     description: "Description 2",
     images: [ImageB, ImageA],
-    discount: { amout: 0, status: false },
+    discount: { amount: 0, status: false },
     sku: "SKU002",
     isAvailable: false,
     categories: mockCategories,
@@ -61,7 +60,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 39.99,
     description: "Description 3",
     images: [ImageC, ImageB],
-    discount: { amout: 10, status: true },
+    discount: { amount: 10, status: true },
     sku: "SKU003",
     isAvailable: true,
     categories: mockCategories,
@@ -76,7 +75,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 49.99,
     description: "Description 4",
     images: [ImageD, ImageC],
-    discount: { amout: 5, status: true },
+    discount: { amount: 5, status: true },
     sku: "SKU004",
     isAvailable: false,
     categories: mockCategories,
@@ -91,7 +90,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 59.99,
     description: "Description 5",
     images: [ImageA, ImageD],
-    discount: { amout: 0, status: false },
+    discount: { amount: 0, status: false },
     sku: "SKU005",
     isAvailable: true,
     categories: mockCategories,
@@ -106,7 +105,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 69.99,
     description: "Description 6",
     images: [ImageA, ImageB],
-    discount: { amout: 8, status: true },
+    discount: { amount: 8, status: true },
     sku: "SKU006",
     isAvailable: true,
     categories: mockCategories,
@@ -121,7 +120,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 79.99,
     description: "Description 7",
     images: [ImageB, ImageA],
-    discount: { amout: 12, status: true },
+    discount: { amount: 12, status: true },
     sku: "SKU007",
     isAvailable: false,
     categories: mockCategories,
@@ -136,7 +135,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 89.99,
     description: "Description 8",
     images: [ImageC, ImageB],
-    discount: { amout: 15, status: true },
+    discount: { amount: 15, status: true },
     sku: "SKU008",
     isAvailable: true,
     categories: mockCategories,
@@ -151,7 +150,7 @@ export const mockProducts: IProductUser[] = [
     priceTag: 99.99,
     description: "Description 9",
     images: [ImageA, ImageD],
-    discount: { amout: 20, status: true },
+    discount: { amount: 20, status: true },
     sku: "SKU009",
     isAvailable: true,
     categories: mockCategories,
@@ -178,7 +177,7 @@ export const mockProduct: IProductUser = {
   description:
     "pariatur ea consequat deserunt occaecat Lorem irure Lorem tempor - dolor elit velit dolor proident ipsum est anim velit voluptate aliqua exercitation - laboris quis elit magna ea amet excepteur amet minim cupidatat irure commodo nulla",
   images: [ImageA, ImageB, ImageC, ImageD],
-  discount: { amout: 10, status: true },
+  discount: { amount: 10, status: true },
   sku: "SKU_PREMIUM",
   isAvailable: true,
   categories: mockCategories,

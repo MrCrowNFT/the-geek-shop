@@ -67,7 +67,7 @@ export const createProduct = async (newProduct: {
   isAvailable: boolean;
   images: string;
   description?: string;
-  category: string[];
+  categories: string[];
 }) => {
   try {
     const res = await api.post("/product/new", newProduct);

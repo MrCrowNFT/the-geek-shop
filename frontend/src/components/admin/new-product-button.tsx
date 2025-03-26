@@ -1,16 +1,19 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { PlusCircle } from "lucide-react";
-import { IProductAdmin } from "@/types/product";
+import { ICreateProductPayload, IProductAdmin } from "@/types/product";
 import { ICategory } from "@/types/category";
+import { useCreateProduct } from "@/hooks/use-product";
 
 const NewProductButton: React.FC = () => {
+  const createProductMutation = useCreateProduct();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<Partial<IProductAdmin>>({//partial as no id nor other that are added on mongo
+  const [formData, setFormData] = useState<Partial<IProductAdmin>>({
+    //partial as no id nor other that are added on mongo
     name: "",
     priceTag: 0,
     total_cost: 0,
     discount: {
-      amout: 0,
+      amount: 0,
       status: false,
     },
     sku: "",
@@ -20,7 +23,7 @@ const NewProductButton: React.FC = () => {
     categories: [], // Initialize as empty array instead of nested object
   });
 
-  // Mock categories data
+  // Mock categories data -> need an api call to get the categories
   const availableCategories: ICategory[] = [
     {
       _id: "cat1",
@@ -54,12 +57,12 @@ const NewProductButton: React.FC = () => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
 
-    if (name === "discount.amout") {
+    if (name === "discount.amount") {
       setFormData({
         ...formData,
         discount: {
           ...formData.discount!,
-          amout: parseFloat(value) || 0,
+          amount: parseFloat(value) || 0,
         },
       });
     } else if (name === "discount.status") {
@@ -136,26 +139,22 @@ const NewProductButton: React.FC = () => {
       return;
     }
 
-    // In a real application, you would send this data to your API
-    const newProduct: IProductAdmin = {
-      _id: formData._id || "",
+    const newProduct: ICreateProductPayload = {
       name: formData.name || "",
       priceTag: formData.priceTag || 0,
-      total_cost: formData.total_cost || 0,
-      discount: formData.discount || { amout: 0, status: false },
+      total_cost: {
+        cost: formData.total_cost || 0,
+        shipping: 0 //todo need to add shipping cost and cost to the form
+      },
+      discount: formData.discount || { amount: 0, status: false },
       sku: formData.sku || "",
       isAvailable: formData.isAvailable || false,
-      images: formData.images || [],
+      images: (formData.images?.[0] || ""),
       description: formData.description || "",
       categories: formData.categories || [],
-      likesCount: 0,
-      salesCount: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     };
 
-    console.log("New Product:", newProduct);
-    //  API call here
+    createProductMutation.mutate(newProduct);
 
     handleCloseModal();
     // Reset form after submission
@@ -164,7 +163,7 @@ const NewProductButton: React.FC = () => {
       priceTag: 0,
       total_cost: 0,
       discount: {
-        amout: 0,
+        amount: 0,
         status: false,
       },
       sku: "",
@@ -271,8 +270,8 @@ const NewProductButton: React.FC = () => {
                     </label>
                     <input
                       type="number"
-                      name="discount.amout"
-                      value={formData.discount?.amout}
+                      name="discount.amount"
+                      value={formData.discount?.amount}
                       onChange={handleChange}
                       min="0"
                       step="0.01"

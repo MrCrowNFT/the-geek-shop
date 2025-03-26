@@ -17,7 +17,7 @@ const OrderProductsList: React.FC<IOrderProductsListProps> = ({
   const getFirstImage = (product: IProductAdmin) => {
     return product.images && product.images.length > 0
       ? product.images[0]
-      : "/placeholder-image.png";//need to get a place holder img
+      : "/placeholder-image.png";//todo need to get a place holder img
   };
 
   // Calculate total earnings

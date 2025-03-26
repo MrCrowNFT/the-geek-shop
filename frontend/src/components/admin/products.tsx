@@ -78,7 +78,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                     </span>
                     {product.discount && product.discount.status && (
                       <span className="text-sm text-green-600">
-                        {product.discount.amout}% off
+                        {product.discount.amount}% off
                       </span>
                     )}
                   </div>
