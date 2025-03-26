@@ -23,7 +23,10 @@ export interface IProductUser {
 
 //this one is for the admin on the dashboard
 export interface IProductAdmin extends IProductUser {
-  total_cost: number;
+  total_cost: {
+    cost: number;
+    shipping: number;
+  };
 }
 
 export interface ProductCardProps {
@@ -68,14 +71,15 @@ export interface ICreateProductPayload {
   };
   sku?: string;
   isAvailable: boolean;
-  images: string;
+  images: string[];
   description?: string;
-  categories: ICategory[] | string[]; 
+  categories: string[]; //i will be sending the _id of the the category
 }
 
-// Type for update product payload
+// Type for update product payload, the same as above but all optional
 export interface IUpdateProductPayload {
   name?: string;
+  priceTag?: number;
   total_cost?: {
     cost?: number;
     shipping?: number;
@@ -84,11 +88,11 @@ export interface IUpdateProductPayload {
     amount?: number;
     status?: boolean;
   };
-  sku?: string;
+  sku?: string[];
   isAvailable?: boolean;
   images?: string;
   description?: string;
-  category?: string[];
+  categories?: string[];
 }
 
 // Type for search params
@@ -108,4 +112,3 @@ export interface IOrderProductsListProps {
   }>;
   paidAmount: number;
 }
-

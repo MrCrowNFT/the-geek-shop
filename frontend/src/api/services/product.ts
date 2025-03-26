@@ -1,5 +1,10 @@
 import api from "../axios";
-import { IProductUser, IPaginatedResponse } from "@/types/product";
+import {
+  IProductUser,
+  IPaginatedResponse,
+  ICreateProductPayload,
+  IUpdateProductPayload,
+} from "@/types/product";
 
 //User calls
 
@@ -53,22 +58,7 @@ export const searchProducts = async (params: {
 };
 
 //Admin Only
-export const createProduct = async (newProduct: {
-  name: string;
-  total_cost: {
-    cost: number;
-    shipping: number;
-  };
-  discount?: {
-    amount: number;
-    status: boolean;
-  };
-  sku?: string;
-  isAvailable: boolean;
-  images: string;
-  description?: string;
-  categories: string[];
-}) => {
+export const createProduct = async (newProduct: ICreateProductPayload) => {
   try {
     const res = await api.post("/product/new", newProduct);
     return res.data;
@@ -80,22 +70,7 @@ export const createProduct = async (newProduct: {
 
 export const updateProduct = async (
   id: string,
-  newProduct: {
-    name?: string;
-    total_cost?: {
-      cost?: number;
-      shipping?: number;
-    };
-    discount?: {
-      amount?: number;
-      status?: boolean;
-    };
-    sku?: string;
-    isAvailable?: boolean;
-    images?: string;
-    description?: string;
-    category?: string[];
-  }
+  newProduct: IUpdateProductPayload
 ) => {
   try {
     const res = await api.put(`/product/${id}`, newProduct);

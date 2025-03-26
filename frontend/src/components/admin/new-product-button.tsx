@@ -1,17 +1,19 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { PlusCircle } from "lucide-react";
-import { ICreateProductPayload, IProductAdmin } from "@/types/product";
+import { ICreateProductPayload } from "@/types/product";
 import { ICategory } from "@/types/category";
 import { useCreateProduct } from "@/hooks/use-product";
 
 const NewProductButton: React.FC = () => {
   const createProductMutation = useCreateProduct();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<Partial<IProductAdmin>>({
-    //partial as no id nor other that are added on mongo
+  const [formData, setFormData] = useState<ICreateProductPayload>({
     name: "",
     priceTag: 0,
-    total_cost: 0,
+    total_cost: {
+      cost: 0,
+      shipping: 0,
+    },
     discount: {
       amount: 0,
       status: false,
@@ -20,7 +22,7 @@ const NewProductButton: React.FC = () => {
     isAvailable: true,
     images: [],
     description: "",
-    categories: [], // Initialize as empty array instead of nested object
+    categories: [],
   });
 
   // Mock categories data -> need an api call to get the categories
@@ -73,12 +75,28 @@ const NewProductButton: React.FC = () => {
           status: checked,
         },
       });
+    } else if (name === "total_cost.cost") {
+      setFormData({
+        ...formData,
+        total_cost: {
+          ...formData.total_cost,
+          cost: parseFloat(value) || 0,
+        },
+      });
+    } else if (name === "total_cost.shipping") {
+      setFormData({
+        ...formData,
+        total_cost: {
+          ...formData.total_cost,
+          shipping: parseFloat(value) || 0,
+        },
+      });
     } else if (type === "checkbox") {
       setFormData({
         ...formData,
         [name]: checked,
       });
-    } else if (name === "priceTag" || name === "total_cost") {
+    } else if (name === "priceTag") {
       setFormData({
         ...formData,
         [name]: parseFloat(value) || 0,
@@ -93,20 +111,25 @@ const NewProductButton: React.FC = () => {
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      // convert files to array of URLs
       const fileUrls = Array.from(e.target.files).map((file) =>
         URL.createObjectURL(file)
       );
 
+      // add new URLs to existing images
       setFormData({
         ...formData,
-        images: [...(formData.images || []), ...fileUrls],
+        images: [...formData.images, ...fileUrls],
       });
     }
   };
 
-  const removeImage = (index: number) => {
-    const newImages = [...(formData.images || [])];
-    newImages.splice(index, 1);
+  const removeImage = (indexToRemove: number) => {
+    // Create a new array without the image at the specified index
+    const newImages = formData.images.filter(
+      (_, index) => index !== indexToRemove
+    );
+
     setFormData({
       ...formData,
       images: newImages,
@@ -120,13 +143,9 @@ const NewProductButton: React.FC = () => {
       (option) => option.value
     );
 
-    const selectedCategories = availableCategories.filter((category) =>
-      selectedCategoryIds.includes(category._id)
-    );
-
     setFormData({
       ...formData,
-      categories: selectedCategories, // Set categories directly as array
+      categories: selectedCategoryIds, // sending category _ids
     });
   };
 
@@ -139,29 +158,17 @@ const NewProductButton: React.FC = () => {
       return;
     }
 
-    const newProduct: ICreateProductPayload = {
-      name: formData.name || "",
-      priceTag: formData.priceTag || 0,
-      total_cost: {
-        cost: formData.total_cost || 0,
-        shipping: 0 //todo need to add shipping cost and cost to the form
-      },
-      discount: formData.discount || { amount: 0, status: false },
-      sku: formData.sku || "",
-      isAvailable: formData.isAvailable || false,
-      images: (formData.images?.[0] || ""),
-      description: formData.description || "",
-      categories: formData.categories || [],
-    };
-
-    createProductMutation.mutate(newProduct);
+    createProductMutation.mutate(formData);
 
     handleCloseModal();
     // Reset form after submission
     setFormData({
       name: "",
       priceTag: 0,
-      total_cost: 0,
+      total_cost: {
+        cost: 0,
+        shipping: 0,
+      },
       discount: {
         amount: 0,
         status: false,
@@ -170,7 +177,7 @@ const NewProductButton: React.FC = () => {
       isAvailable: true,
       images: [],
       description: "",
-      categories: [], // Reset to empty array
+      categories: [],
     });
   };
 
@@ -234,12 +241,12 @@ const NewProductButton: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Total Cost (Admin Only)
+                      Total Cost (Cost)
                     </label>
                     <input
                       type="number"
-                      name="total_cost"
-                      value={formData.total_cost}
+                      name="total_cost.cost"
+                      value={formData.total_cost.cost}
                       onChange={handleChange}
                       min="0"
                       step="0.01"
@@ -248,6 +255,24 @@ const NewProductButton: React.FC = () => {
                     />
                   </div>
 
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Total Cost (Shipping)
+                    </label>
+                    <input
+                      type="number"
+                      name="total_cost.shipping"
+                      value={formData.total_cost.shipping}
+                      onChange={handleChange}
+                      min="0"
+                      step="0.01"
+                      required
+                      className="mt-1 w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       SKU
@@ -260,12 +285,8 @@ const NewProductButton: React.FC = () => {
                       required
                       className="mt-1 w-full rounded-md border-gray-300 shadow-sm p-2 border"
                     />
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700 mt-4">
                       Discount Amount
                     </label>
                     <input
@@ -279,31 +300,33 @@ const NewProductButton: React.FC = () => {
                     />
                   </div>
 
-                  <div className="flex items-center mt-6">
-                    <input
-                      type="checkbox"
-                      name="discount.status"
-                      checked={formData.discount?.status}
-                      onChange={handleChange}
-                      className="h-4 w-4 text-blue-600 rounded"
-                    />
-                    <label className="ml-2 block text-sm text-gray-700">
-                      Enable Discount
-                    </label>
-                  </div>
-                </div>
+                  <div className="flex flex-col space-y-4 mt-6">
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="discount.status"
+                        checked={formData.discount?.status}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-blue-600 rounded"
+                      />
+                      <label className="ml-2 block text-sm text-gray-700">
+                        Enable Discount
+                      </label>
+                    </div>
 
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    name="isAvailable"
-                    checked={formData.isAvailable}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 rounded"
-                  />
-                  <label className="ml-2 block text-sm text-gray-700">
-                    Product Available
-                  </label>
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="isAvailable"
+                        checked={formData.isAvailable}
+                        onChange={handleChange}
+                        className="h-4 w-4 text-blue-600 rounded"
+                      />
+                      <label className="ml-2 block text-sm text-gray-700">
+                        Product Available
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -417,5 +440,4 @@ const NewProductButton: React.FC = () => {
     </div>
   );
 };
-
 export default NewProductButton;
