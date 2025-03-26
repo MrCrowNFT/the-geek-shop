@@ -17,6 +17,9 @@ export const useFetchUserOrders = () => {
     queryFn: fetchUserOrders,
     staleTime: 1000 * 60 * 5,
     retry: 2,
+    onError: (error) => {
+      console.error("Fetching user orders error:", error);
+    },
   });
 };
 
@@ -59,6 +62,9 @@ export const useFetchAllOrders = () => {
     queryFn: getAllOrders,
     staleTime: 1000 * 60 * 5,
     retry: 2,
+    onError: (error) => {
+      console.error("Fetching orders error:", error);
+    },
   });
 };
 
