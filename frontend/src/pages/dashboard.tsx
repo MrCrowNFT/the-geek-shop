@@ -29,7 +29,7 @@ const Dashboard = () => {
         </TabsContent>
 
         <TabsContent value="orders" className="mt-0">
-          <OrderManagement orders={mockOrders} />
+          <OrderManagement />
         </TabsContent>
 
         <TabsContent value="products" className="mt-0">

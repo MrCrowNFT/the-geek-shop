@@ -44,7 +44,7 @@ export const useFetchProductById = (productId: string) => {
       //check if the order is on the cached orders, if is not, make the api call
       const cachedProducts = queryClient.getQueryData<{
         products: IProductUser[];
-      }>(["orders"]);
+      }>(["products"]);
       const cachedProduct = cachedProducts?.products.find(
         (p) => p._id === productId
       );
