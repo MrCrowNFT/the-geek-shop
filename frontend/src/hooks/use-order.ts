@@ -37,6 +37,7 @@ export const useCreateOrder = () => {
   });
 };
 
+//TODO: consider adding a client side cancel check so that only valid cancel api calls are made
 export const useCancelOrder = () => {
   const queryClient = useQueryClient();
 
