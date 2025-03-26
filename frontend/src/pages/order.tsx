@@ -7,7 +7,7 @@ import OrderTracking from "@/components/admin/add-tracking-button";
 import { IProductAdmin } from "@/types/product";
 import { IShipping } from "@/types/shipping";
 
-//TODO: Need to add this to the router and handle api calls
+
 
 const OrderDetailsPage: React.FC<IOrderDetails> = ({ order }) => {
   //Here comes a bunch of type checking because typescript was being difficult

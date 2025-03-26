@@ -6,6 +6,7 @@ import { mockProduct, mockProducts } from "./mock/products-mock";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Dashboard from "./pages/dashboard";
+import OrderDetailsPage from "./pages/order";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/login/" element={<Login />} />
         <Route path="/signup/" element={<Signup />} />
         <Route path="/admin" element={<Dashboard />} />
+        <Route path="admin/order/" element={<OrderDetailsPage order={}/>} />
       </Routes>
     </QueryClientProvider>
   );
