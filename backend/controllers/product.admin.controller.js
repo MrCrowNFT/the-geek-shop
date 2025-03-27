@@ -1,10 +1,44 @@
 import Product from "../module/product.model.js";
 
+//get the products without sanitizing them
+export const getAdminProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
+    return res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.error(`Error fetching products: ${error.message}`);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const getAdminProductById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid product ID" });
+    }
+
+    const product = await Product.findById(id);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+    return res.status(200).json({ success: true, data: product });
+  } catch (error) {
+    console.error(`Error fetching product by ID: ${error.message}`);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 export const newProduct = async (req, res) => {
   try {
     const {
       name,
-      priceTag, 
+      priceTag,
       total_cost,
       discount,
       sku,
@@ -46,7 +80,7 @@ export const newProduct = async (req, res) => {
     // Create and save product
     const newProduct = new Product({
       name,
-      priceTag, 
+      priceTag,
       total_cost,
       discount,
       sku,

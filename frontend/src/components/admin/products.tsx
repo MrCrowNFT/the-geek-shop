@@ -6,7 +6,7 @@ interface ProductListProps {
   products: IProductAdmin[];
 }
 
-//todo need to add the add product button!!!
+
 const ProductList: React.FC<ProductListProps> = ({ products }) => {
   if (!products || products.length === 0) {
     return (
