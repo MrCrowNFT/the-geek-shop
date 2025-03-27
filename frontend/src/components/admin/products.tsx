@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFetchAdminProducts } from "@/hooks/use-product";
+import ProductFilter from "./product-search-filter";
+import { IProductAdmin } from "@/types/product";
 
 const ProductList: React.FC = () => {
   const { data: products, isLoading, isError } = useFetchAdminProducts();
+  const [filteredProducts, setFilteredProducts] = useState<IProductAdmin[]>([]);
 
   if (isLoading) {
     return (
@@ -21,9 +24,20 @@ const ProductList: React.FC = () => {
     );
   }
 
+  // filtered products if available, otherwise original products
+  const displayProducts =
+    filteredProducts.length > 0 ? filteredProducts : products;
+
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold mb-4">Products</h2>
+
+      {/* ProductFilter */}
+      <ProductFilter
+        products={products}
+        onFilteredProducts={setFilteredProducts}
+      />
+
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead className="bg-gray-100">
@@ -35,7 +49,7 @@ const ProductList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {displayProducts.map((product) => (
               <tr
                 key={product._id}
                 className="border-b hover:bg-gray-50 cursor-pointer"
