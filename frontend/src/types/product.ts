@@ -33,7 +33,7 @@ export interface ProductCardProps {
   product: IProductUser;
 }
 
-export interface ProductGridProps {
+export interface IProductGridProps {
   products: IProductUser[];
   title: string;
   seeMoreLink: string;

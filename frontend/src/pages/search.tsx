@@ -5,7 +5,7 @@ import Navbar from "@/components/common/navbar";
 import ProductCard from "@/components/shop/product-card";
 import { useProductsSearch } from "@/hooks/use-product";
 import { ISearchParams } from "@/types/product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -15,15 +15,31 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+import { useLocation } from "react-router";
 
 //todo add advanced search functionality
-
 const Search: React.FC = () => {
+  //need this to access search params on the url
+  const location = useLocation();
+
   // Initial search params
   const [searchParams, setSearchParams] = useState<ISearchParams>({
     page: 1,
     limit: 20,
   });
+
+  useEffect(() => {
+    //create new url search object from the url to get the category
+    const queryParams = new URLSearchParams(location.search);
+    const categoryParam = queryParams.get("category");
+    //keep the existing parameter and add the category id
+    if (categoryParam) {
+      setSearchParams((prev) => ({
+        ...prev,
+        categories: categoryParam,
+      }));
+    }
+  }, [location.search]); //run whenever the url changes
 
   const { data, isLoading, isError, error } = useProductsSearch(searchParams);
 

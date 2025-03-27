@@ -22,6 +22,7 @@ const ProductPage: React.FC = () => {
     error: productError,
   } = useFetchProductById(productId!);
 
+  //todo: the "see more" link should redirect to the search page with the category as query
   // fetching related products based on the product's first category
   const relatedProductsSearch = useProductsSearch({
     categories: product?.categories?.[0]?._id,
@@ -56,6 +57,11 @@ const ProductPage: React.FC = () => {
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
+
+  // Generate the "See More" link with category query by putting the id of the category on url
+  const seeMoreLink = product?.categories?.[0]?._id
+    ? `/search?category=${product.categories[0]._id}`
+    : "/search";
 
   // loading and error states
   if (isProductLoading) {
@@ -166,8 +172,6 @@ const ProductPage: React.FC = () => {
                   {addedToCart ? "Added to Cart!" : "Add to Cart"}
                 </button>
               </div>
-
-              {/* Additional info like shipping, returns, etc. */}
             </div>
           </div>
 
@@ -177,7 +181,7 @@ const ProductPage: React.FC = () => {
               <ProductGrid
                 products={filteredRelatedProducts}
                 title="Related Products"
-                seeMoreLink="/products/new"
+                seeMoreLink={seeMoreLink}
               />
             </div>
           )}

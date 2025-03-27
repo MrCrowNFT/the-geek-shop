@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "./product-card";
-import { ProductGridProps } from "@/types/product";
+import { IProductGridProps } from "@/types/product";
 
-const ProductGrid: React.FC<ProductGridProps> = ({
+const ProductGrid: React.FC<IProductGridProps> = ({
   products,
   title,
   seeMoreLink,

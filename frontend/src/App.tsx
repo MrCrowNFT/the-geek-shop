@@ -6,6 +6,7 @@ import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Dashboard from "./pages/dashboard";
 import OrderDetailsPage from "./pages/order";
+import Search from "./pages/search";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signup/" element={<Signup />} />
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/order/:orderId" element={<OrderDetailsPage />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </QueryClientProvider>
   );
