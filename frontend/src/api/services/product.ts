@@ -54,6 +54,7 @@ export const searchProducts = async (
 };
 
 //Admin Only
+
 export const fetchAdminProducts = async (): Promise<IProductAdmin[]> => {
   try {
     const res = await api.get<{
@@ -67,8 +68,6 @@ export const fetchAdminProducts = async (): Promise<IProductAdmin[]> => {
   }
 };
 
-//todo: the main problem with this approach is that i am just ignoring the message that is sent from the api
-// Fetch a single product by ID
 export const fetchAdminProductById = async (
   id: string
 ): Promise<IProductAdmin> => {

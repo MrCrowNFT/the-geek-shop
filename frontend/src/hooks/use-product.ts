@@ -12,7 +12,11 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  fetchAdminProducts,
+  fetchAdminProductById,
 } from "@/api/services/product";
+
+//USER HOOKS
 
 // Query hook for fetching all products
 export const useFetchProducts = () => {
@@ -62,6 +66,41 @@ export const useProductsSearch = (params: ISearchParams) => {
   });
 };
 
+//ADMIN HOOKS
+export const useFetchAdminProducts = () => {
+  return useQuery({
+    queryKey: ["adminProducts"],
+    queryFn: fetchAdminProducts,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
+    onError: (error) => {
+      console.error("Fetching products error:", error);
+    },
+  });
+};
+
+// Query hook for fetching a product by ID
+export const useFetchAdminProductById = (productId: string) => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: ["adminProducts", productId],
+    queryFn: async () => {
+      const cachedProducts = queryClient.getQueryData<{
+        adminProducts: IProductUser[];
+      }>(["adminProducts"]);
+      const cachedProduct = cachedProducts?.adminProducts.find(
+        (p) => p._id === productId
+      );
+
+      if (cachedProduct) return cachedProduct;
+
+      return fetchAdminProductById(productId);
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
 // Mutation hook for creating a product
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
@@ -71,7 +110,7 @@ export const useCreateProduct = () => {
     {
       onSuccess: () => {
         // Invalidate products queries to refetch data
-        queryClient.invalidateQueries(["products"]);
+        queryClient.invalidateQueries(["adminProducts"]);
       },
       onError: (error) => {
         console.error("Create product mutation error:", error);
@@ -90,9 +129,8 @@ export const useUpdateProduct = () => {
       updateProduct(id, data),
     {
       onSuccess: (_, variables) => {
-        // Invalidate specific product query and products list
-        queryClient.invalidateQueries(["products", variables.id]);
-        queryClient.invalidateQueries(["products"]);
+        queryClient.invalidateQueries(["adminProducts", variables.id]);
+        queryClient.invalidateQueries(["adminProducts"]);
       },
       onError: (error) => {
         console.error("Updating product mutation error:", error);
@@ -109,7 +147,7 @@ export const useDeleteProduct = () => {
   return useMutation((id: string) => deleteProduct(id), {
     onSuccess: () => {
       // Invalidate products queries to refetch data
-      queryClient.invalidateQueries(["products"]);
+      queryClient.invalidateQueries(["adminProducts"]);
     },
     onError: (error) => {
       console.error("Deleting product mutation error:", error);
