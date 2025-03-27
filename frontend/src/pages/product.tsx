@@ -8,7 +8,7 @@ import { ShoppingCart, Minus, Plus } from "lucide-react";
 import ProductGrid from "@/components/shop/product-grid";
 import { useCart } from "@/hooks/use-cart";
 import Layout from "@/components/common/layout";
-import { useFetchProductById } from "@/hooks/use-product";
+import { useFetchProductById, useProductsSearch } from "@/hooks/use-product";
 
 const ProductPage: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -21,6 +21,13 @@ const ProductPage: React.FC = () => {
     isLoading: isProductLoading,
     error: productError,
   } = useFetchProductById(productId!);
+
+  // fetching related products based on the product's first category
+  const relatedProductsSearch = useProductsSearch({
+    categories: product?.categories?.[0]?._id,
+    limit: 4,
+    page: 1,
+  });
 
   // Zustand cart hook
   const addToCart = useCart((state) => state.addToCart);
@@ -50,7 +57,7 @@ const ProductPage: React.FC = () => {
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
-  // Handle loading and error states
+  // loading and error states
   if (isProductLoading) {
     return (
       <Layout>
@@ -73,6 +80,11 @@ const ProductPage: React.FC = () => {
 
   // Split description for bullet points
   const descriptionPoints = product.description.split("-");
+
+  // Filter out the current product from related products
+  const filteredRelatedProducts = relatedProductsSearch.data?.data
+    ? relatedProductsSearch.data.data.filter((p) => p._id !== product._id)
+    : [];
 
   return (
     <Layout>
@@ -154,17 +166,21 @@ const ProductPage: React.FC = () => {
                   {addedToCart ? "Added to Cart!" : "Add to Cart"}
                 </button>
               </div>
+
+              {/* Additional info like shipping, returns, etc. */}
             </div>
           </div>
 
           {/* Related products section */}
-          <div className="max-w-full">
-            <ProductGrid
-              products={[]} // You'll pass your related products here from your hook
-              title="Related Products"
-              seeMoreLink="/products/new"
-            />
-          </div>
+          {filteredRelatedProducts.length > 0 && (
+            <div className="max-w-full">
+              <ProductGrid
+                products={filteredRelatedProducts}
+                title="Related Products"
+                seeMoreLink="/products/new"
+              />
+            </div>
+          )}
         </main>
 
         <Footer />

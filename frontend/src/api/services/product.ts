@@ -4,18 +4,19 @@ import {
   IPaginatedResponse,
   ICreateProductPayload,
   IUpdateProductPayload,
+  ISearchParams,
 } from "@/types/product";
 
 //User calls
 
 // Fetch all products
-export const fetchProducts = async () => {
+export const fetchProducts = async (): Promise<IProductUser[]> => {
   try {
     const res = await api.get<{
       success: boolean;
       data: IProductUser[];
     }>("/product/");
-    return res.data;
+    return res.data.data;
   } catch (err) {
     console.error("Fetching products error:", err);
     throw err;
@@ -24,7 +25,7 @@ export const fetchProducts = async () => {
 
 //todo: the main problem with this approach is that i am just ignoring the message that is sent from the api
 // Fetch a single product by ID
-export const fetchProductById = async (id: string) => {
+export const fetchProductById = async (id: string): Promise<IProductUser> => {
   try {
     const res = await api.get<{ success: boolean; data: IProductUser }>(
       `/product/${id}`
@@ -37,14 +38,9 @@ export const fetchProductById = async (id: string) => {
 };
 
 // Search for products with filters
-export const searchProducts = async (params: {
-  categories?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  searchTerm?: string;
-  page?: number;
-  limit?: number;
-}): Promise<IPaginatedResponse> => {
+export const searchProducts = async (
+  params: ISearchParams
+): Promise<IPaginatedResponse> => {
   try {
     const res = await api.get<IPaginatedResponse>("/product/search", {
       params,
