@@ -41,6 +41,7 @@ export const useCreateOrder = () => {
 };
 
 //TODO: consider adding a client side cancel check so that only valid cancel api calls are made
+//todo: check the api call
 export const useCancelOrder = () => {
   const queryClient = useQueryClient();
 
@@ -87,6 +88,7 @@ export const useFetchOrderById = (orderId: string) => {
   });
 };
 
+//todo: check the api call
 //* currently not using it since there aren't that many orders
 export const useOrderSearch = (params: IOrderSearchParams) => {
   return useQuery({

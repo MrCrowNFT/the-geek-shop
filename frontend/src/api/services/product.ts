@@ -22,15 +22,14 @@ export const fetchProducts = async () => {
   }
 };
 
+//todo: the main problem with this approach is that i am just ignoring the message that is sent from the api
 // Fetch a single product by ID
-export const fetchProductById = async (
-  id: string
-): Promise<{ success: boolean; data: IProductUser }> => {
+export const fetchProductById = async (id: string) => {
   try {
     const res = await api.get<{ success: boolean; data: IProductUser }>(
       `/product/${id}`
     );
-    return res.data;
+    return res.data.data;
   } catch (err) {
     console.error("Fetching products error:", err);
     throw err;

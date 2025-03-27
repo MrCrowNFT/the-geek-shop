@@ -69,7 +69,7 @@ export const createOrder = async (req, res) => {
 export const getUserOrders = async (req, res) => {
   try {
     const userId = req.user._id; // Assuming you have user data from auth middleware
-
+//todo: fix this, those params don't exists on the model
     const orders = await Order.find({ user: userId })
       .populate("shipping", "address city state zipCode country")
       .populate("products.id", "name price image")

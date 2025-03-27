@@ -18,7 +18,7 @@ export const createOrder = async (orderData: {
   shipping: string;
   products: { id: string; quantity: number }[];
   paid_amount: number;
-}) => {
+}): Promise<IOrder> => {
   try {
     const res = await api.post<IOrder>("/order/new", orderData);
     return res.data;
@@ -28,6 +28,7 @@ export const createOrder = async (orderData: {
   }
 };
 
+//todo check the return value, not implemented yet, it returns a message and the cancelled order
 // Cancel an order
 export const cancelOrder = async (id: string) => {
   try {
@@ -43,26 +44,27 @@ export const cancelOrder = async (id: string) => {
 };
 
 //Admin only
-export const getAllOrders = async () => {
+export const getAllOrders = async (): Promise<IOrder[]> => {
   try {
     const res = await api.get("/order/admin/");
-    return res.data;
+    return res.data.data; //* this was the simplest option, not using the message
   } catch (err) {
     console.error("Fetching orders error:", err);
     throw err;
   }
 };
 
-export const getOrderById = async (id: string) => {
+export const getOrderById = async (id: string): Promise<IOrder> => {
   try {
     const res = await api.get(`/order/admin/${id}`);
-    return res.data;
+    return res.data.data;
   } catch (err) {
     console.error("Fetching order error:", err);
     throw err;
   }
 };
 
+//todo this returns a bool + pagination+ orders, leep this in mind when ntegrating
 //the server has a default value for the page and limit
 export const orderSearch = async (searchParams: IOrderSearchParams) => {
   try {

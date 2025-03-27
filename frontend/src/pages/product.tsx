@@ -1,20 +1,26 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Header from "@/components/common/header";
 import Navbar from "@/components/common/navbar";
 import Footer from "@/components/common/footer";
 import Slider from "@/components/ui/slider";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import ProductGrid from "@/components/shop/product-grid";
-import { ProductPageProps } from "@/types/product";
 import { useCart } from "@/hooks/use-cart";
 import Layout from "@/components/common/layout";
+import { useFetchProductById } from "@/hooks/use-product";
 
-const ProductPage: React.FC<ProductPageProps> = ({
-  product,
-  relatedProducts,
-}) => {
+const ProductPage: React.FC = () => {
+  const { productId } = useParams<{ productId: string }>();
   const [productCounter, setProductCounter] = useState<number>(1);
   const [addedToCart, setAddedToCart] = useState<boolean>(false);
+
+  // Fetch product details
+  const {
+    data: product,
+    isLoading: isProductLoading,
+    error: productError,
+  } = useFetchProductById(productId!);
 
   // Zustand cart hook
   const addToCart = useCart((state) => state.addToCart);
@@ -32,6 +38,8 @@ const ProductPage: React.FC<ProductPageProps> = ({
   };
 
   const handleAddToCart = (): void => {
+    if (!product) return;
+
     // Add the product to cart with the selected quantity
     for (let i = 0; i < productCounter; i++) {
       addToCart(product);
@@ -41,6 +49,27 @@ const ProductPage: React.FC<ProductPageProps> = ({
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
+
+  // Handle loading and error states
+  if (isProductLoading) {
+    return (
+      <Layout>
+        <div className="flex min-h-screen justify-center items-center">
+          Loading product...
+        </div>
+      </Layout>
+    );
+  }
+
+  if (productError || !product) {
+    return (
+      <Layout>
+        <div className="flex min-h-screen justify-center items-center">
+          Error loading product. Please try again later.
+        </div>
+      </Layout>
+    );
+  }
 
   // Split description for bullet points
   const descriptionPoints = product.description.split("-");
@@ -125,25 +154,13 @@ const ProductPage: React.FC<ProductPageProps> = ({
                   {addedToCart ? "Added to Cart!" : "Add to Cart"}
                 </button>
               </div>
-
-              {/* Additional info like shipping, returns, etc. */}
-              <div className="space-y-3 rounded-lg bg-gray-50 p-4 text-sm">
-                <div className="flex items-center text-gray-600">
-                  <span className="font-medium">Free shipping</span>
-                  <span className="ml-auto">on orders over $50</span>
-                </div>
-                <div className="flex items-center text-gray-600">
-                  <span className="font-medium">Free returns</span>
-                  <span className="ml-auto">within 30 days</span>
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Related products section */}
           <div className="max-w-full">
             <ProductGrid
-              products={relatedProducts.slice()}
+              products={[]} // You'll pass your related products here from your hook
               title="Related Products"
               seeMoreLink="/products/new"
             />
