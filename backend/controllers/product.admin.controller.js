@@ -34,6 +34,8 @@ export const getAdminProductById = async (req, res) => {
   }
 };
 
+//todo, might need a search product function, as of now, i am just using a front end search
+
 export const newProduct = async (req, res) => {
   try {
     const {

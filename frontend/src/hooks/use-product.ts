@@ -147,7 +147,7 @@ export const useUpdateProduct = () => {
         // Return an object with the previous product
         return { previousProduct };
       },
-      onError: (err, variables, context) => {
+      onError: (_, variables, context) => {
         // Rollback only if context exists
         if (context?.previousProduct) {
           queryClient.setQueryData(

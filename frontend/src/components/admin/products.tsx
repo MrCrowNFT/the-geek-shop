@@ -1,14 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IProductAdmin } from "@/types/product";
+import { useFetchAdminProducts } from "@/hooks/use-product";
 
-interface ProductListProps {
-  products: IProductAdmin[];
-}
+const ProductList: React.FC = () => {
+  const { data: products, isLoading, isError } = useFetchAdminProducts();
 
+  if (isLoading) {
+    return (
+      <div className="w-full p-8 text-center">
+        <p className="text-gray-500">Loading products...</p>
+      </div>
+    );
+  }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
-  if (!products || products.length === 0) {
+  if (isError || !products || products.length === 0) {
     return (
       <div className="w-full p-8 text-center">
         <p className="text-gray-500">No products available</p>
