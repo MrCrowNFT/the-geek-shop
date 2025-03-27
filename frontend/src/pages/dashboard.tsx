@@ -1,7 +1,6 @@
 import OrderManagement from "@/components/admin/orders";
 import Overview from "@/components/admin/overview";
 import ProductList from "@/components/admin/products";
-import { mockProductsAdmin } from "@/mock/products-mock";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminProfile from "@/components/admin/admin-profile";
 import { mockAdmin } from "@/mock/user-mock";
@@ -32,7 +31,7 @@ const Dashboard = () => {
         </TabsContent>
 
         <TabsContent value="products" className="mt-0">
-          <ProductList products={mockProductsAdmin} />
+          <ProductList  />
         </TabsContent>
         <TabsContent value="profile" className="mt-0">
           <AdminProfile user={mockAdmin}/>
