@@ -123,18 +123,43 @@ export const useCreateProduct = () => {
 // Mutation hook for updating a product
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
-
   return useMutation(
     ({ id, data }: { id: string; data: IUpdateProductPayload }) =>
       updateProduct(id, data),
     {
-      onSuccess: (_, variables) => {
+      // Optimistic Update
+      onMutate: async (variables) => {
+        // Cancel any ongoing refetches
+        await queryClient.cancelQueries(["adminProducts", variables.id]);
+
+        // Get the current cached data
+        const previousProduct = queryClient.getQueryData([
+          "adminProducts",
+          variables.id,
+        ]);
+
+        // Optimistically update the cache
+        queryClient.setQueryData(
+          ["adminProducts", variables.id],
+          variables.data
+        );
+
+        // Return an object with the previous product
+        return { previousProduct };
+      },
+      onError: (err, variables, context) => {
+        // Rollback only if context exists
+        if (context?.previousProduct) {
+          queryClient.setQueryData(
+            ["adminProducts", variables.id],
+            context.previousProduct
+          );
+        }
+      },
+      onSettled: (_, __, variables) => {
+        // Always invalidate queries to ensure fresh data
         queryClient.invalidateQueries(["adminProducts", variables.id]);
         queryClient.invalidateQueries(["adminProducts"]);
-      },
-      onError: (error) => {
-        console.error("Updating product mutation error:", error);
-        throw error;
       },
     }
   );
