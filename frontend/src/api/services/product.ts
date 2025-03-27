@@ -5,6 +5,7 @@ import {
   ICreateProductPayload,
   IUpdateProductPayload,
   ISearchParams,
+  IProductAdmin,
 } from "@/types/product";
 
 //User calls
@@ -53,9 +54,38 @@ export const searchProducts = async (
 };
 
 //Admin Only
+export const fetchAdminProducts = async (): Promise<IProductAdmin[]> => {
+  try {
+    const res = await api.get<{
+      success: boolean;
+      data: IProductAdmin[];
+    }>("/admin/product/");
+    return res.data.data;
+  } catch (err) {
+    console.error("Fetching products error:", err);
+    throw err;
+  }
+};
+
+//todo: the main problem with this approach is that i am just ignoring the message that is sent from the api
+// Fetch a single product by ID
+export const fetchAdminProductById = async (
+  id: string
+): Promise<IProductAdmin> => {
+  try {
+    const res = await api.get<{ success: boolean; data: IProductAdmin }>(
+      `/admin/product/${id}`
+    );
+    return res.data.data;
+  } catch (err) {
+    console.error("Fetching products error:", err);
+    throw err;
+  }
+};
+
 export const createProduct = async (newProduct: ICreateProductPayload) => {
   try {
-    const res = await api.post("/product/new", newProduct);
+    const res = await api.post("/admin/product/new", newProduct);
     return res.data;
   } catch (err) {
     console.error("Creating new product error:", err);
@@ -68,7 +98,7 @@ export const updateProduct = async (
   newProduct: IUpdateProductPayload
 ) => {
   try {
-    const res = await api.put(`/product/${id}`, newProduct);
+    const res = await api.put(`/admin/product/${id}`, newProduct);
     return res.data;
   } catch (err) {
     console.error("Updating product error:", err);
@@ -78,7 +108,7 @@ export const updateProduct = async (
 
 export const deleteProduct = async (id: string) => {
   try {
-    const res = await api.delete(`/product/${id}`);
+    const res = await api.delete(`/admin/product/${id}`);
     return res.data;
   } catch (err) {
     console.error("Deleting product error:", err);
