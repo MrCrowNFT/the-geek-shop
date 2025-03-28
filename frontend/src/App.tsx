@@ -7,6 +7,7 @@ import Signup from "./pages/common/signup";
 import Dashboard from "./pages/admin/dashboard";
 import OrderDetailsPage from "./pages/admin/order";
 import Search from "./pages/common/search";
+import AdminProductPage from "./pages/admin/product";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,10 @@ function App() {
         {/*Admin */}
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/order/:orderId" element={<OrderDetailsPage />} />
-        <Route path="/admin/product/:productId" />
+        <Route
+          path="/admin/product/:productId"
+          element={<AdminProductPage />}
+        />
       </Routes>
     </QueryClientProvider>
   );
