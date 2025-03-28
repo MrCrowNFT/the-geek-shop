@@ -73,7 +73,7 @@ export interface ICreateProductPayload {
   isAvailable: boolean;
   images: string[];
   description?: string;
-  categories: string[] ; //i will be sending the _id of the the category
+  categories: string[]; //i will be sending the _id of the the category
 }
 
 // Type for update product payload, the same as above but all optional
@@ -88,7 +88,7 @@ export interface IUpdateProductPayload {
     amount?: number;
     status?: boolean;
   };
-  sku?: string[];
+  sku?: string;
   isAvailable?: boolean;
   images?: string;
   description?: string;

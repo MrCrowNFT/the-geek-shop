@@ -5,7 +5,6 @@ import ProductFilter from "./product-search-filter";
 import { IProductAdmin } from "@/types/product";
 import NewProductButton from "./new-product-button";
 
-//todo add the new produt button
 const ProductList: React.FC = () => {
   const { data: products, isLoading, isError } = useFetchAdminProducts();
   const [filteredProducts, setFilteredProducts] = useState<IProductAdmin[]>([]);
