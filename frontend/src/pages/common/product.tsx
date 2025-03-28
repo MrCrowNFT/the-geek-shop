@@ -10,6 +10,7 @@ import { useCart } from "@/hooks/use-cart";
 import Layout from "@/components/common/layout";
 import { useFetchProductById, useProductsSearch } from "@/hooks/use-product";
 
+//todo: better ui, need to add category labels
 const ProductPage: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
   const [productCounter, setProductCounter] = useState<number>(1);
