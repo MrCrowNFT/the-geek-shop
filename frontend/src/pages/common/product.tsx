@@ -22,7 +22,6 @@ const ProductPage: React.FC = () => {
     error: productError,
   } = useFetchProductById(productId!);
 
-  //todo: the "see more" link should redirect to the search page with the category as query
   // fetching related products based on the product's first category
   const relatedProductsSearch = useProductsSearch({
     categories: product?.categories?.[0]?._id,
