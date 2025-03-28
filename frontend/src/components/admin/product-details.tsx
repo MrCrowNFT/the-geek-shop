@@ -6,13 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { IProductAdmin, IUpdateProductPayload } from "@/types/product";
@@ -20,6 +13,7 @@ import {
   useFetchAdminProductById,
   useUpdateProduct,
 } from "@/hooks/use-product";
+import { CategorySelection } from "./category-select";
 
 const AdminProductDetail: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -240,26 +234,12 @@ const AdminProductDetail: React.FC = () => {
                   </div>
 
                   {/* Categories */}
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label className="text-right">Categories</Label>
-                    <Select
-                      defaultValue={product.categories[0]?._id}
-                      onValueChange={(value) =>
-                        handleInputChange("categories", [value])
-                      }
-                    >
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select Category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {product.categories.map((category) => (
-                          <SelectItem key={category._id} value={category._id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <CategorySelection
+                    existingCategories={adminProduct.categories}
+                    onCategoryChange={(categories) =>
+                      handleInputChange("categories", categories)
+                    }
+                  />
                 </div>
               </TabsContent>
             </Tabs>

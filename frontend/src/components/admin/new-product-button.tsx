@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { PlusCircle } from "lucide-react";
 import { ICreateProductPayload } from "@/types/product";
-import { ICategory } from "@/types/category";
 import { useCreateProduct } from "@/hooks/use-product";
+import { CategorySelection } from "./category-select";
 
 const NewProductButton: React.FC = () => {
   const createProductMutation = useCreateProduct();
@@ -24,31 +24,6 @@ const NewProductButton: React.FC = () => {
     description: "",
     categories: [],
   });
-
-  // Mock categories data -> need an api call to get the categories
-  const availableCategories: ICategory[] = [
-    {
-      _id: "cat1",
-      name: "Electronics",
-      description: "Electronic devices and accessories",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      _id: "cat2",
-      name: "Clothing",
-      description: "Apparel and fashion items",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      _id: "cat3",
-      name: "Home & Kitchen",
-      description: "Household and kitchen products",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -133,19 +108,6 @@ const NewProductButton: React.FC = () => {
     setFormData({
       ...formData,
       images: newImages,
-    });
-  };
-
-  // category handling directly selecting category objects
-  const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedCategoryIds = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-
-    setFormData({
-      ...formData,
-      categories: selectedCategoryIds, // sending category _ids
     });
   };
 
@@ -374,51 +336,14 @@ const NewProductButton: React.FC = () => {
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Categories
-                  </label>
-                  <select
-                    multiple
-                    name="categories"
-                    value={formData.categories || []}
-                    onChange={handleCategoryChange}
-                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm p-2 border"
-                    size={3}
-                  >
-                    {availableCategories.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Hold Ctrl/Cmd to select multiple categories
-                  </p>
-                </div>
-
-                {formData.categories && formData.categories.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-700">
-                      Selected Categories:
-                    </h3>
-                    <div className="mt-1 flex flex-wrap gap-2">
-                      {formData.categories.map((categoryId) => {
-                        const category = availableCategories.find(
-                          (cat) => cat._id === categoryId
-                        );
-                        return category ? (
-                          <span
-                            key={category._id}
-                            className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
-                          >
-                            {category.name}
-                          </span>
-                        ) : null;
-                      })}
-                    </div>
-                  </div>
-                )}
+                <CategorySelection
+                  onCategoryChange={(categories) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      categories: categories,
+                    }))
+                  }
+                />
 
                 <div className="pt-4 flex justify-end gap-2">
                   <button
