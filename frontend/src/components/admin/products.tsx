@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { useFetchAdminProducts } from "@/hooks/use-product";
 import ProductFilter from "./product-search-filter";
 import { IProductAdmin } from "@/types/product";
+import NewProductButton from "./new-product-button";
 
+//todo add the new produt button
 const ProductList: React.FC = () => {
   const { data: products, isLoading, isError } = useFetchAdminProducts();
   const [filteredProducts, setFilteredProducts] = useState<IProductAdmin[]>([]);
@@ -20,6 +22,9 @@ const ProductList: React.FC = () => {
     return (
       <div className="w-full p-8 text-center">
         <p className="text-gray-500">No products available</p>
+        <div className="mt-4 flex justify-center">
+          <NewProductButton />
+        </div>
       </div>
     );
   }
@@ -30,8 +35,10 @@ const ProductList: React.FC = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold mb-4">Products</h2>
-
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Products</h2>
+        <NewProductButton />
+      </div>
       {/* ProductFilter */}
       <ProductFilter
         products={products}

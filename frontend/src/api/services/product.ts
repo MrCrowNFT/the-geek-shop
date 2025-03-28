@@ -9,7 +9,6 @@ import {
 } from "@/types/product";
 
 //User calls
-
 // Fetch all products
 export const fetchProducts = async (): Promise<IProductUser[]> => {
   try {
