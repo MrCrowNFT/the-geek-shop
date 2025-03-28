@@ -30,7 +30,7 @@ const AdminProductDetail: React.FC = () => {
   // Handle input changes
   const handleInputChange = (
     field: keyof IUpdateProductPayload,
-    value: string | number | boolean
+    value: string | number | boolean | string[]
   ) => {
     setFormData((prev) => ({
       ...prev,
