@@ -1,9 +1,11 @@
+import { IUser } from "@/types/user";
 import api from "../axios";
 import { SignupParams } from "@/types/api";
 
 // User routes
 // get user profile
-export const getUserProfile = async () => {
+//todo check url
+export const getUserProfile = async ():Promise<IUser> => {
   try {
     const res = await api.get(`/user/users/profile`);
     return res.data;

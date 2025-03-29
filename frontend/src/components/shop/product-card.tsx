@@ -1,8 +1,8 @@
 import { useState } from "react";
-import {  ProductCardProps } from "@/types/product";
+import { IProductUser} from "@/types/product";
 import { useCart } from "@/hooks/use-cart";
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<IProductUser> = () => {
   const [hovering, setHovering] = useState(false);
 
   // Zustand cart hook

@@ -1,6 +1,6 @@
 import { IOrdersData } from "./order";
 import { IProductUser } from "./product";
-import { IShippingAddresses } from "./shipping";
+import { IShipping } from "./shipping";
 
 export interface IUser {
   _id?: string;
@@ -9,7 +9,7 @@ export interface IUser {
   email: string;
   role: "admin" | "super_admin" | "user";
   orders: string[] | IOrdersData;
-  shipping: string[] | IShippingAddresses[];
+  shipping: string[] | IShipping[];
   wishlist: string[] | IProductUser[];
   createdAt: Date;
   updatedAt: Date;
