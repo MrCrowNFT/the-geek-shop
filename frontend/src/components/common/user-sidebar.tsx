@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { navData } from "@/data/nav-data";
 import { useLogout } from "@/hooks/use-auth";
 
+
+//todo update data, make orders page (and an order card maybe, as well as order details), wishlist page , 
 interface NavItem {
   title: string;
   url: string;

@@ -8,6 +8,7 @@ import {
 import { IShipping } from "@/types/shipping";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+//todo -> this will come with the user profile?
 export const useFetchShippingAddresses = () => {
   try {
     const data = useQuery({

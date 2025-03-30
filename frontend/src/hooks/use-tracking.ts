@@ -5,6 +5,8 @@ import {
 } from "@/api/services/tracking";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 
+//todo -> the user function will be deleted, it will be gotten with the order 
+//todo update the backend to populate the traking info response 
 export const useFetchTrackingInfo = (trackingId: string) => {
   return useQuery({
     queryKey: ["tracking", trackingId],
@@ -15,6 +17,7 @@ export const useFetchTrackingInfo = (trackingId: string) => {
   });
 };
 
+//
 export const useNewTracking = () => {
   const queryClient = useQueryClient();
 

@@ -10,12 +10,15 @@ import {
   logoutRequest,
 } from "@/api/services/auth"; // Update this path
 
+//todo NO LONGER NEED THIS, USING ZUSTARD FOR PROFILE AND HANDLE ALL AUTH LOGIC FROM THERE
+//todo i do need the signup though, but maybe should just use the axios fn directly
 // Signup hook
-export const useSignup = (): UseMutationResult<any, Error, SignupParams> => {
+export const useSignup = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: SignupParams) => signupRequest(params),
+    mutationFn: (username: string, password: string, email: string) =>
+      signupRequest(username, password, email)}{
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },

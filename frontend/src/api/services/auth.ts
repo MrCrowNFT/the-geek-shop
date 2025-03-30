@@ -1,5 +1,4 @@
 import api from "../axios";
-import { SignupParams, LoginParams } from "@/types/api";
 import { refreshAccessTokenRequest } from "../utils/tokenRefresh";
 
 //TODO: All the api calls on the services using a try catch block, this was written before
@@ -7,12 +6,15 @@ import { refreshAccessTokenRequest } from "../utils/tokenRefresh";
 //TODO: handling at the component level, therefor these try catch block are redundant,
 //TODO: so, probably just eliminate them, the component can also just access the loginMutation.error
 
+//TODO: THIS IS VULNERABLE TO MAN IN THE MIDDLE ATTACK, I AM SENDING THE RAW PASSWORD, EVEN IF IT WILL BE HASHED ON THE 
+//TODO: BACKEND, WHEN BEEN SENT, IT GOES RAW
+
 //signup call
-export const signupRequest = async ({
-  username,
-  password,
-  email,
-}: SignupParams) => {
+export const signupRequest = async (
+  username: string,
+  password: string,
+  email: string
+) => {
   try {
     const res = await api.post("/auth/signup", { username, password, email });
     return res.data;
@@ -23,7 +25,7 @@ export const signupRequest = async ({
 };
 
 //login request
-export const loginRequest = async ({ username, password }: LoginParams) => {
+export const loginRequest = async (username: string, password: string) => {
   try {
     const res = await api.post("/auth/login", { username, password });
 

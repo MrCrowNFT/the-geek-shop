@@ -21,6 +21,7 @@ export const useFetchCategories = () => {
   }
 };
 
+//Admin only
 export const useAddCategory = () => {
   const queryClient = useQueryClient();
   return useMutation({

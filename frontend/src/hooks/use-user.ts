@@ -5,6 +5,8 @@ import {
 } from "@/api/services/user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+
+//todo NO LONGER NEED THIS, USING ZUSTARD FOR PROFILE AND HANDLE ALL AUTH LOGIC FROM THERE 
 //User Profile
 
 //this should only be called after logging in

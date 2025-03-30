@@ -10,6 +10,7 @@ export const getUserProfile = async (req, res) => {
   try {
     const userId = req.user._id;
 
+    //we return the whole thing, all field pupulated to set the profile on the frontend 
     const user = await User.findById(userId)
       .select("-password")
       .populate("orders")
@@ -31,6 +32,7 @@ export const getUserProfile = async (req, res) => {
 
 //todo should i add a check for the older password here?
 //todo need to handle people not sending anything
+//todo need a lot more parameters
 /**
  * Update user profile
  * @route PUT /users/profile

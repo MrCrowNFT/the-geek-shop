@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IProductUser} from "@/types/product";
 import { useCart } from "@/hooks/use-cart";
 
+//todo wishlist add/remove and fix
 const ProductCard: React.FC<IProductUser> = () => {
   const [hovering, setHovering] = useState(false);
 

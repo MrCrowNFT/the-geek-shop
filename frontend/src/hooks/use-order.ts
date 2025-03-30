@@ -10,6 +10,7 @@ import {
 import { IOrder, IOrderSearchParams } from "@/types/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+//todo delete the user fetch orders-> they will be moved into the zustard use-profile
 // User order hooks
 export const useFetchUserOrders = () => {
   return useQuery({
