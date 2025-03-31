@@ -1,13 +1,31 @@
 import { useState } from "react";
-import { IProductUser} from "@/types/product";
+import { IProductUser } from "@/types/product";
 import { useCart } from "@/hooks/use-cart";
+import { useProfile } from "@/hooks/use-profile";
+import { Heart } from "lucide-react";
 
-//todo wishlist add/remove and fix
-const ProductCard: React.FC<IProductUser> = () => {
+const ProductCard: React.FC<IProductUser> = (product) => {
   const [hovering, setHovering] = useState(false);
 
   // Zustand cart hook
   const addToCart = useCart((state) => state.addToCart);
+
+  // Zustand profile hook for wishlist
+  const { wishlist, updateWishList } = useProfile((state) => ({
+    wishlist: state.wishlist,
+    updateWishList: state.updateWishList,
+  }));
+
+  // Check if product is in wishlist
+  const isInWishlist = wishlist.some((item) => item._id === product._id);
+
+  // Toggle wishlist function
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation to product detail
+    e.stopPropagation(); // Prevent event bubbling
+
+    updateWishList(product, isInWishlist ? "remove" : "add");
+  };
 
   return (
     <div
@@ -35,6 +53,21 @@ const ProductCard: React.FC<IProductUser> = () => {
             />
           </a>
         )}
+
+        {/* Wishlist heart icon - positioned in the top-right corner */}
+        <button
+          onClick={handleWishlistToggle}
+          className="absolute top-2 right-2 p-2 rounded-full bg-white bg-opacity-70 hover:bg-opacity-100 transition-all duration-200 z-10"
+        >
+          <Heart
+            size={24}
+            className={`transition-colors duration-200 ${
+              isInWishlist
+                ? "fill-red-500 text-red-500"
+                : "fill-transparent text-gray-700 hover:text-red-500"
+            }`}
+          />
+        </button>
       </div>
 
       {/* Product Info Section */}
@@ -49,9 +82,9 @@ const ProductCard: React.FC<IProductUser> = () => {
         </a>
         <button
           onClick={() => addToCart(product)}
-          className={`w-full py-2 px-4  font-bold rounded transition-all duration-300 transform cursor-pointer ${
+          className={`w-full py-2 px-4 font-bold rounded transition-all duration-300 transform cursor-pointer ${
             hovering ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-          } hover:bg-gray-500`}
+          } bg-black text-white hover:bg-gray-700`}
         >
           Add to cart →
         </button>
