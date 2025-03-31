@@ -76,6 +76,7 @@ export const updateUserProfile = async (req, res) => {
     // Save updated user
     const updatedUser = await user.save();
 
+    //todo change this, check the expected frontend, maybe?
     res.status(200).json({
       _id: updatedUser._id,
       username: updatedUser.username,

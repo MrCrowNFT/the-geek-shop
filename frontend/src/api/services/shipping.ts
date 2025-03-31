@@ -1,3 +1,4 @@
+import { ICreateShippingPayload } from "@/types/shipping";
 import api from "../axios";
 
 export const getShippingAddresses = async () => {
@@ -20,14 +21,9 @@ export const getShippingAddressById = async (id: string) => {
   }
 };
 
-export const createShippingAddress = async (newShippingAddress: {
-  name: string;
-  phone: string;
-  run: string;
-  address: string;
-  region: string;
-  indications?: string;
-}) => {
+export const createShippingAddress = async (
+  newShippingAddress: ICreateShippingPayload
+) => {
   try {
     const res = await api.post(`/shipping/new`, newShippingAddress);
     return res.data;

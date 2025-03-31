@@ -1,4 +1,4 @@
-import { IUser } from "@/types/user";
+import { IUpdateProfilePayload, IUser } from "@/types/user";
 import api from "../axios";
 import { SignupParams } from "@/types/api";
 
@@ -16,11 +16,7 @@ export const getUserProfile = async ():Promise<IUser> => {
 };
 
 // update user profile
-export const updateUserProfile = async (updatedProfile: {
-  username?: string;
-  email?: string;
-  password?: string;
-}) => {
+export const updateUserProfile = async (updatedProfile: IUpdateProfilePayload) => {
   try {
     const res = await api.put(`/user/users/profile`, updatedProfile);
     return res.data;

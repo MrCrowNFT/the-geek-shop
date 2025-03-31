@@ -1,8 +1,9 @@
 import api from "../axios";
-import { IOrder, IOrderSearchParams } from "@/types/order";
+import { ICreateOrderPayload, IOrder, IOrderSearchParams } from "@/types/order";
 
 //User calls
 // Fetch all user orders
+//todo no longer really need this one, since it comes with the user profile
 export const fetchUserOrders = async (): Promise<IOrder[]> => {
   try {
     const res = await api.get<IOrder[]>("/order");
@@ -14,11 +15,9 @@ export const fetchUserOrders = async (): Promise<IOrder[]> => {
 };
 
 // Create a new order
-export const createOrder = async (orderData: {
-  shipping: string;
-  products: { id: string; quantity: number }[];
-  paid_amount: number;
-}): Promise<IOrder> => {
+export const createOrder = async (
+  orderData: ICreateOrderPayload
+): Promise<IOrder> => {
   try {
     const res = await api.post<IOrder>("/order/new", orderData);
     return res.data;
@@ -64,7 +63,7 @@ export const getOrderById = async (id: string): Promise<IOrder> => {
   }
 };
 
-//todo this returns a bool + pagination+ orders, leep this in mind when ntegrating
+//todo this returns a bool + pagination+ orders, keep this in mind when integrating
 //the server has a default value for the page and limit
 export const orderSearch = async (searchParams: IOrderSearchParams) => {
   try {

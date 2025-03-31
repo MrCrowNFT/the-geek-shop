@@ -1,21 +1,23 @@
 import {
   addToWishlist,
   deleteFromWishlist,
+  deleteUserAccount,
   getUserProfile,
-  updateUserProfileRequest,
-  deleteUserProfileRequest,
-  // Order API imports would go here
-  // Shipping API imports would go here
+  updateUserProfile,
 } from "@/api/services/user";
-import { IUser } from "@/types/user";
+import { IUpdateProfilePayload, IUser } from "@/types/user";
 import { IProductUser } from "@/types/product";
-import { IShipping } from "@/types/shipping";
+import { ICreateShippingPayload, IShipping } from "@/types/shipping";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { IOrder } from "@/types/order";
+import { ICreateOrderPayload, IOrder } from "@/types/order";
 import { loginRequest, logoutRequest } from "@/api/services/auth";
-
-//TODO ADD API CALLS
+import { cancelOrder, createOrder } from "@/api/services/order";
+import {
+  createShippingAddress,
+  deleteShippingAddress,
+  updateShippingAddress,
+} from "@/api/services/shipping";
 
 type ProfileState = {
   _id: string;
@@ -37,7 +39,7 @@ type ProfileState = {
 
   // Profile methods
   setProfile: (user: IUser) => void;
-  updateProfile: (userData: Partial<IUser>) => Promise<boolean>;
+  updateProfile: (userData: IUpdateProfilePayload) => Promise<boolean>;
   deleteProfile: () => Promise<boolean>;
 
   // Wishlist methods
@@ -47,7 +49,7 @@ type ProfileState = {
   ) => Promise<void>;
 
   // Order methods
-  createOrder: (orderData: Omit<IOrder, "_id">) => Promise<boolean>;
+  createOrder: (orderData: ICreateOrderPayload) => Promise<boolean>;
   cancelOrder: (orderId: string) => Promise<boolean>;
 
   // Shipping methods
@@ -111,7 +113,7 @@ export const useProfile = create<ProfileState>()(
         }
       },
 
-      logout: () => {
+      logout: async () => {
         set({
           _id: "",
           username: "",
@@ -127,7 +129,7 @@ export const useProfile = create<ProfileState>()(
           error: null,
           isLoading: false,
         });
-        logoutRequest();
+        await logoutRequest();
       },
 
       setProfile: (userData: IUser) =>
@@ -145,7 +147,7 @@ export const useProfile = create<ProfileState>()(
           initialized: true,
         }),
 
-      updateProfile: async (userData: Partial<IUser>) => {
+      updateProfile: async (userData: IUpdateProfilePayload) => {
         // Store current state for rollback if needed
         const previousState = { ...get() };
 
@@ -159,7 +161,7 @@ export const useProfile = create<ProfileState>()(
 
         try {
           // Add updateUserProfileRequest function in the API services
-          await updateUserProfileRequest(userData);
+          await updateUserProfile(userData);
 
           // Update succeeded, update timestamp
           set((state) => ({
@@ -193,7 +195,7 @@ export const useProfile = create<ProfileState>()(
 
         try {
           // Add deleteUserProfileRequest function in the API services
-          await deleteUserProfileRequest();
+          await deleteUserAccount();
 
           // On successful deletion, clear the profile state
           set({
@@ -259,7 +261,8 @@ export const useProfile = create<ProfileState>()(
         }
       },
 
-      createOrder: async (orderData) => {
+      //todo fix this
+      createOrder: async (orderData: ICreateOrderPayload) => {
         // Store current orders for rollback if needed
         const currentOrders = [...get().orders];
 
@@ -268,6 +271,11 @@ export const useProfile = create<ProfileState>()(
         const newOrder: IOrder = {
           _id: tempId,
           ...orderData,
+          user: get()._id,
+          status: "Pending", // Default status for new orders
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          tracking: undefined,
         };
 
         // Optimistic update
@@ -279,10 +287,7 @@ export const useProfile = create<ProfileState>()(
 
         try {
           // Add createOrderRequest function in the API services
-          // const createdOrder = await createOrderRequest(orderData);
-
-          // Simulating API response for now
-          const createdOrder = { ...newOrder, _id: `real_${tempId}` };
+          const createdOrder = await createOrder(orderData);
 
           // Update with the actual order from the server
           set((state) => ({
@@ -310,18 +315,17 @@ export const useProfile = create<ProfileState>()(
         // Store current orders for rollback if needed
         const currentOrders = [...get().orders];
 
-        // Optimistic update - mark the order as cancelled
+        // Optimistic update -> mark the order as cancelled
         set((state) => ({
           orders: state.orders.map((order) =>
-            order._id === orderId ? { ...order, status: "cancelled" } : order
+            order._id === orderId ? { ...order, status: "Cancelled" } : order
           ),
           isLoading: true,
           error: null,
         }));
 
         try {
-          // Add cancelOrderRequest function in the API services
-          // await cancelOrderRequest(orderId);
+          await cancelOrder(orderId);
 
           // Request succeeded, we can keep the optimistic update
           set({ isLoading: false });
@@ -340,15 +344,19 @@ export const useProfile = create<ProfileState>()(
         }
       },
 
-      createShipping: async (shippingData) => {
+      createShipping: async (shippingData: ICreateShippingPayload) => {
         // Store current shipping addresses for rollback if needed
         const currentShipping = [...get().shipping];
 
-        // Generate a temporary ID for optimistic update
+        // temporary ID for optimistic update
         const tempId = `temp_${Date.now()}`;
         const newShipping: IShipping = {
           _id: tempId,
+          user: "",
+          orders: [],
           ...shippingData,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
 
         // Optimistic update
@@ -359,11 +367,7 @@ export const useProfile = create<ProfileState>()(
         }));
 
         try {
-          // Add createShippingRequest function in the API services
-          // const createdShipping = await createShippingRequest(shippingData);
-
-          // Simulating API response for now
-          const createdShipping = { ...newShipping, _id: `real_${tempId}` };
+          const createdShipping = await createShippingAddress(shippingData);
 
           // Update with the actual shipping from the server
           set((state) => ({
@@ -405,9 +409,7 @@ export const useProfile = create<ProfileState>()(
         }));
 
         try {
-          // Add updateShippingRequest function in the API services
-          // await updateShippingRequest(shippingId, shippingData);
-
+          await updateShippingAddress(shippingId, shippingData);
           // Request succeeded, we can keep the optimistic update
           set({ isLoading: false });
 
@@ -441,8 +443,7 @@ export const useProfile = create<ProfileState>()(
         }));
 
         try {
-          // Add deleteShippingRequest function in the API services
-          // await deleteShippingRequest(shippingId);
+          await deleteShippingAddress(shippingId);
 
           // Request succeeded, we can keep the optimistic update
           set({ isLoading: false });

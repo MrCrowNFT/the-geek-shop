@@ -16,6 +16,13 @@ export interface IUser {
   updatedAt: Date;
 }
 
+export interface IUpdateProfilePayload{
+  username: string;
+  profile_pic: string;
+  email: string;
+  password?: string;
+}
+
 
 export interface IUserCardProps {
   user: IUser;
