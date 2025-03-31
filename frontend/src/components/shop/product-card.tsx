@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { IProductUser } from "@/types/product";
+import { ProductCardProps } from "@/types/product";
 import { useCart } from "@/hooks/use-cart";
 import { useProfile } from "@/hooks/use-profile";
 import { Heart } from "lucide-react";
 
-const ProductCard: React.FC<IProductUser> = (product) => {
+const ProductCard: React.FC<ProductCardProps> = ({product}) => {
   const [hovering, setHovering] = useState(false);
 
   // Zustand cart hook

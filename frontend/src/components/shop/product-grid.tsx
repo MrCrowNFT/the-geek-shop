@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ProductCard from "./product-card";
 import { IProductGridProps } from "@/types/product";
 
+//todo update the see more link
 const ProductGrid: React.FC<IProductGridProps> = ({
   products,
   title,
@@ -20,7 +21,7 @@ const ProductGrid: React.FC<IProductGridProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {/* Product Cards */}
           {displayProducts.map((product) => (
-            <ProductCard key={product._id} product={product} />
+            <ProductCard product={product} />
           ))}
 
           {/* See More Card */}
