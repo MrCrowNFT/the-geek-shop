@@ -1,38 +1,29 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLogin } from "@/hooks/use-auth"; // Update path as needed
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useProfile } from "@/hooks/use-profile";
 
-//TODO need a page for recover account in case user forget password
-//TODO add api call from profile hook
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const loginMutation = useLogin();
+  const { login, isLoading, error } = useProfile(); // Destructure from Zustand store
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    loginMutation.mutate(
-      { username: email, password },
-      {
-        onSuccess: () => {
 
-          window.location.href = "/home";
-        },
-      }
-    );
+    // Call the login method from the Zustand store
+    const success = await login(email, password);
+
+    if (success) {
+      window.location.href = "/home";
+    }
   };
 
   return (
@@ -44,11 +35,10 @@ export function LoginForm({
         <CardContent>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
-              {loginMutation.isError && (
+              {error && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {loginMutation.error?.message ||
-                      "Login failed. Please try again."}
+                    {error || "Login failed. Please try again."}
                   </AlertDescription>
                 </Alert>
               )}
@@ -81,12 +71,8 @@ export function LoginForm({
                   required
                 />
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={loginMutation.isLoading}
-              >
-                {loginMutation.isLoading ? "Logging in..." : "Login"}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">

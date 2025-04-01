@@ -11,6 +11,8 @@ export const getUserProfile = async (req, res) => {
     const userId = req.user._id;
 
     //we return the whole thing, all field pupulated to set the profile on the frontend 
+    //todo inside orders, for each order, in the products parameters need to also pupulate the id parameter
+    //todo so it also returns the products
     const user = await User.findById(userId)
       .select("-password")
       .populate("orders")
