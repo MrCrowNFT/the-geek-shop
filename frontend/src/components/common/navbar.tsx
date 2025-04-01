@@ -4,6 +4,8 @@ import cat from "@/assets/cat-logo.svg";
 import Cart from "../shop/cart";
 import Sidebar from "./user-sidebar";
 
+//todo wislist link
+
 interface NavbarProps {
   className?: string;
 }

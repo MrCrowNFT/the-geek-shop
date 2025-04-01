@@ -5,7 +5,7 @@ import { SignupParams } from "@/types/api";
 // User routes
 // get user profile
 //todo check url
-export const getUserProfile = async ():Promise<IUser> => {
+export const getUserProfile = async (): Promise<IUser> => {
   try {
     const res = await api.get(`/user/users/profile`);
     return res.data;
@@ -16,7 +16,9 @@ export const getUserProfile = async ():Promise<IUser> => {
 };
 
 // update user profile
-export const updateUserProfile = async (updatedProfile: IUpdateProfilePayload) => {
+export const updateUserProfile = async (
+  updatedProfile: IUpdateProfilePayload
+) => {
   try {
     const res = await api.put(`/user/users/profile`, updatedProfile);
     return res.data;

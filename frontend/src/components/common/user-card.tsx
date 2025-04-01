@@ -3,7 +3,6 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { IUserCardProps } from "@/types/user";
 
-//todo change so it uses the profile state
 const UserInfoCard: React.FC<IUserCardProps> = ({ user }) => {
   return (
     <Card className="w-full max-w-xs">

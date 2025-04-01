@@ -9,6 +9,8 @@ import OrderDetailsPage from "./pages/admin/order";
 import Search from "./pages/common/search";
 import AdminProductPage from "./pages/admin/product";
 
+//todo missing user pages
+
 const queryClient = new QueryClient();
 
 function App() {

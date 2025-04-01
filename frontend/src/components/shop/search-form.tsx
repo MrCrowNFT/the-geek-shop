@@ -7,7 +7,7 @@ import {
   SidebarInput,
 } from "@/components/ui/sidebar";
 
-//todo add search options
+//todo this should redirect to the search page
 export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   return (
     <form {...props}>

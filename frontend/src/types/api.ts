@@ -1,6 +1,5 @@
 import { AxiosRequestConfig } from "axios";
 
-
 export interface LoginParams {
   username: string;
   password: string;
@@ -27,4 +26,10 @@ export interface DecodedToken {
 // Add specific config for your API requests
 export interface ApiRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
+}
+
+export interface SignupParams {
+  username: string;
+  email: string;
+  password: string;
 }
