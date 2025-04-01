@@ -8,6 +8,7 @@ import ProductGrid from "@/components/shop/product-grid";
 import { mockBannerData } from "@/mock/banner-mock";
 import { mockProducts } from "@/mock/products-mock";
 
+//todo add most search request 
 const Home = () => {
   return (
     <>

@@ -1,10 +1,5 @@
 import { AxiosRequestConfig } from "axios";
 
-export interface SignupParams {
-  username: string;
-  password: string;
-  email: string;
-}
 
 export interface LoginParams {
   username: string;

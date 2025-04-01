@@ -5,9 +5,8 @@ import DarkModeToggle from "./dark-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link, useNavigate } from "react-router-dom";
 import { navData } from "@/data/nav-data";
-import { useLogout } from "@/hooks/use-auth";
 
-
+//TODO Add the logout from profile hook
 //todo update data, make orders page (and an order card maybe, as well as order details), wishlist page , 
 interface NavItem {
   title: string;

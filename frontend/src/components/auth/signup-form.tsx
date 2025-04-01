@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { useSignup } from "@/hooks/use-auth"; 
+import { useSignup } from "@/hooks/use-auth";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function SignupForm({
@@ -86,7 +86,7 @@ export function SignupForm({
               {signupMutation.isError && (
                 <Alert variant="destructive">
                   <AlertDescription>
-                    {signupMutation.error?.message ||
+                    {(signupMutation.error as Error)?.message ||
                       "Signup failed. Please try again."}
                   </AlertDescription>
                 </Alert>
