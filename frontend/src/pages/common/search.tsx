@@ -17,7 +17,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router";
 
-//todo add advanced search functionality
 const Search: React.FC = () => {
   //need this to access search params on the url
   const location = useLocation();
@@ -29,14 +28,26 @@ const Search: React.FC = () => {
   });
 
   useEffect(() => {
-    //create new url search object from the url to get the category
     const queryParams = new URLSearchParams(location.search);
     const categoryParam = queryParams.get("category");
-    //keep the existing parameter and add the category id
+    const searchQueryParam = queryParams.get("query");
+
+    // Update search params with any URL parameters
+    const updatedParams: Partial<ISearchParams> = {};
+
     if (categoryParam) {
+      updatedParams.categories = categoryParam;
+    }
+
+    if (searchQueryParam) {
+      updatedParams.searchTerm = searchQueryParam;
+    }
+
+    // Only update state if we have new parameters
+    if (Object.keys(updatedParams).length > 0) {
       setSearchParams((prev) => ({
         ...prev,
-        categories: categoryParam,
+        ...updatedParams,
       }));
     }
   }, [location.search]); //run whenever the url changes
@@ -93,17 +104,43 @@ const Search: React.FC = () => {
     );
   }
 
+  // Display search query if present
+  const searchQuery = new URLSearchParams(location.search).get("query");
+  const categoryName = new URLSearchParams(location.search).get("category");
+
   return (
     <Layout>
       <Header />
       <Navbar />
 
       <div className="container mx-auto px-4 py-8">
+        {/* Search Results Header */}
+        {(searchQuery || categoryName) && (
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold mb-2">
+              {searchQuery
+                ? `Search results for "${searchQuery}"`
+                : categoryName
+                ? `Category: ${categoryName}`
+                : "All Products"}
+            </h1>
+            <p className="text-gray-600">
+              Found {data.pagination.totalProducts || 0} products
+            </p>
+          </div>
+        )}
+
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
-          {data.data.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
+          {data.data.length > 0 ? (
+            data.data.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-8">
+              No products found matching your criteria.
+            </div>
+          )}
         </div>
 
         {/* Pagination */}
