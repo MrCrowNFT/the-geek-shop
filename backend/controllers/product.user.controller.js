@@ -43,9 +43,10 @@ export const getProductById = async (req, res) => {
 
 //this method will be used for product search therefor
 //some params in the request query may be empty
+//todo add a wayt to get latest products and products by amount of likes
 export const productSearch = async (req, res) => {
   try {
-    const { categories, minPrice, maxPrice, searchTerm, page, limit } =
+    const { categories, minPrice, maxPrice, searchTerm, page, limit, sortBy } =
       req.query;
 
     const query = {}; //dynami query
@@ -75,9 +76,48 @@ export const productSearch = async (req, res) => {
     const limitNumber = parseInt(limit, 10) > 0 ? parseInt(limit, 10) : 20;
     const skip = (pageNumber - 1) * limitNumber;
 
+    // Define sort options
+    let sortOptions = {};
+
+    // Handle different sort criteria
+    switch (sortBy) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortOptions = { createdAt: 0 };
+        break;
+      case "likes":
+        sortOptions = { likesCount: -1 };
+        break;
+      case "no-likes":
+        sortOptions = { likesCount: 0 };
+        break;
+      case "popular":
+        // Combined popularity based on likes and sales
+        sortOptions = {
+          salesCount: -1, // Higher priority to sales
+          likesCount: -1, // Then by likes
+        };
+        break;
+      case "unpopular":
+        sortOptions = {
+          salesCount: 0,
+          likesCount: 0,
+        };
+        break;
+      case "bestselling":
+        sortOptions = { salesCount: -1 };
+        break;
+      // Default to newest
+      default:
+        sortOptions = { createdAt: -1 };
+    }
+
     // Fetch products with pagination
     const products = await Product.find(query)
       .populate("category")
+      .sort(sortOptions)
       .skip(skip)
       .limit(limitNumber);
 
@@ -104,6 +144,7 @@ export const productSearch = async (req, res) => {
         currentPage: pageNumber,
         productsPerPage: limitNumber,
       },
+      sorted: sortBy || "newest",
     });
   } catch (error) {
     console.error(`Error during product search: ${error.message}`);

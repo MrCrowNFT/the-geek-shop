@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import ProductCard from "./product-card";
 import { IProductGridProps } from "@/types/product";
 
-//todo update the see more link
 const ProductGrid: React.FC<IProductGridProps> = ({
   products,
   title,

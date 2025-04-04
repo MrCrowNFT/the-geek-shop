@@ -19,6 +19,7 @@ const Home = () => {
         <br />
 
         {/* New Arrivals Section */}
+        {/*The idea is the the see more link takes to search page with the query to it. How can i make it more versitile? */}
         <ProductGrid
           products={mockProducts.slice().reverse()}
           title="New Arrivals"
