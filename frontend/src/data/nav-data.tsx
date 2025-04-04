@@ -16,17 +16,17 @@ export const navData = [
     items: [
       {
         title: "Profile",
-        url: "/account/profile",
+        url: "/profile",
         icon: <User className="w-4 h-4" />,
       },
       {
         title: "Security & Login",
-        url: "/account/security",
+        url: "/security",
         icon: <Settings className="w-4 h-4" />,
       },
       {
         title: "Notifications",
-        url: "/account/notifications",
+        url: "/notifications",
         icon: <Bell className="w-4 h-4" />,
       },
     ],
@@ -36,12 +36,12 @@ export const navData = [
     items: [
       {
         title: "Orders",
-        url: "/account/orders",
+        url: "/orders",
         icon: <ShoppingCart className="w-4 h-4" />,
       },
       {
         title: "Wishlist",
-        url: "/account/wishlist",
+        url: "/wishlist",
         icon: <Heart className="w-4 h-4" />,
       },
     ],
@@ -51,12 +51,12 @@ export const navData = [
     items: [
       {
         title: "Payment Methods",
-        url: "/account/payment",
+        url: "/payment",
         icon: <CreditCard className="w-4 h-4" />,
       },
       {
         title: "Shipping Addresses",
-        url: "/account/shipping",
+        url: "/shipping",
         icon: <Truck className="w-4 h-4" />,
       },
     ],
@@ -66,7 +66,7 @@ export const navData = [
     items: [
       {
         title: "Help Center",
-        url: "/account/help",
+        url: "/help",
         icon: <HelpCircle className="w-4 h-4" />,
       },
       {

@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { navData } from "@/data/nav-data";
 import { useProfile } from "@/hooks/use-profile";
 
-//todo update data, make orders page (and an order card maybe, as well as order details), wishlist page ,
 interface NavItem {
   title: string;
   url: string;
@@ -28,7 +27,7 @@ const Sidebar = () => {
   ) => {
     // Check if this is the logout item
     if (itemUrl === "/logout") {
-      e.preventDefault(); 
+      e.preventDefault();
       try {
         await logout(); // call the logout method from Zustand store
         setIsOpen(false);

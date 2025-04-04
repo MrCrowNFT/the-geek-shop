@@ -8,8 +8,9 @@ import Dashboard from "./pages/admin/dashboard";
 import OrderDetailsPage from "./pages/admin/order";
 import Search from "./pages/common/search";
 import AdminProductPage from "./pages/admin/product";
-
-//todo missing user pages
+import OrdersPage from "./pages/common/orders";
+import ProfilePage from "./pages/common/profile";
+import WishlistPage from "./pages/common/wishlist";
 
 const queryClient = new QueryClient();
 
@@ -21,8 +22,11 @@ function App() {
         <Route path="/home/" element={<Home />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/login/" element={<Login />} />
-        <Route path="/signup/" element={<Signup />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
         {/*Admin */}
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/order/:orderId" element={<OrderDetailsPage />} />
