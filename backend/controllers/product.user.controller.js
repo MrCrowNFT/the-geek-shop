@@ -85,13 +85,13 @@ export const productSearch = async (req, res) => {
         sortOptions = { createdAt: -1 };
         break;
       case "oldest":
-        sortOptions = { createdAt: 0 };
+        sortOptions = { createdAt: 1 };
         break;
       case "likes":
         sortOptions = { likesCount: -1 };
         break;
       case "no-likes":
-        sortOptions = { likesCount: 0 };
+        sortOptions = { likesCount: 1 };
         break;
       case "popular":
         // Combined popularity based on likes and sales
@@ -102,8 +102,8 @@ export const productSearch = async (req, res) => {
         break;
       case "unpopular":
         sortOptions = {
-          salesCount: 0,
-          likesCount: 0,
+          salesCount: 1,
+          likesCount: 1,
         };
         break;
       case "bestselling":
