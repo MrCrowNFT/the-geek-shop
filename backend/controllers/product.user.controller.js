@@ -4,7 +4,7 @@ import { sanitizeProduct } from "../helpers/product.helpers.js";
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({}).populate("category");
     //sanitize products so that we don't send the total_cost since that's business logic
     const sanitizedProducts = products.map((product) =>
       sanitizeProduct(product)
@@ -26,7 +26,7 @@ export const getProductById = async (req, res) => {
         .json({ success: false, message: "Invalid product ID" });
     }
 
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate("category");
     if (!product) {
       return res
         .status(404)
@@ -43,7 +43,6 @@ export const getProductById = async (req, res) => {
 
 //this method will be used for product search therefor
 //some params in the request query may be empty
-//todo add a wayt to get latest products and products by amount of likes
 export const productSearch = async (req, res) => {
   try {
     const { categories, minPrice, maxPrice, searchTerm, page, limit, sortBy } =

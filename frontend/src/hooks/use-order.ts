@@ -1,7 +1,4 @@
 import {
-  cancelOrder,
-  createOrder,
-  fetchUserOrders,
   getAllOrders,
   getOrderById,
   orderSearch,
@@ -9,53 +6,6 @@ import {
 } from "@/api/services/order";
 import { IOrder, IOrderSearchParams } from "@/types/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-//todo delete the user fetch orders-> they will be moved into the zustard use-profile
-// User order hooks
-export const useFetchUserOrders = () => {
-  return useQuery({
-    queryKey: ["orders"],
-    queryFn: fetchUserOrders,
-    staleTime: 1000 * 60 * 5,
-    retry: 2,
-    onError: (error) => {
-      console.error("Fetching user orders error:", error);
-    },
-  });
-};
-
-export const useCreateOrder = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (orderData: {
-      shipping: string;
-      products: { id: string; quantity: number }[];
-      paid_amount: number;
-    }) => createOrder(orderData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
-    onError: (error) => {
-      console.error("Create order mutation error:", error);
-    },
-  });
-};
-
-//TODO: consider adding a client side cancel check so that only valid cancel api calls are made
-//todo: check the api call
-export const useCancelOrder = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => cancelOrder(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
-    onError: (error) => {
-      console.error("Canceling order mutation error:", error);
-    },
-  });
-};
 
 // Admin order hooks
 export const useFetchAllOrders = () => {
@@ -79,7 +29,9 @@ export const useFetchOrderById = (orderId: string) => {
       const cachedOrders = queryClient.getQueryData<{ adminOrders: IOrder[] }>([
         "adminOrders",
       ]);
-      const cachedOrder = cachedOrders?.adminOrders.find((o) => o._id === orderId);
+      const cachedOrder = cachedOrders?.adminOrders.find(
+        (o) => o._id === orderId
+      );
 
       if (cachedOrder) return cachedOrder;
 
@@ -100,7 +52,7 @@ export const useOrderSearch = (params: IOrderSearchParams) => {
   });
 };
 
-//todo: there is a fundamental issue right, so, i put the status on the order, maybe should have putted it into the 
+//todo: there is a fundamental issue right, so, i put the status on the order, maybe should have putted it into the
 //todo: tracking, so that i can just change the tracking, give it a thought.
 export const useUpdateOrder = () => {
   const queryClient = useQueryClient();

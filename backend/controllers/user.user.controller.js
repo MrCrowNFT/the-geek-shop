@@ -10,12 +10,16 @@ export const getUserProfile = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    //we return the whole thing, all field pupulated to set the profile on the frontend 
-    //todo inside orders, for each order, in the products parameters need to also pupulate the id parameter
-    //todo so it also returns the products
+    //we return the whole thing, all field pupulated to set the profile on the frontend
     const user = await User.findById(userId)
       .select("-password")
-      .populate("orders")
+      .populate({
+        path: "orders",
+        populate: {
+          path: "products.id", // This corresponds to the id field in the products array
+          model: "Product",
+        },
+      })
       .populate("shipping")
       .populate("wishlist");
 
