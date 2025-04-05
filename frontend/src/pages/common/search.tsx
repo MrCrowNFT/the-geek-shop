@@ -16,6 +16,13 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Search: React.FC = () => {
   //need this to access search params on the url
@@ -25,12 +32,14 @@ const Search: React.FC = () => {
   const [searchParams, setSearchParams] = useState<ISearchParams>({
     page: 1,
     limit: 20,
+    sortBy: "newest", // Default sort order
   });
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const categoryParam = queryParams.get("category");
     const searchQueryParam = queryParams.get("query");
+    const sortByParam = queryParams.get("sortBy");
 
     // Update search params with any URL parameters
     const updatedParams: Partial<ISearchParams> = {};
@@ -41,6 +50,10 @@ const Search: React.FC = () => {
 
     if (searchQueryParam) {
       updatedParams.searchTerm = searchQueryParam;
+    }
+
+    if (sortByParam) {
+      updatedParams.sortBy = sortByParam as ISearchParams["sortBy"];
     }
 
     // Only update state if we have new parameters
@@ -60,6 +73,49 @@ const Search: React.FC = () => {
       ...prev,
       page: newPage,
     }));
+
+    // Update URL with new page parameter (without page reload)
+    updateUrlWithoutReload({ ...searchParams, page: newPage });
+  };
+
+  // Handle sort change
+  const handleSortChange = (value: string) => {
+    const newSortBy = value as ISearchParams["sortBy"];
+
+    setSearchParams((prev) => ({
+      ...prev,
+      sortBy: newSortBy,
+      // Reset to page 1 when changing sort
+      page: 1,
+    }));
+
+    // Update URL with new sort parameter (without page reload)
+    updateUrlWithoutReload({
+      ...searchParams,
+      sortBy: newSortBy,
+      page: 1,
+    });
+  };
+
+  // Helper function to update URL without page reload
+  const updateUrlWithoutReload = (params: ISearchParams) => {
+    const url = new URL(window.location.href);
+
+    // Clear existing query params we manage
+    url.searchParams.delete("page");
+    url.searchParams.delete("sortBy");
+
+    // Add new params if they exist
+    if (params.page && params.page > 1) {
+      url.searchParams.set("page", params.page.toString());
+    }
+
+    if (params.sortBy) {
+      url.searchParams.set("sortBy", params.sortBy);
+    }
+
+    // Update URL without reload
+    window.history.pushState({}, "", url);
   };
 
   // Render loading state
@@ -114,9 +170,9 @@ const Search: React.FC = () => {
       <Navbar />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Search Results Header */}
-        {(searchQuery || categoryName) && (
-          <div className="mb-6">
+        {/* Search Results Header with Sort */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+          <div>
             <h1 className="text-2xl font-bold mb-2">
               {searchQuery
                 ? `Search results for "${searchQuery}"`
@@ -128,7 +184,31 @@ const Search: React.FC = () => {
               Found {data.pagination.totalProducts || 0} products
             </p>
           </div>
-        )}
+
+          {/* Sort Dropdown */}
+          <div className="mt-4 md:mt-0">
+            <div className="flex items-center">
+              <span className="mr-2 text-gray-700">Sort by:</span>
+              <Select
+                value={searchParams.sortBy}
+                onValueChange={handleSortChange}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                  <SelectItem value="popular">Most Popular</SelectItem>
+                  <SelectItem value="unpopular">Least Popular</SelectItem>
+                  <SelectItem value="likes">Most Liked</SelectItem>
+                  <SelectItem value="no-likes">Least Liked</SelectItem>
+                  <SelectItem value="bestselling">Bestsellers</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">

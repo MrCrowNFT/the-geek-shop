@@ -38,8 +38,9 @@ export interface IProductGridProps {
   title: string;
   seeMoreLink: string;
   maxDisplay?: number;
+  isLoading?: boolean;
+  error?: unknown;
 }
-
 export interface ProductPageProps {
   product: IProductUser;
   relatedProducts: IProductUser[];
@@ -103,6 +104,14 @@ export interface ISearchParams {
   searchTerm?: string;
   page?: number;
   limit?: number;
+  sortBy?:
+    | "newest"
+    | "oldest"
+    | "likes"
+    | "no-likes"
+    | "popular"
+    | "unpopular"
+    | "bestselling";
 }
 
 export interface IOrderProductsListProps {

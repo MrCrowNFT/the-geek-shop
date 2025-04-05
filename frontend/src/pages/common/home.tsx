@@ -3,13 +3,35 @@ import Footer from "@/components/common/footer";
 import Header from "@/components/common/header";
 import Layout from "@/components/common/layout";
 import Navbar from "@/components/common/navbar";
-
 import ProductGrid from "@/components/shop/product-grid";
 import { mockBannerData } from "@/mock/banner-mock";
-import { mockProducts } from "@/mock/products-mock";
+import { useProductsSearch } from "@/hooks/use-product"; // Import your hook
 
-//todo add most search request 
 const Home = () => {
+  // Fetch 9 newest products
+  const {
+    data: newArrivalsData,
+    isLoading: newArrivalsLoading,
+    error: newArrivalsError,
+  } = useProductsSearch({
+    sortBy: "newest",
+    limit: 9,
+  });
+
+  // Fetch 9 most popular products
+  const {
+    data: popularProductsData,
+    isLoading: popularProductsLoading,
+    error: popularProductsError,
+  } = useProductsSearch({
+    sortBy: "popular",
+    limit: 9,
+  });
+
+  // Extract the products from the response data
+  const newArrivals = newArrivalsData?.data || [];
+  const popularProducts = popularProductsData?.data || [];
+
   return (
     <>
       <Layout>
@@ -19,17 +41,23 @@ const Home = () => {
         <br />
 
         {/* New Arrivals Section */}
-        {/*The idea is the the see more link takes to search page with the query to it. How can i make it more versitile? */}
         <ProductGrid
-          products={mockProducts.slice().reverse()}
+          products={newArrivals}
           title="New Arrivals"
-          seeMoreLink="/products/new"
+          seeMoreLink="/products?sortBy=newest"
+          isLoading={newArrivalsLoading}
+          error={newArrivalsError}
         />
+
+        {/* Most Popular Section */}
         <ProductGrid
-          products={mockProducts.slice().reverse()}
+          products={popularProducts}
           title="Most Popular"
-          seeMoreLink="/products/new"
+          seeMoreLink="/products?sortBy=popular"
+          isLoading={popularProductsLoading}
+          error={popularProductsError}
         />
+
         <Footer />
       </Layout>
     </>
