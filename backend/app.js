@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173", //only accept from here where frontend is running
-    credentials: true, //need this for the cookies to work cross origin (httpOnly cookie with the refresh token)
+    credentials: true, //need this for the cookies to work cross origin 
   })
 );
 

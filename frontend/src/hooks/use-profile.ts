@@ -82,32 +82,50 @@ export const useProfile = create<ProfileState>()(
         set({ isLoading: true, error: null });
 
         try {
-          // login and then get user profile
+          // First attempt the login
           await loginRequest(email, password);
-          const userData: IUser = await getUserProfile();
 
-          // Set the profile with all user data
-          set({
-            _id: userData._id,
-            username: userData.username,
-            profile_pic: userData.profile_pic,
-            email: userData.email,
-            role: userData.role,
-            orders: userData.orders,
-            shipping: userData.shipping,
-            wishlist: userData.wishlist,
-            createdAt: userData.createdAt,
-            updatedAt: userData.updatedAt,
-            initialized: true,
-            isLoading: false,
-            error: null,
-          });
+          try {
+            // Only if login succeeds, get the user profile
+            const userData: IUser = await getUserProfile();
 
-          return true;
-        } catch (error) {
+            // Set the profile with all user data
+            set({
+              _id: userData._id,
+              username: userData.username,
+              profile_pic: userData.profile_pic,
+              email: userData.email,
+              role: userData.role,
+              orders: userData.orders,
+              shipping: userData.shipping,
+              wishlist: userData.wishlist,
+              createdAt: userData.createdAt,
+              updatedAt: userData.updatedAt,
+              initialized: true,
+              isLoading: false,
+              error: null,
+            });
+
+            return true;
+          } catch (profileError) {
+            // Handle the case where login worked but getting profile failed
+            set({
+              isLoading: false,
+              error:
+                profileError instanceof Error
+                  ? `Profile retrieval failed: ${profileError.message}`
+                  : "Failed to retrieve user profile",
+            });
+            return false;
+          }
+        } catch (loginError) {
+          // Handle login failure
           set({
             isLoading: false,
-            error: error instanceof Error ? error.message : "Login failed",
+            error:
+              loginError instanceof Error
+                ? `Login failed: ${loginError.message}`
+                : "Login failed",
           });
           return false;
         }
