@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { signupRequest } from "@/api/services/auth"; // Update this path
+import { signupRequest } from "@/api/services/auth";
 
 // Signup hook
 export const useSignup = () => {

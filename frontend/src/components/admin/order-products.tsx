@@ -17,13 +17,13 @@ const OrderProductsList: React.FC<IOrderProductsListProps> = ({
   const getFirstImage = (product: IProductAdmin) => {
     return product.images && product.images.length > 0
       ? product.images[0]
-      : "/placeholder-image.png";//todo need to get a place holder img
+      : "/placeholder-image.png"; //todo need to get a place holder img
   };
 
   // Calculate total earnings
   const calculateEarnings = (product: IProductAdmin, quantity: number) => {
     const sellingPrice = product.priceTag;
-    const costPrice = product.total_cost;
+    const costPrice = product.total_cost.cost + product.total_cost.shipping;
     const earnings = (sellingPrice - costPrice) * quantity;
     return earnings;
   };

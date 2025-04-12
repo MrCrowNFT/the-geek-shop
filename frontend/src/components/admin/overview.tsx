@@ -27,7 +27,7 @@ const Overview = () => {
   }
 
   // Process data safely
-  const { indicatorsData, salesSummary } = processData(ordersData.orders || []);
+  const { indicatorsData, salesSummary } = processData(ordersData || []);
 
   return (
     <div className="flex flex-col gap-6">
@@ -50,7 +50,7 @@ const Overview = () => {
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="text-lg font-medium mb-4">Recent Orders</h2>
           {/*only the top 10 orders*/}
-          <SalesTable ordersData={ordersData.orders || []} limit={10} />
+          <SalesTable ordersData={ordersData || []} limit={10} />
         </div>
       </div>
     </div>

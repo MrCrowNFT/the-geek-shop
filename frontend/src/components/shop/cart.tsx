@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/hooks/use-cart";
-import { ShoppingCart, XCircle, } from "lucide-react";
+import { ShoppingCart, XCircle } from "lucide-react";
 
 const Cart: React.FC = () => {
   const { items, addToCart, removeFromCart, reduceQuantity, clearCart } =
@@ -74,7 +74,7 @@ const Cart: React.FC = () => {
                   <div className="space-y-4">
                     {items.map((item) => (
                       <motion.div
-                        key={item.id}
+                        key={item._id}
                         layout
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -90,7 +90,7 @@ const Cart: React.FC = () => {
                           <div className="flex-1">
                             <h3 className="font-medium text-sm">{item.name}</h3>
                             <p className="text-blue-600 font-bold">
-                              ${item.price}
+                              ${item.priceTag}
                             </p>
                           </div>
                         </div>
@@ -100,7 +100,7 @@ const Cart: React.FC = () => {
                             <motion.button
                               whileTap={{ scale: 0.9 }}
                               className="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300"
-                              onClick={() => reduceQuantity(item.id)}
+                              onClick={() => reduceQuantity(item._id)}
                             >
                               -
                             </motion.button>
@@ -119,7 +119,7 @@ const Cart: React.FC = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.9 }}
                             className="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => removeFromCart(item._id)}
                           >
                             Remove
                           </motion.button>
@@ -135,7 +135,7 @@ const Cart: React.FC = () => {
                         $
                         {items
                           .reduce(
-                            (sum, item) => sum + item.price * item.quantity,
+                            (sum, item) => sum + item.priceTag * item.quantity,
                             0
                           )
                           .toFixed(2)}
