@@ -8,6 +8,7 @@ import shippingRouter from "./routers/shipping.routes.js";
 import userRouter from "./routers/user.routes.js";
 import stripeRouter from "./routers/stripe.routes.js";
 import trackingRouter from "./routers/tracking.routes.js";
+import productRouter from "./routers/product.routes.js";
 
 const app = express();
 
