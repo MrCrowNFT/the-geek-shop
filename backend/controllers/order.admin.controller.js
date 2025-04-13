@@ -1,4 +1,4 @@
-import Order from "../module/order.model.js";
+import Order from "../models/order.model.js";
 import mongoose from "mongoose";
 
 //ORDERS ADMIN FUNCTIONS

@@ -4,8 +4,8 @@ import {
   deleteCategory,
   getAllCategories,
   updateCategory,
-} from "../controllers/category.controller";
-import { authenticate, verifyAdmin } from "../middleware/auth";
+} from "../controllers/category.controller.js";
+import { authenticate, verifyAdmin } from "../middleware/auth.js";
 
 const categoryRouter = express.Router();
 

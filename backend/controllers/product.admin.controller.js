@@ -1,4 +1,4 @@
-import Product from "../module/product.model.js";
+import Product from "../models/product.model.js";
 
 //get the products without sanitizing them
 export const getAdminProducts = async (req, res) => {

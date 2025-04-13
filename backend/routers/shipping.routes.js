@@ -1,12 +1,12 @@
 import express from "express";
-import { authenticate } from "../middleware/auth";
+import { authenticate } from "../middleware/auth.js";
 import {
   createShipping,
   deleteShipping,
   getShippingById,
   getUserShippingAddresses,
   updateShipping,
-} from "../controllers/shipping.controller";
+} from "../controllers/shipping.controller.js";
 
 const shippingRouter = express.Router();
 

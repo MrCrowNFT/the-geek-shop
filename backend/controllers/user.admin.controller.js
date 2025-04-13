@@ -1,4 +1,4 @@
-import User from "../models/User.js";
+import User from "../models/user.model.js";
 import mongoose from "mongoose";
 
 /**
@@ -10,14 +10,18 @@ export const createAdmin = async (req, res) => {
   try {
     // Check if the requestor is a super_admin
     if (req.user.role !== "super_admin") {
-      return res.status(403).json({ message: "Not authorized. Super admin access required." });
+      return res
+        .status(403)
+        .json({ message: "Not authorized. Super admin access required." });
     }
 
     const { username, email, password, role = "admin" } = req.body;
 
     // Validate role is either admin or super_admin
     if (role !== "admin" && role !== "super_admin") {
-      return res.status(400).json({ message: "Invalid role. Must be 'admin' or 'super_admin'" });
+      return res
+        .status(400)
+        .json({ message: "Invalid role. Must be 'admin' or 'super_admin'" });
     }
 
     // Check if username already exists
@@ -50,7 +54,9 @@ export const createAdmin = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating admin:", error);
-    res.status(500).json({ message: "Error creating admin", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error creating admin", error: error.message });
   }
 };
 
@@ -63,17 +69,21 @@ export const getAllAdmins = async (req, res) => {
   try {
     // Check if the requestor is a super_admin
     if (req.user.role !== "super_admin") {
-      return res.status(403).json({ message: "Not authorized. Super admin access required." });
+      return res
+        .status(403)
+        .json({ message: "Not authorized. Super admin access required." });
     }
 
-    const admins = await User.find({ 
-      role: { $in: ["admin", "super_admin"] } 
+    const admins = await User.find({
+      role: { $in: ["admin", "super_admin"] },
     }).select("-password");
 
     res.status(200).json(admins);
   } catch (error) {
     console.error("Error fetching admins:", error);
-    res.status(500).json({ message: "Error fetching admins", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching admins", error: error.message });
   }
 };
 
@@ -86,7 +96,9 @@ export const getAdminById = async (req, res) => {
   try {
     // Check if the requestor is a super_admin
     if (req.user.role !== "super_admin") {
-      return res.status(403).json({ message: "Not authorized. Super admin access required." });
+      return res
+        .status(403)
+        .json({ message: "Not authorized. Super admin access required." });
     }
 
     const adminId = req.params.id;
@@ -97,7 +109,7 @@ export const getAdminById = async (req, res) => {
 
     const admin = await User.findOne({
       _id: adminId,
-      role: { $in: ["admin", "super_admin"] }
+      role: { $in: ["admin", "super_admin"] },
     }).select("-password");
 
     if (!admin) {
@@ -107,7 +119,9 @@ export const getAdminById = async (req, res) => {
     res.status(200).json(admin);
   } catch (error) {
     console.error("Error fetching admin:", error);
-    res.status(500).json({ message: "Error fetching admin", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching admin", error: error.message });
   }
 };
 
@@ -120,7 +134,9 @@ export const updateAdmin = async (req, res) => {
   try {
     // Check if the requestor is a super_admin
     if (req.user.role !== "super_admin") {
-      return res.status(403).json({ message: "Not authorized. Super admin access required." });
+      return res
+        .status(403)
+        .json({ message: "Not authorized. Super admin access required." });
     }
 
     const adminId = req.params.id;
@@ -133,7 +149,7 @@ export const updateAdmin = async (req, res) => {
     // Find admin first
     const admin = await User.findOne({
       _id: adminId,
-      role: { $in: ["admin", "super_admin"] }
+      role: { $in: ["admin", "super_admin"] },
     });
 
     if (!admin) {
@@ -142,7 +158,9 @@ export const updateAdmin = async (req, res) => {
 
     // Validate role is either admin or super_admin
     if (role && role !== "admin" && role !== "super_admin") {
-      return res.status(400).json({ message: "Invalid role. Must be 'admin' or 'super_admin'" });
+      return res
+        .status(400)
+        .json({ message: "Invalid role. Must be 'admin' or 'super_admin'" });
     }
 
     // Check if username already exists
@@ -184,7 +202,9 @@ export const updateAdmin = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating admin:", error);
-    res.status(500).json({ message: "Error updating admin", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating admin", error: error.message });
   }
 };
 
@@ -197,7 +217,9 @@ export const deleteAdmin = async (req, res) => {
   try {
     // Check if the requestor is a super_admin
     if (req.user.role !== "super_admin") {
-      return res.status(403).json({ message: "Not authorized. Super admin access required." });
+      return res
+        .status(403)
+        .json({ message: "Not authorized. Super admin access required." });
     }
 
     const adminId = req.params.id;
@@ -208,13 +230,15 @@ export const deleteAdmin = async (req, res) => {
 
     // Prevent super_admin from deleting themselves
     if (adminId.toString() === req.user._id.toString()) {
-      return res.status(400).json({ message: "Cannot delete your own super admin account" });
+      return res
+        .status(400)
+        .json({ message: "Cannot delete your own super admin account" });
     }
 
     // Find and delete admin
     const deletedAdmin = await User.findOneAndDelete({
       _id: adminId,
-      role: { $in: ["admin", "super_admin"] }
+      role: { $in: ["admin", "super_admin"] },
     });
 
     if (!deletedAdmin) {
@@ -224,6 +248,8 @@ export const deleteAdmin = async (req, res) => {
     res.status(200).json({ message: "Admin deleted successfully" });
   } catch (error) {
     console.error("Error deleting admin:", error);
-    res.status(500).json({ message: "Error deleting admin", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting admin", error: error.message });
   }
 };

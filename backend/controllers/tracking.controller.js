@@ -1,4 +1,4 @@
-import Tracking from "../module/tracking.model";
+import Tracking from "../models/tracking.model.js";
 import mongoose from "mongoose";
 
 /**

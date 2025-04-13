@@ -3,8 +3,8 @@ import {
   createTracking,
   getTrackingById,
   updateTracking,
-} from "../controllers/tracking.controller";
-import { authenticate, verifyAdmin } from "../middleware/auth";
+} from "../controllers/tracking.controller.js";
+import { authenticate, verifyAdmin } from "../middleware/auth.js";
 
 const trackingRouter = express.Router();
 

@@ -3,15 +3,15 @@ import {
   getProductById,
   getProducts,
   productSearch,
-} from "../controllers/product.user.controller";
-import { authenticate, verifyAdmin } from "../middleware/auth";
+} from "../controllers/product.user.controller.js";
+import { authenticate, verifyAdmin } from "../middleware/auth.js";
 import {
   deleteProduct,
   getAdminProductById,
   getAdminProducts,
   newProduct,
   updateProduct,
-} from "../controllers/product.admin.controller";
+} from "../controllers/product.admin.controller.js";
 
 const productRouter = express.Router();
 

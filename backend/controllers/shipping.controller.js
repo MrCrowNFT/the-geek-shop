@@ -1,4 +1,4 @@
-import Shipping from "../module/shipping.model";
+import Shipping from "../models/shipping.model.js";
 import mongoose from "mongoose";
 
 /**
@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 export const createShipping = async (req, res) => {
   try {
     const { name, phone, run, address, region, indications } = req.body;
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
     // Create new shipping address
     const newShipping = new Shipping({
@@ -173,17 +173,18 @@ export const deleteShipping = async (req, res) => {
     // Check if shipping address is associated with any orders
     if (shipping.orders && shipping.orders.length > 0) {
       // Fetch all orders associated with the shipping address
-      const orders = await Order.find({ 
+      const orders = await Order.find({
         _id: { $in: shipping.orders },
-        status: { $nin: ['Delivered', 'Cancelled'] } // Only looking for orders that are NOT Delivered or Cancelled
+        status: { $nin: ["Delivered", "Cancelled"] }, // Only looking for orders that are NOT Delivered or Cancelled
       });
-      
+
       // If any active orders exist (not completed or canceled), prevent deletion
       if (orders.length > 0) {
         return res.status(400).json({
-          message: "Cannot delete shipping address associated with active orders",
+          message:
+            "Cannot delete shipping address associated with active orders",
           activeOrderCount: orders.length,
-          totalOrderCount: shipping.orders.length
+          totalOrderCount: shipping.orders.length,
         });
       }
     }

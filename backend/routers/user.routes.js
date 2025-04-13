@@ -3,14 +3,14 @@ import {
   authenticate,
   verifyAdmin,
   verifySuperAdmin,
-} from "../middleware/auth";
+} from "../middleware/auth.js";
 import {
   createAdmin,
   deleteAdmin,
   getAdminById,
   getAllAdmins,
   updateAdmin,
-} from "../controllers/user.admin.controller";
+} from "../controllers/user.admin.controller.js";
 import {
   addToWishlist,
   deleteUserAccount,
@@ -18,7 +18,7 @@ import {
   getWishlist,
   removeFromWishlist,
   updateUserProfile,
-} from "../controllers/user.user.controller";
+} from "../controllers/user.user.controller.js";
 
 const userRouter = express.Router();
 

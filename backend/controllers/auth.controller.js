@@ -1,5 +1,5 @@
-import User from "../module/user.model.js";
-import RefreshToken from "../module/refreshToken.model.js";
+import User from "../models/user.model.js";
+import RefreshToken from "../models/refreshToken.model.js";
 import {
   generateTokens,
   generateAccessToken,

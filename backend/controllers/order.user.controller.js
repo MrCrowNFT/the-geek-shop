@@ -1,6 +1,6 @@
-import Order from "../module/order.model.js";
-import Shipping from "../module/shipping.model.js";
-import Product from "../module/product.model.js";
+import Order from "../models/order.model.js";
+import Shipping from "../models/shipping.model.js";
+import Product from "../models/product.model.js";
 
 /**
  * Create a new order
@@ -70,7 +70,7 @@ export const createOrder = async (req, res) => {
 export const getUserOrders = async (req, res) => {
   try {
     const userId = req.user._id; // Assuming you have user data from auth middleware
-//todo: fix this, those params don't exists on the model
+    //todo: fix this, those params don't exists on the model
     const orders = await Order.find({ user: userId })
       .populate("shipping")
       .populate("products.id")

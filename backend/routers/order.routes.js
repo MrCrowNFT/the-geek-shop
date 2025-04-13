@@ -1,7 +1,7 @@
 import express from "express";
-import { authenticate, verifyAdmin } from "../middleware/auth";
-import { addOrderToShipping, cancelOrder, createOrder, getUserOrders } from "../controllers/order.user.controller";
-import { getOrderById, getOrders, orderSearch, updateOrder } from "../controllers/order.admin.controller";
+import { authenticate, verifyAdmin } from "../middleware/auth.js";
+import { addOrderToShipping, cancelOrder, createOrder, getUserOrders } from "../controllers/order.user.controller.js";
+import { getOrderById, getOrders, orderSearch, updateOrder } from "../controllers/order.admin.controller.js";
 
 const orderRouter = express.Router();
 

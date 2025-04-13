@@ -32,6 +32,7 @@ const Home = () => {
   const newArrivals = newArrivalsData?.data || [];
   const popularProducts = popularProductsData?.data || [];
 
+  //todo add rel banner data
   return (
     <>
       <Layout>

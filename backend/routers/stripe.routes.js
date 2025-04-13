@@ -1,6 +1,6 @@
 import express from "express";
-import { createPaymentIntent } from "../controllers/stripe.controller";
-import { authenticate } from "../middleware/auth";
+import { createPaymentIntent } from "../controllers/stripe.controller.js";
+import { authenticate } from "../middleware/auth.js";
 
 const stripeRouter = express.Router();
 
