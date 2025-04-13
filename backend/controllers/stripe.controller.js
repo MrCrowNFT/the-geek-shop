@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
 import Stripe from "stripe";
 
+//for some reason the stripe key showed as undefined, so i had to get the config again
+dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createPaymentIntent = async (req, res) => {
