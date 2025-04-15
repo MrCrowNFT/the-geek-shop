@@ -11,6 +11,7 @@ import AdminProductPage from "./pages/admin/product";
 import OrdersPage from "./pages/common/orders";
 import ProfilePage from "./pages/common/profile";
 import WishlistPage from "./pages/common/wishlist";
+import ProtectedAdminRoute from "./components/admin/admin-popup";
 
 const queryClient = new QueryClient();
 
@@ -28,11 +29,29 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         {/*Admin */}
-        <Route path="/admin" element={<Dashboard />} />
-        <Route path="/admin/order/:orderId" element={<OrderDetailsPage />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedAdminRoute>
+              <Dashboard />
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin/order/:orderId"
+          element={
+            <ProtectedAdminRoute>
+              <OrderDetailsPage />
+            </ProtectedAdminRoute>
+          }
+        />
         <Route
           path="/admin/product/:productId"
-          element={<AdminProductPage />}
+          element={
+            <ProtectedAdminRoute>
+              <AdminProductPage />
+            </ProtectedAdminRoute>
+          }
         />
       </Routes>
     </QueryClientProvider>
