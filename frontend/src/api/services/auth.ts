@@ -25,9 +25,9 @@ export const signupRequest = async (
 };
 
 //login request
-export const loginRequest = async (username: string, password: string) => {
+export const loginRequest = async (email: string, password: string) => {
   try {
-    const res = await api.post("/auth/login", { username, password });
+    const res = await api.post("/auth/login", { email, password });
 
     if (res.data && res.data.accessToken) {
       localStorage.setItem("accessToken", res.data.accessToken);
