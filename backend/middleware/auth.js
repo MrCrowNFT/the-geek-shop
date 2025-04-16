@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 export const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
+  console.log(`Request Header: ${authHeader}`)
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res
@@ -13,6 +14,7 @@ export const authenticate = (req, res, next) => {
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    console.log(`Decoded token: ${decoded}`)
 
 
     req.user = decoded;
@@ -47,6 +49,8 @@ export const verifyAdmin = (req, res, next) => {
       message: "Unauthorized. Token missing or invalid.",
     });
   }
+  console.log(`request user: ${req.user}`)
+  console.log(`request user role: ${req.user.role}`)
   if (req.user.role !== "admin" && req.user.role !== "super_admin") {
     return res.status(403).json({
       success: false,

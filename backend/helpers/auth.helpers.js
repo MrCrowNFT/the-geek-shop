@@ -28,12 +28,12 @@ const validateEnvironmentVars = (requiredVars) => {
 export const generateAccessToken = (user) => {
   validateEnvironmentVars(["JWT_ACCESS_SECRET"]);
 
-  if (!user || !user._id || !user.username) {
+  if (!user || !user._id || !user.username || !user.role) {
     throw new Error("Invalid user object provided");
   }
 
   return jwt.sign(
-    { _id: user._id, username: user.username },
+    { _id: user._id, username: user.username, role: user.role },
     process.env.JWT_ACCESS_SECRET,
     { expiresIn: ACCESS_TOKEN_EXPIRY }
   );
@@ -48,12 +48,12 @@ export const generateAccessToken = (user) => {
 export const generateRefreshToken = (user) => {
   validateEnvironmentVars(["JWT_REFRESH_SECRET"]);
 
-  if (!user || !user._id || !user.username) {
+  if (!user || !user._id || !user.username || !user.role) {
     throw new Error("Invalid user object provided");
   }
 
   return jwt.sign(
-    { _id: user._id, username: user.username },
+    { _id: user._id, username: user.username, role: user.role },
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: REFRESH_TOKEN_EXPIRY }
   );
@@ -68,7 +68,7 @@ export const generateRefreshToken = (user) => {
 export const generateTokens = (user) => {
   validateEnvironmentVars(["JWT_ACCESS_SECRET", "JWT_REFRESH_SECRET"]);
 
-  if (!user || !user._id || !user.username) {
+  if (!user || !user._id || !user.username || !user.role) {
     throw new Error("Invalid user object provided");
   }
 

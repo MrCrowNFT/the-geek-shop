@@ -64,6 +64,7 @@ export const login = async (req, res) => {
 
 export const refreshAccessToken = async (req, res) => {
   try {
+    console.log("refreshing access token")
     //check refresh token from the cookie
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
@@ -72,6 +73,7 @@ export const refreshAccessToken = async (req, res) => {
         .json({ success: false, message: "Refresh token is required" });
       return;
     }
+    console.log("Refreshing token extracted")
 
     //check if refresh token exist on db
     const storedToken = await RefreshToken.findOne({ token: refreshToken });
@@ -81,6 +83,7 @@ export const refreshAccessToken = async (req, res) => {
         .json({ success: false, message: "Invalid refresh token" });
       return;
     }
+    console.log("Refreshing token found in db")
 
     //check if refresh token isn't expired
     if (storedToken.expiresAt < new Date()) {
@@ -90,11 +93,13 @@ export const refreshAccessToken = async (req, res) => {
         .json({ success: false, message: "Refresh token expired" });
       return;
     }
+    console.log("Refreshing token is not expired")
 
     // Verify the refresh token
     let decoded;
     try {
       decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+      console.log(`Decoded refresh token: ${decoded} `)
     } catch (error) {
       //If verification fails, delete the stored refresh token from the database
       //as a security measure -> if someone tries to use an invalid token (possibly tampered with), we remove it from the system entirely
@@ -105,13 +110,14 @@ export const refreshAccessToken = async (req, res) => {
       return;
     }
 
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded._id);
     if (!user) {
       res.status(401).json({ success: false, message: "User not found" });
       return;
     }
 
     const accessToken = generateAccessToken(user);
+    console.log("Access token refreshed succesfuly")
 
     return res.status(200).json({
       success: true,

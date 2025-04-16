@@ -63,10 +63,12 @@ export const newProduct = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Missing required fields" });
     }
+    console.log("new product validated")
 
     // Check if SKU already exists
     if (sku) {
       const existingProduct = await Product.findOne({ sku });
+      console.log()
       if (existingProduct) {
         return res
           .status(400)

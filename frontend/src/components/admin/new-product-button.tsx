@@ -152,7 +152,7 @@ const NewProductButton: React.FC = () => {
     e.preventDefault();
 
     // Ensure all required fields are present
-    if (!formData.name || !formData.sku || formData.priceTag === undefined) {
+    if (!formData.name || formData.priceTag === undefined) {
       alert("Please fill in all required fields");
       return;
     }
