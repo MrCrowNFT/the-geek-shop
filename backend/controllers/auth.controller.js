@@ -8,21 +8,25 @@ import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await User.findOne({ username }).select("+password"); //explicitly select password for comparison
+    const user = await User.findOne({ email }).select("+password"); //explicitly select password for comparison
     if (!user) {
-      res.status(401).json({ success: false, message: "Invalid username" });
+      res.status(401).json({ success: false, message: "email" });
       return;
     }
+    console.log("user found");
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       res.status(401).json({ success: false, message: "Invalid password" });
       return;
     }
+    console.log("Password match");
 
     const { accessToken, refreshToken } = generateTokens(user);
+
+    console.log("jwt generated");
 
     //store the refresh token on db
     const createdToken = await RefreshToken.create({
@@ -37,6 +41,7 @@ export const login = async (req, res) => {
       });
       return;
     }
+    console.log("Refresh token saved");
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -45,7 +50,8 @@ export const login = async (req, res) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    res.status(200).json({
+
+    return res.status(200).json({
       success: true,
       message: "Login successful",
       accessToken,
@@ -107,7 +113,7 @@ export const refreshAccessToken = async (req, res) => {
 
     const accessToken = generateAccessToken(user);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Refresh successful",
       accessToken,
@@ -142,7 +148,7 @@ export const logout = async (req, res) => {
     // Clear the cookie
     res.clearCookie("refreshToken");
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Logout successful",
     });
@@ -190,7 +196,7 @@ export const signup = async (req, res) => {
     await newUser.save();
 
     // Send success response
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "User created successfully",
       data: {

@@ -1,5 +1,11 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { PlusCircle } from "lucide-react";
+import React, {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  DragEvent,
+} from "react";
+import { PlusCircle, Upload } from "lucide-react";
 import { ICreateProductPayload } from "@/types/product";
 import { useCreateProduct } from "@/hooks/use-product";
 import { CategorySelection } from "./category-select";
@@ -7,6 +13,7 @@ import { CategorySelection } from "./category-select";
 const NewProductButton: React.FC = () => {
   const createProductMutation = useCreateProduct();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [formData, setFormData] = useState<ICreateProductPayload>({
     name: "",
     priceTag: 0,
@@ -84,18 +91,48 @@ const NewProductButton: React.FC = () => {
     }
   };
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      // convert files to array of URLs
-      const fileUrls = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
+  // Process files (either from drop or file input)
+  const processFiles = useCallback((files: FileList) => {
+    const fileUrls = Array.from(files).map((file) => URL.createObjectURL(file));
 
-      // add new URLs to existing images
-      setFormData({
-        ...formData,
-        images: [...formData.images, ...fileUrls],
-      });
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, ...fileUrls],
+    }));
+  }, []);
+
+  // Handle file input change
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      processFiles(e.target.files);
+    }
+  };
+
+  // Handle drag events
+  const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processFiles(e.dataTransfer.files);
     }
   };
 
@@ -303,35 +340,76 @@ const NewProductButton: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Product Images
                   </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageUpload}
-                    className="mt-1 w-full"
-                  />
 
+                  {/* Enhanced Drag & Drop Area */}
+                  <div
+                    className={`border-2 border-dashed rounded-lg p-8 text-center ${
+                      isDragging
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-300 hover:border-gray-400"
+                    } transition-colors duration-200 cursor-pointer`}
+                    onDragEnter={handleDragEnter}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={() =>
+                      document.getElementById("fileInput")?.click()
+                    }
+                  >
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <div className="flex flex-col items-center justify-center">
+                      <Upload
+                        size={36}
+                        className={`mb-2 ${
+                          isDragging ? "text-blue-500" : "text-gray-400"
+                        }`}
+                      />
+                      <p className="text-sm text-gray-600 font-medium">
+                        Drag and drop your images here
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Or click to browse files
+                      </p>
+                      <p className="text-xs text-gray-400 mt-2">
+                        Supports: JPG, PNG, GIF
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Image Preview Area */}
                   {formData.images && formData.images.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {formData.images.map((img, index) => (
-                        <div key={index} className="relative w-16 h-16">
-                          <img
-                            src={img}
-                            alt={`Product preview ${index}`}
-                            className="w-full h-full object-cover rounded"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => removeImage(index)}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                      ))}
+                    <div className="mt-4">
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">
+                        Selected Images ({formData.images.length})
+                      </h4>
+                      <div className="grid grid-cols-6 gap-3">
+                        {formData.images.map((img, index) => (
+                          <div key={index} className="relative group">
+                            <img
+                              src={img}
+                              alt={`Product preview ${index}`}
+                              className="w-full h-16 object-cover rounded border border-gray-200"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-sm hover:bg-red-600 transition-colors"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -368,4 +446,5 @@ const NewProductButton: React.FC = () => {
     </div>
   );
 };
+
 export default NewProductButton;

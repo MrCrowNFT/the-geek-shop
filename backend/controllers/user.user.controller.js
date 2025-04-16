@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 export const getUserProfile = async (req, res) => {
   try {
     const userId = req.user._id;
+    console.log(`recovered id: ${userId}`);
 
     //we return the whole thing, all field pupulated to set the profile on the frontend
     const user = await User.findById(userId)
@@ -26,8 +27,9 @@ export const getUserProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    console.log("user found succesfully");
 
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (error) {
     console.error("Error fetching user profile:", error);
     res
