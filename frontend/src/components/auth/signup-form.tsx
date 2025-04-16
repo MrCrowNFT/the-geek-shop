@@ -12,11 +12,15 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useSignup } from "@/hooks/use-auth";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useNavigate } from "react-router-dom"; // Add this import
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  // Get navigate function from react-router
+  const navigate = useNavigate();
+
   // State to manage form inputs
   const [formData, setFormData] = useState({
     username: "",
@@ -56,20 +60,20 @@ export function SignupForm({
     setErrors({ passwordMismatch: false });
 
     // Call the signup mutation
-    signupMutation.mutate(
-      {
+    try {
+      await signupMutation.mutateAsync({
         username: formData.username,
         email: formData.email,
         password: formData.password,
-      },
-      {
-        onSuccess: () => {
-          //todo maybe use useNavigate instead?
-          // Redirect to login page on successful signup
-          window.location.href = "/login";
-        },
-      }
-    );
+      });
+
+      // If we reach here, the mutation was successful
+      // Redirect to login page
+      navigate("/login");
+    } catch (error) {
+      // Error is already handled by the mutation
+      console.log("Signup failed:", error);
+    }
   };
 
   return (
@@ -160,7 +164,7 @@ export function SignupForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <a href="/login/" className="underline underline-offset-4">
+              <a href="/login" className="underline underline-offset-4">
                 Log in
               </a>
             </div>

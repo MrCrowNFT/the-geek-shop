@@ -6,8 +6,6 @@ import { refreshAccessTokenRequest } from "../utils/tokenRefresh";
 //TODO: handling at the component level, therefor these try catch block are redundant,
 //TODO: so, probably just eliminate them, the component can also just access the loginMutation.error
 
-//TODO: THIS IS VULNERABLE TO MAN IN THE MIDDLE ATTACK, I AM SENDING THE RAW PASSWORD, EVEN IF IT WILL BE HASHED ON THE 
-//TODO: BACKEND, WHEN BEEN SENT, IT GOES RAW, NEED TO LOOK INTO THIS
 
 //signup call
 export const signupRequest = async (

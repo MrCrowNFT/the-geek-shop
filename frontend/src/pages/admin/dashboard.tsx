@@ -34,7 +34,7 @@ const Dashboard = () => {
           <ProductList  />
         </TabsContent>
         <TabsContent value="profile" className="mt-0">
-          <AdminProfile user={mockAdmin}/>
+          <AdminProfile />
         </TabsContent>
       </Tabs>
     </div>
