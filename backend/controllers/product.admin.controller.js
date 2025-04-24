@@ -1,8 +1,10 @@
 import Product from "../models/product.model.js";
+import mongoose from "mongoose";
 
 //get the products without sanitizing them
 export const getAdminProducts = async (req, res) => {
   try {
+    console.log("fetching admin products")
     const products = await Product.find({});
     return res.status(200).json({ success: true, data: products });
   } catch (error) {
@@ -12,6 +14,7 @@ export const getAdminProducts = async (req, res) => {
 };
 
 export const getAdminProductById = async (req, res) => {
+  console.log("getting admin product by id")
   const { id } = req.params;
 
   try {
@@ -37,6 +40,7 @@ export const getAdminProductById = async (req, res) => {
 //todo, might need a search product function, as of now, i am just using a front end search
 
 export const newProduct = async (req, res) => {
+  console.log("Creating new product...");
   try {
     const {
       name,
@@ -49,6 +53,7 @@ export const newProduct = async (req, res) => {
       description,
       category,
     } = req.body;
+    console.log(`New product values extracted: ${req.body}`);
 
     // Validate required fields
     if (
@@ -56,19 +61,18 @@ export const newProduct = async (req, res) => {
       !total_cost?.cost ||
       !total_cost?.shipping ||
       isAvailable === undefined ||
-      !images?.length ||
       priceTag === undefined
     ) {
+      console.log("new product missing fields");
       return res
         .status(400)
         .json({ success: false, message: "Missing required fields" });
     }
-    console.log("new product validated")
+    console.log("new product validated");
 
     // Check if SKU already exists
     if (sku) {
       const existingProduct = await Product.findOne({ sku });
-      console.log()
       if (existingProduct) {
         return res
           .status(400)
@@ -93,8 +97,10 @@ export const newProduct = async (req, res) => {
       description,
       category: categoryIds,
     });
+    console.log(`New product created: ${newProduct}`);
 
     await newProduct.save();
+    console.log("New product saved on database");
 
     return res.status(201).json({ success: true, data: newProduct });
   } catch (error) {

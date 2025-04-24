@@ -42,7 +42,7 @@ export const searchProducts = async (
   params: ISearchParams
 ): Promise<IPaginatedResponse> => {
   try {
-    const res = await api.get<IPaginatedResponse>("/product/search", {
+    const res = await api.get<IPaginatedResponse>("/product/search/", {
       params,
     });
     return res.data;
@@ -59,7 +59,7 @@ export const fetchAdminProducts = async (): Promise<IProductAdmin[]> => {
     const res = await api.get<{
       success: boolean;
       data: IProductAdmin[];
-    }>("/admin/product/");
+    }>("/product/admin/");
     return res.data.data;
   } catch (err) {
     console.error("Fetching products error:", err);
@@ -72,7 +72,7 @@ export const fetchAdminProductById = async (
 ): Promise<IProductAdmin> => {
   try {
     const res = await api.get<{ success: boolean; data: IProductAdmin }>(
-      `/admin/product/${id}`
+      `/product/admin/${id}`
     );
     return res.data.data;
   } catch (err) {
@@ -83,7 +83,7 @@ export const fetchAdminProductById = async (
 
 export const createProduct = async (newProduct: ICreateProductPayload) => {
   try {
-    const res = await api.post("/admin/product/new", newProduct);
+    const res = await api.post("/product/admin/new", newProduct);
     return res.data;
   } catch (err) {
     console.error("Creating new product error:", err);
@@ -96,7 +96,7 @@ export const updateProduct = async (
   newProduct: IUpdateProductPayload
 ) => {
   try {
-    const res = await api.put(`/admin/product/${id}`, newProduct);
+    const res = await api.put(`/product/admin/${id}`, newProduct);
     return res.data;
   } catch (err) {
     console.error("Updating product error:", err);
@@ -106,7 +106,7 @@ export const updateProduct = async (
 
 export const deleteProduct = async (id: string) => {
   try {
-    const res = await api.delete(`/admin/product/${id}`);
+    const res = await api.delete(`/product/admin/${id}`);
     return res.data;
   } catch (err) {
     console.error("Deleting product error:", err);

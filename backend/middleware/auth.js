@@ -57,5 +57,6 @@ export const verifyAdmin = (req, res, next) => {
       message: "Access denied. Admin or super admin role required.",
     });
   }
+  console.log("Admin verified")
   next();
 };

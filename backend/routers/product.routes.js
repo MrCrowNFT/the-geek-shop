@@ -17,8 +17,7 @@ const productRouter = express.Router();
 
 //user
 productRouter.get("/", getProducts);
-productRouter.get("/:id", getProductById);
-productRouter.get("/search", productSearch);
+productRouter.get("/search", productSearch); 
 
 //admin
 productRouter.get("/admin/", authenticate, verifyAdmin, getAdminProducts);
@@ -26,5 +25,8 @@ productRouter.get("/admin/:id", authenticate, verifyAdmin, getAdminProductById);
 productRouter.post("/admin/new", authenticate, verifyAdmin, newProduct);
 productRouter.put("/admin/:id", authenticate, verifyAdmin, updateProduct);
 productRouter.delete("/admin/:id", authenticate, verifyAdmin, deleteProduct);
+
+// This needs to come LAST since it's a catch-all for IDs
+productRouter.get("/:id", getProductById);
 
 export default productRouter;

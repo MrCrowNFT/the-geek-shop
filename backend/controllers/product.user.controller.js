@@ -17,6 +17,7 @@ export const getProducts = async (req, res) => {
 };
 
 export const getProductById = async (req, res) => {
+  console.log("Getting user product by id")
   const { id } = req.params;
 
   try {
