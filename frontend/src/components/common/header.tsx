@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           className="flex items-center gap-2 hover:text-red-500 transition-colors"
         >
           <Mail size={20} />
-          <span className="hidden sm:inline-block">marketplace@gmail.com</span>
+          <span className="hidden sm:inline-block">thegeekshop@gmail.com</span>
         </a>
       </div>
 
