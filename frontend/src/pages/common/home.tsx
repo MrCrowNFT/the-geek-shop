@@ -5,34 +5,41 @@ import Layout from "@/components/common/layout";
 import Navbar from "@/components/common/navbar";
 import ProductGrid from "@/components/shop/product-grid";
 import { mockBannerData } from "@/mock/banner-mock";
-import { useProductsSearch } from "@/hooks/use-product"; // Import your hook
+import { useProductsSearch } from "@/hooks/use-product"; 
+import { useMemo } from "react";
+import { ISearchParams } from "@/types/product";
 
 const Home = () => {
+// Stabilize parameters for useProductsSearch with memos
+  const newestParams = useMemo((): ISearchParams => ({ sortBy: "newest", limit: 9 }), []);
+  const popularParams = useMemo((): ISearchParams => ({ sortBy: "popular", limit: 9 }), []);
+
   // Fetch 9 newest products
   const {
     data: newArrivalsData,
     isLoading: newArrivalsLoading,
-    error: newArrivalsError,
-  } = useProductsSearch({
-    sortBy: "newest",
-    limit: 9,
-  });
+    error: newArrivalsError, // This is the actual error object
+    isError: newArrivalsIsError, // React Query also provides a boolean isError flag
+  } = useProductsSearch(newestParams);
 
   // Fetch 9 most popular products
   const {
     data: popularProductsData,
     isLoading: popularProductsLoading,
     error: popularProductsError,
-  } = useProductsSearch({
-    sortBy: "popular",
-    limit: 9,
-  });
+    isError: popularProductsIsError, 
+  } = useProductsSearch(popularParams);
 
   // Extract the products from the response data
   const newArrivals = newArrivalsData?.data || [];
   const popularProducts = popularProductsData?.data || [];
 
-  //todo add rel banner data
+  //for debugging
+  console.log('Home component render cycle');
+  console.log('New Arrivals - Loading:', newArrivalsLoading, 'Error:', newArrivalsIsError, 'Data:', newArrivalsData);
+  console.log('Popular Products - Loading:', popularProductsLoading, 'Error:', popularProductsIsError, 'Data:', popularProductsData);
+
+  //todo add real banner data
   return (
     <>
       <Layout>
