@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema(
 
     isAvailable: { type: Boolean, required: true },
 
-    images: [{ type: String }],
+    images: [{ type: String }],//we will store the url
 
     description: { type: String, maxlength: 500 },
 
