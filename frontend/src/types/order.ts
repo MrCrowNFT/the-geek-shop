@@ -3,6 +3,8 @@ import { IShipping } from "./shipping";
 import { IUser } from "./user";
 import { ITracking } from "./tracking";
 
+export type OrderStatus = "Pending" | "Paid" | "OnRoute" | "Delivered" | "Cancelled";
+
 export interface IOrder {
   _id: string;
   user: string | IUser;
@@ -13,7 +15,7 @@ export interface IOrder {
     quantity: number;
   }[];
   paid_amount: number;
-  status: "Pending" | "Paid" | "OnRoute" | "Delivered" | "Cancelled";
+  status: OrderStatus;
   createdAt: Date;
   updatedAt: Date;
 }
