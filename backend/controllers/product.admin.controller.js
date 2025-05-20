@@ -1,5 +1,6 @@
 import Product from "../models/product.model.js";
 import mongoose from "mongoose";
+import { uploadImageToS3 } from "../utils/s3Uploader.js";
 
 //get the products without sanitizing them
 export const getAdminProducts = async (req, res) => {
@@ -49,10 +50,10 @@ export const newProduct = async (req, res) => {
       discount,
       sku,
       isAvailable,
-      images,
       description,
       category,
     } = req.body;
+    const file = req.files;//get the images
     console.log(`New product values extracted: ${req.body}`);
 
     // Validate required fields
@@ -85,6 +86,11 @@ export const newProduct = async (req, res) => {
       ? category.map((id) => mongoose.Types.ObjectId(id))
       : [];
 
+      //each img is uploaded to the aws s3 bucket
+    const imageUrls = await Promise.all(
+      files.map(file=>uploadImageToS3(file))
+    );
+
     // Create and save product
     const newProduct = new Product({
       name,
@@ -93,7 +99,7 @@ export const newProduct = async (req, res) => {
       discount,
       sku,
       isAvailable,
-      images,
+      images: imageUrls,
       description,
       category: categoryIds,
     });
@@ -109,6 +115,7 @@ export const newProduct = async (req, res) => {
   }
 };
 
+//need a function to also delete the images from the s3 bucket
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
