@@ -12,7 +12,9 @@ import {
   newProduct,
   updateProduct,
 } from "../controllers/product.admin.controller.js";
+import multer from "multer";
 
+const upload = multer({storage: multer.memoryStorage()})
 const productRouter = express.Router();
 
 //user
@@ -22,7 +24,7 @@ productRouter.get("/search", productSearch);
 //admin
 productRouter.get("/admin/", authenticate, verifyAdmin, getAdminProducts);
 productRouter.get("/admin/:id", authenticate, verifyAdmin, getAdminProductById);
-productRouter.post("/admin/new", authenticate, verifyAdmin, newProduct);
+productRouter.post("/admin/new", authenticate, verifyAdmin, upload.array("images", Number(process.env.MAX_IMG_AMOUNT)), newProduct);
 productRouter.put("/admin/:id", authenticate, verifyAdmin, updateProduct);
 productRouter.delete("/admin/:id", authenticate, verifyAdmin, deleteProduct);
 

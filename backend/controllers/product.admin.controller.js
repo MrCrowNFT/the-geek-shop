@@ -53,7 +53,7 @@ export const newProduct = async (req, res) => {
       description,
       category,
     } = req.body;
-    const file = req.files;//get the images
+    const files = req.files;//get the images
     console.log(`New product values extracted: ${req.body}`);
 
     // Validate required fields
