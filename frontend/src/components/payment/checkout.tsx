@@ -3,18 +3,7 @@ import { useOrderStore } from "@/hooks/use-new-order";
 import OrderConfirmation from "./order-confirmation";
 import ShippingAddressSelection from "./shipping-address-selection";
 import PaymentProcessor from "./payment-processor";
-
-// These components will be implemented later
-//import OrderConfirmation from "./OrderConfirmation";
-//import ShippingAddressSelection from "./ShippingAddressSelection";
-//import PaymentProcessor from "./PaymentProcessor";
-//import OrderComplete from "./OrderComplete";
-
-// Stepper component for tracking checkout progress
-
-
-
-
+import OrderComplete from "./order-complete";
 
 // Stepper component for tracking checkout progress
 const CheckoutStepper = ({ currentStep }) => {

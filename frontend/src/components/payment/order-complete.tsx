@@ -1,5 +1,6 @@
 import { useOrderStore } from "@/hooks/use-new-order";
 
+//todo need to add a failure option in case it fails
 const OrderComplete = () => {
   const { currentOrder, resetOrder } = useOrderStore();
 
