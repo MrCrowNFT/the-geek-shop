@@ -1,6 +1,5 @@
 import { IOrder, OrderStatus } from "@/types/order";
 import { IProductUser } from "@/types/product";
-import { IShipping } from "@/types/shipping";
 import { create } from "zustand";
 
 interface OrderItem {
@@ -11,13 +10,11 @@ interface OrderItem {
 interface OrderState {
   currentOrder: Partial<IOrder> | null; // Change to Partial<IOrder> to allow incomplete order during initialization
   checkoutStep: number; // 1: confirmation, 2: shipping, 3: payment, 4: complete
-  availableShippingAddresses: IShipping[];
-  selectedShippingId: string | null;
+  selectedShippingId: string | null; //todo check what the backend expects, leave a string for now
 
   // Actions
   initializeOrder: (items: OrderItem[]) => void;
   setShippingAddress: (shippingId: string) => void;
-  setAvailableShippingAddresses: (addresses: IShipping[]) => void;
   setOrderStatus: (status: OrderStatus) => void;
   setPaymentIntentId: (id: string) => void;
   setOrderId: (id: string) => void;
@@ -65,10 +62,6 @@ export const useOrderStore = create<OrderState>()((set, get) => ({
         : null,
       selectedShippingId: shippingId,
     }));
-  },
-
-  setAvailableShippingAddresses: (addresses: IShipping[]) => {
-    set({ availableShippingAddresses: addresses });
   },
 
   setOrderStatus: (status: OrderStatus) => {
