@@ -1,5 +1,6 @@
 import { useOrderStore } from "@/hooks/use-new-order";
 
+//todo neeed to get the get the order details from the shopping cart
 const OrderConfirmation = () => (
   <div className="bg-white p-6 rounded-lg shadow-md">
     <h2 className="text-2xl font-bold mb-4">Confirm Your Order</h2>
