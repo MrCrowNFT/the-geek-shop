@@ -361,44 +361,24 @@ export const useProfile = create<ProfileState>()(
         }
       },
 
+      //this can't use optimistic update, the user may end up creating an order with a temp id for shipping
+      //with an invalid id in the backend
       createShipping: async (shippingData: ICreateShippingPayload) => {
-        // Store current shipping addresses for rollback if needed
-        const currentShipping = [...get().shipping];
-
-        // temporary ID for optimistic update
-        const tempId = `temp_${Date.now()}`;
-        const newShipping: IShipping = {
-          _id: tempId,
-          user: "",
-          orders: [],
-          ...shippingData,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-
-        // Optimistic update
-        set((state) => ({
-          shipping: [...state.shipping, newShipping],
-          isLoading: true,
-          error: null,
-        }));
-
         try {
           const createdShipping = await createShippingAddress(shippingData);
 
-          // Update with the actual shipping from the server
+          // Update with shipping from the server
           set((state) => ({
-            shipping: state.shipping.map((shipping) =>
-              shipping._id === tempId ? createdShipping : shipping
-            ),
-            isLoading: false,
+            shipping: [...state.shipping, createdShipping],
+            isLoading: true,
+            error: null,
           }));
 
           return true;
         } catch (error) {
-          // Rollback if API call fails
+          ///// Rollback if API call fails
+          //no longer need rollback since no longer optimistic update
           set({
-            shipping: currentShipping,
             isLoading: false,
             error:
               error instanceof Error
