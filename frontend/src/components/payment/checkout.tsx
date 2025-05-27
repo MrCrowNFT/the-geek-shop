@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useOrderStore } from "@/hooks/use-new-order";
 import OrderConfirmation from "./order-confirmation";
 import ShippingAddressSelection from "./shipping-address-selection";
-import PaymentProcessor from "./payment-processor";
 import OrderComplete from "./order-complete";
+import OrderCreationPending from "./order-creation";
 
 // Stepper component for tracking checkout progress
 const CheckoutStepper = ({ currentStep }) => {
@@ -85,7 +85,7 @@ const CheckoutContainer = () => {
       case 2:
         return <ShippingAddressSelection />;
       case 3:
-        return <PaymentProcessor />;
+        return <OrderCreationPending />;
       case 4:
         return <OrderComplete />;
       default:
