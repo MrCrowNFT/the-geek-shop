@@ -8,7 +8,7 @@ interface OrderItem {
 }
 
 interface OrderState {
-  currentOrder: Partial<IOrder> | null; // Change to Partial<IOrder> to allow incomplete order during initialization
+  currentOrder: Partial<IOrder> | null; // Partial<IOrder> to allow incomplete order during initialization
   checkoutStep: number; // 1: confirmation, 2: shipping, 3: payment, 4: complete
   selectedShippingId: string | null; //todo check what the backend expects, leave a string for now
 
