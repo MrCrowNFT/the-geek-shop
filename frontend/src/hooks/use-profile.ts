@@ -279,47 +279,19 @@ export const useProfile = create<ProfileState>()(
         }
       },
 
+      //this should no be a optimistic update ether
       createOrder: async (orderData: ICreateOrderPayload) => {
-        // Store current orders for rollback if needed
-        const currentOrders = [...get().orders];
-
-        // Generate a temporary ID for optimistic update
-        const tempId = `temp_${Date.now()}`;
-        const newOrder: IOrder = {
-          _id: tempId,
-          ...orderData,
-          user: get()._id,
-          status: "Pending", // Default status for new orders
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          tracking: undefined,
-        };
-
-        // Optimistic update
-        set((state) => ({
-          orders: [...state.orders, newOrder],
-          isLoading: true,
-          error: null,
-        }));
-
         try {
-          // Add createOrderRequest function in the API services
           const createdOrder = await createOrder(orderData);
 
-          // Update with the actual order from the server
           set((state) => ({
-            orders: state.orders.map((order) =>
-              order._id === tempId ? createdOrder : order
-            ),
+            orders: [...state.orders, createdOrder],
             isLoading: false,
           }));
 
           return true;
         } catch (error) {
-          // Rollback if API call fails
           set({
-            orders: currentOrders,
-            isLoading: false,
             error:
               error instanceof Error ? error.message : "Failed to create order",
           });
