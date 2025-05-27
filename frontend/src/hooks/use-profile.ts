@@ -53,7 +53,7 @@ type ProfileState = {
   cancelOrder: (orderId: string) => Promise<boolean>;
 
   // Shipping methods
-  createShipping: (shippingData: Omit<IShipping, "_id">) => Promise<boolean>;
+  createShipping: (shippingData: ICreateShippingPayload) => Promise<boolean>;
   updateShipping: (
     shippingId: string,
     shippingData: Partial<IShipping>
@@ -364,13 +364,17 @@ export const useProfile = create<ProfileState>()(
       //this can't use optimistic update, the user may end up creating an order with a temp id for shipping
       //with an invalid id in the backend
       createShipping: async (shippingData: ICreateShippingPayload) => {
+        set(() => ({
+          isLoading: false,
+          error: null,
+        }));
         try {
           const createdShipping = await createShippingAddress(shippingData);
 
           // Update with shipping from the server
           set((state) => ({
             shipping: [...state.shipping, createdShipping],
-            isLoading: true,
+            isLoading: false,
             error: null,
           }));
 
