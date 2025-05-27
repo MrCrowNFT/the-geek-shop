@@ -20,7 +20,7 @@ const OrderCreationPending = () => {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Standard shipping price - could be moved to env later
+  // Standard shipping price -> should be moved to env later
   const SHIPPING_COST = 5.00;
 
   // Get selected shipping address details
