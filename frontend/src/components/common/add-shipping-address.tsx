@@ -10,15 +10,7 @@ import {
   FileText,
 } from "lucide-react";
 import { useProfile } from "@/hooks/use-profile";
-
-interface ICreateShippingPayload {
-  name: string;
-  phone: string;
-  run: string;
-  address: string;
-  region: string;
-  indications?: string;
-}
+import { ICreateShippingPayload } from "@/types/shipping";
 
 const AddShippingAddress: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
