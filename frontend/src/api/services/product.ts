@@ -83,7 +83,38 @@ export const fetchAdminProductById = async (
 
 export const createProduct = async (newProduct: ICreateProductPayload) => {
   try {
-    const res = await api.post("/product/admin/new", newProduct);
+    // Create FormData for file upload
+    const formData = new FormData();
+    
+    // Append all non-file fields
+    formData.append('name', newProduct.name);
+    formData.append('priceTag', newProduct.priceTag.toString());
+    formData.append('total_cost', JSON.stringify(newProduct.total_cost));
+    formData.append('isAvailable', newProduct.isAvailable.toString());
+    
+    if (newProduct.discount) {
+      formData.append('discount', JSON.stringify(newProduct.discount));
+    }
+    if (newProduct.sku) {
+      formData.append('sku', newProduct.sku);
+    }
+    if (newProduct.description) {
+      formData.append('description', newProduct.description);
+    }
+    if (newProduct.category.length > 0) {
+      formData.append('category', JSON.stringify(newProduct.category));
+    }
+    
+    // Append image files
+    newProduct.images.forEach((file) => {
+      formData.append('images', file);
+    });
+
+    const res = await api.post("/product/admin/new", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return res.data;
   } catch (err) {
     console.error("Creating new product error:", err);
