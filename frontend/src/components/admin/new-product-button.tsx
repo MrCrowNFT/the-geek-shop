@@ -37,7 +37,7 @@ const NewProductButton: React.FC = () => {
     isAvailable: true,
     images: [], // This will store File objects
     description: "",
-    category: [], // Fixed: changed from 'categories' to 'category'
+    category: [], 
   });
 
   // Cleanup blob URLs when component unmounts or images change
@@ -496,7 +496,7 @@ const NewProductButton: React.FC = () => {
                   onCategoryChange={(categories) =>
                     setFormData((prev) => ({
                       ...prev,
-                      category: categories, // Fixed: changed from 'categories' to 'category'
+                      category: categories, 
                     }))
                   }
                 />

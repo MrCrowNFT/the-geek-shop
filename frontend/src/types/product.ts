@@ -72,11 +72,12 @@ export interface ICreateProductPayload {
   };
   sku?: string;
   isAvailable: boolean;
-  images: File[]; // Changed from string[] to File[]
+  images: File[]; 
   description?: string;
-  category: string[]; // Changed from categories to category
+  category: string[]; 
 }
 
+//todo need to update this as well for aws s3 
 // Type for update product payload, the same as above but all optional
 export interface IUpdateProductPayload {
   name?: string;

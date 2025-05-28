@@ -122,6 +122,7 @@ export const createProduct = async (newProduct: ICreateProductPayload) => {
   }
 };
 
+//todo update this as the one above
 export const updateProduct = async (
   id: string,
   newProduct: IUpdateProductPayload
