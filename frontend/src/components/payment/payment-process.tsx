@@ -5,7 +5,7 @@ import {
   PaymentElement,
 } from "@stripe/react-stripe-js";
 import { useOrderStore } from "@/hooks/use-new-order";
-import { createPaymentIntent, dollarsToCents } from "@/services/stripe";
+import { createPaymentIntent, dollarsToCents } from "@/api/services/stripe";
 import {
   CreditCard,
   Loader2,
