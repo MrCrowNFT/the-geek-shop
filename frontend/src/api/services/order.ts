@@ -63,6 +63,9 @@ export const getOrderById = async (id: string): Promise<IOrder> => {
   }
 };
 
+//TODO CREATE FUNCTION TO CALL CHANGE ORDER STATE FROM PENDING TO PAID AND ADD IT TO USE-PROFILE
+//TODO SHOULD SEND THE ORDER ID
+
 //todo this returns a bool + pagination+ orders, keep this in mind when integrating
 //the server has a default value for the page and limit
 export const orderSearch = async (searchParams: IOrderSearchParams) => {

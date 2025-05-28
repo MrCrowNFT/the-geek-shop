@@ -67,12 +67,12 @@ const CheckoutContainer = () => {
   // Reset order on unmount
   useEffect(() => {
     return () => {
-      // Uncomment if you want to reset the order when the component unmounts
+      // Uncomment to reset the order when the component unmounts
       // resetOrder();
     };
   }, [resetOrder]);
 
-  // For debugging - you can remove this in production
+  // For debugging - remove this in prod
   useEffect(() => {
     console.log("Current order state:", currentOrder);
     console.log("Current checkout step:", checkoutStep);

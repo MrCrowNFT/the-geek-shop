@@ -85,6 +85,38 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
+export const updateOrderStatusToPaid = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid order ID format" });
+  }
+
+  try {
+    const orderToUpdate = await Order.findById(id);
+
+    if (!orderToUpdate) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    //update status to paid
+    orderToUpdate.status = "Paid";
+
+    const updatedOrder = await orderToUpdate.save();
+
+    return res.status(200).json({ success: true, data: updatedOrder });
+  } catch (error) {
+    console.error(`Error updating order: ${error.message}`);
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || "Server error" });
+  }
+};
+
 /**
  * Cancel an order
  * @route PUT /orders/:id/cancel
