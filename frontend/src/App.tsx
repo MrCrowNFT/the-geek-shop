@@ -12,6 +12,9 @@ import OrdersPage from "./pages/common/orders";
 import ProfilePage from "./pages/common/profile";
 import WishlistPage from "./pages/common/wishlist";
 import ProtectedAdminRoute from "./components/admin/admin-popup";
+import CheckoutContainer from "./components/payment/checkout";
+import { Elements } from "@stripe/react-stripe-js";
+import stripePromise from "@/lib/stripe";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +31,11 @@ function App() {
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
+
+        <Elements stripe={stripePromise}>
+          <Route path="/checkout" element={<CheckoutContainer />} />
+        </Elements>
+
         {/*Admin */}
         <Route
           path="/admin"
