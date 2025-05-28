@@ -4,16 +4,24 @@ import React, {
   FormEvent,
   useCallback,
   DragEvent,
+  useEffect,
 } from "react";
 import { PlusCircle, Upload } from "lucide-react";
 import { ICreateProductPayload } from "@/types/product";
 import { useCreateProduct } from "@/hooks/use-product";
 import { CategorySelection } from "./category-select";
 
+// Interface for image preview with both file and preview URL
+interface ImagePreview {
+  file: File;
+  previewUrl: string;
+}
+
 const NewProductButton: React.FC = () => {
   const createProductMutation = useCreateProduct();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
   const [formData, setFormData] = useState<ICreateProductPayload>({
     name: "",
     priceTag: 0,
@@ -27,13 +35,30 @@ const NewProductButton: React.FC = () => {
     },
     sku: "",
     isAvailable: true,
-    images: [],
+    images: [], // This will store File objects
     description: "",
-    categories: [],
+    category: [], // Fixed: changed from 'categories' to 'category'
   });
 
+  // Cleanup blob URLs when component unmounts or images change
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach((preview) => {
+        URL.revokeObjectURL(preview.previewUrl);
+      });
+    };
+  }, [imagePreviews]);
+
   const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleCloseModal = () => {
+    // Cleanup blob URLs when closing modal
+    imagePreviews.forEach((preview) => {
+      URL.revokeObjectURL(preview.previewUrl);
+    });
+    setImagePreviews([]);
+    setIsModalOpen(false);
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -93,11 +118,28 @@ const NewProductButton: React.FC = () => {
 
   // Process files (either from drop or file input)
   const processFiles = useCallback((files: FileList) => {
-    const fileUrls = Array.from(files).map((file) => URL.createObjectURL(file));
+    const newFiles = Array.from(files);
 
+    // Filter only image files
+    const imageFiles = newFiles.filter((file) =>
+      file.type.startsWith("image/")
+    );
+
+    if (imageFiles.length !== newFiles.length) {
+      alert("Only image files are allowed");
+    }
+
+    // Create preview objects
+    const newPreviews: ImagePreview[] = imageFiles.map((file) => ({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+
+    // Update both previews and form data
+    setImagePreviews((prev) => [...prev, ...newPreviews]);
     setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...fileUrls],
+      images: [...prev.images, ...imageFiles],
     }));
   }, []);
 
@@ -106,6 +148,8 @@ const NewProductButton: React.FC = () => {
     if (e.target.files && e.target.files.length > 0) {
       processFiles(e.target.files);
     }
+    // Reset the input so the same file can be selected again if needed
+    e.target.value = "";
   };
 
   // Handle drag events
@@ -137,30 +181,34 @@ const NewProductButton: React.FC = () => {
   };
 
   const removeImage = (indexToRemove: number) => {
-    // Create a new array without the image at the specified index
+    // Revoke the blob URL to prevent memory leaks
+    const previewToRemove = imagePreviews[indexToRemove];
+    if (previewToRemove) {
+      URL.revokeObjectURL(previewToRemove.previewUrl);
+    }
+
+    // Remove from both previews and form data
+    const newPreviews = imagePreviews.filter(
+      (_, index) => index !== indexToRemove
+    );
     const newImages = formData.images.filter(
       (_, index) => index !== indexToRemove
     );
 
+    setImagePreviews(newPreviews);
     setFormData({
       ...formData,
       images: newImages,
     });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const resetForm = () => {
+    // Cleanup existing blob URLs
+    imagePreviews.forEach((preview) => {
+      URL.revokeObjectURL(preview.previewUrl);
+    });
 
-    // Ensure all required fields are present
-    if (!formData.name || formData.priceTag === undefined) {
-      alert("Please fill in all required fields");
-      return;
-    }
-
-    createProductMutation.mutate(formData);
-
-    handleCloseModal();
-    // Reset form after submission
+    setImagePreviews([]);
     setFormData({
       name: "",
       priceTag: 0,
@@ -176,8 +224,39 @@ const NewProductButton: React.FC = () => {
       isAvailable: true,
       images: [],
       description: "",
-      categories: [],
+      category: [],
     });
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Validate required fields
+    if (
+      !formData.name ||
+      formData.priceTag === undefined ||
+      formData.total_cost.cost === undefined ||
+      formData.total_cost.shipping === undefined
+    ) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
+    // Validate that at least one image is provided
+    if (formData.images.length === 0) {
+      alert("Please add at least one product image");
+      return;
+    }
+
+    try {
+      await createProductMutation.mutateAsync(formData);
+      alert("Product created successfully!");
+      resetForm();
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error creating product:", error);
+      alert("Failed to create product. Please try again.");
+    }
   };
 
   return (
@@ -279,7 +358,6 @@ const NewProductButton: React.FC = () => {
                       name="sku"
                       value={formData.sku}
                       onChange={handleChange}
-                      required
                       className="mt-1 w-full rounded-md border-gray-300 shadow-sm p-2 border"
                     />
 
@@ -387,16 +465,16 @@ const NewProductButton: React.FC = () => {
                   </div>
 
                   {/* Image Preview Area */}
-                  {formData.images && formData.images.length > 0 && (
+                  {imagePreviews.length > 0 && (
                     <div className="mt-4">
                       <h4 className="text-sm font-medium text-gray-700 mb-2">
-                        Selected Images ({formData.images.length})
+                        Selected Images ({imagePreviews.length})
                       </h4>
                       <div className="grid grid-cols-6 gap-3">
-                        {formData.images.map((img, index) => (
+                        {imagePreviews.map((preview, index) => (
                           <div key={index} className="relative group">
                             <img
-                              src={img}
+                              src={preview.previewUrl}
                               alt={`Product preview ${index}`}
                               className="w-full h-16 object-cover rounded border border-gray-200"
                             />
@@ -418,7 +496,7 @@ const NewProductButton: React.FC = () => {
                   onCategoryChange={(categories) =>
                     setFormData((prev) => ({
                       ...prev,
-                      categories: categories,
+                      category: categories, // Fixed: changed from 'categories' to 'category'
                     }))
                   }
                 />
@@ -428,14 +506,18 @@ const NewProductButton: React.FC = () => {
                     type="button"
                     onClick={handleCloseModal}
                     className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    disabled={createProductMutation.isLoading}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                    disabled={createProductMutation.isLoading}
                   >
-                    Create Product
+                    {createProductMutation.isLoading
+                      ? "Creating..."
+                      : "Create Product"}
                   </button>
                 </div>
               </form>
