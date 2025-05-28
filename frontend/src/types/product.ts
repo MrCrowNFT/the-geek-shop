@@ -72,9 +72,9 @@ export interface ICreateProductPayload {
   };
   sku?: string;
   isAvailable: boolean;
-  images: string[];
+  images: File[]; // Changed from string[] to File[]
   description?: string;
-  categories: string[]; //i will be sending the _id of the the category
+  category: string[]; // Changed from categories to category
 }
 
 // Type for update product payload, the same as above but all optional
