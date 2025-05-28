@@ -11,17 +11,21 @@ const s3 = new S3Client({
 });
 
 export const uploadImageToS3 = async (file) => {
-  const ext = path.extname(file.originalname);
-  const filename = `${uuidv4()}${ext}`;
+  try {
+    const ext = path.extname(file.originalname);
+    const filename = `${uuidv4()}${ext}`;
 
-  const params = {
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: filename,
-    Body: file.buffer,
-    ContentType: file.mimetype,
-  };
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: filename,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    };
 
-  await s3.send(new PutObjectCommand(params))
-  //return the url to store it on the db
-  return `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${filename}`;
+    await s3.send(new PutObjectCommand(params));
+    return `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${filename}`;
+  } catch (error) {
+    console.error("S3 upload error:", error);
+    throw new Error("Failed to upload image to S3");
+  }
 };

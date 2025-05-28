@@ -41,8 +41,7 @@ export const cancelOrder = async (id: string) => {
     throw err;
   }
 };
-//TODO CREATE FUNCTION TO CALL CHANGE ORDER STATE FROM PENDING TO PAID AND ADD IT TO USE-PROFILE
-//TODO SHOULD SEND THE ORDER ID
+
 export const updateOrderToPaid = async (id: string): Promise<IOrder> => {
   try {
     const res = await api.put(`/order/${id}/order-paid`);
