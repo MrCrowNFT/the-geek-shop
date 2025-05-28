@@ -4,6 +4,9 @@ import OrderConfirmation from "./order-confirmation";
 import ShippingAddressSelection from "./shipping-address-selection";
 import OrderComplete from "./order-complete";
 import OrderCreationPending from "./order-creation";
+import { Elements } from '@stripe/react-stripe-js';
+import stripePromise from '@/lib/stripe';
+import PaymentProcessing from "./payment-process";
 
 // Stepper component for tracking checkout progress
 const CheckoutStepper = ({ currentStep }) => {
@@ -52,13 +55,12 @@ const CheckoutStepper = ({ currentStep }) => {
 };
 
 const CheckoutContainer = () => {
-  // Use more store values and actions directly from the zustand store
+  // Use store values and actions directly from the zustand store
   const {
     checkoutStep,
     currentOrder,
     resetOrder,
     calculateTotal,
-    availableShippingAddresses,
     selectedShippingId,
   } = useOrderStore();
 
@@ -87,6 +89,12 @@ const CheckoutContainer = () => {
       case 3:
         return <OrderCreationPending />;
       case 4:
+        return (
+          <Elements stripe={stripePromise}>
+            <PaymentProcessing />
+          </Elements>
+        );
+      case 5:
         return <OrderComplete />;
       default:
         return <OrderConfirmation />;
