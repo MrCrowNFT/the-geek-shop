@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useOrderStore } from "@/hooks/use-new-order";
 import { useProfile } from "@/hooks/use-profile";
 import { useCart } from "@/hooks/use-cart";
@@ -11,7 +11,7 @@ const OrderCreationPending = () => {
     selectedShippingId, 
     setCheckoutStep, 
     setOrderStatus,
-    setOrderId
+    
   } = useOrderStore();
   
   const { createOrder, shipping: shippingAddresses, isLoading } = useProfile();
