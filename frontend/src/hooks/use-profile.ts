@@ -22,6 +22,7 @@ import {
   deleteShippingAddress,
   updateShippingAddress,
 } from "@/api/services/shipping";
+import { useOrderStore } from "./use-new-order";
 
 type ProfileState = {
   _id: string;
@@ -284,10 +285,13 @@ export const useProfile = create<ProfileState>()(
         }
       },
 
-      //this should no be a optimistic update ether
+      //this should not be a optimistic update ether
       createOrder: async (orderData: ICreateOrderPayload) => {
         try {
           const createdOrder = await createOrder(orderData);
+
+          //need this so that i can get the order id to update it's state after the payment is succesful
+          useOrderStore.getState().setOrderId(createdOrder._id)
 
           set((state) => ({
             orders: [...state.orders, createdOrder],
