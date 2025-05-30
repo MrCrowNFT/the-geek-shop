@@ -12,7 +12,11 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { ICreateOrderPayload, IOrder } from "@/types/order";
 import { loginRequest, logoutRequest } from "@/api/services/auth";
-import { cancelOrder, createOrder } from "@/api/services/order";
+import {
+  cancelOrder,
+  createOrder,
+  updateOrderToPaid,
+} from "@/api/services/order";
 import {
   createShippingAddress,
   deleteShippingAddress,
@@ -50,6 +54,7 @@ type ProfileState = {
 
   // Order methods
   createOrder: (orderData: ICreateOrderPayload) => Promise<boolean>;
+  updateOrderToPaid: (orderId: string) => Promise<boolean>;
   cancelOrder: (orderId: string) => Promise<boolean>;
 
   // Shipping methods
@@ -296,6 +301,29 @@ export const useProfile = create<ProfileState>()(
               error instanceof Error ? error.message : "Failed to create order",
           });
 
+          return false;
+        }
+      },
+
+      updateOrderToPaid: async (orderId) => {
+        try {
+          const updatedOrder = await updateOrderToPaid(orderId);
+          set((state) => ({
+            orders: state.orders.map((order) =>
+              order._id === orderId
+                ? { ...order, status: updatedOrder.status }
+                : order
+            ),
+            isLoading: false,
+            error: null,
+          }));
+          return true;
+        } catch (error) {
+          set({
+            isLoading: false,
+            error:
+              error instanceof Error ? error.message : "Failed to cancel order",
+          });
           return false;
         }
       },
